@@ -1,0 +1,56 @@
+export declare class tabsCodes {
+    CODENAME: string;
+    CODE: string;
+    PARTCODE: string;
+    LANGUAGE_NAME: string;
+    CODETEXT_LANG: string;
+    CODEVALUE_LANG: string;
+    LAST_UPDATE: string;
+    FLEX_FLD1: string;
+    FLEX_FLD2: string;
+    FLEX_FLD3: string;
+    FLEX_FLD4: string;
+    FLEX_FLD5: string;
+}
+export declare class componentConfigDef {
+    eventFrom: any;
+    eventTo: any;
+    languageChanged: string;
+    masterSaved: any;
+    masterDeleted: any;
+    parentClose: any;
+    formMode: any;
+    savingMode: any;
+    isMaster: any;
+    isChild: any;
+    masterKey: any;
+    AUTH_TYPE: any;
+    formattedWhere: any;
+    clearComponent: any;
+    otherMasterKey: any;
+    gridHeight: number;
+    formHeight: any;
+    routineAuth: any;
+    showAll: any;
+    editable: any;
+    masterParams: any;
+    queryable: Boolean;
+    navigable: Boolean;
+    insertable: Boolean;
+    removeable: Boolean;
+    enabled: Boolean;
+    updateable: Boolean;
+    toolsShow: any;
+    masterReadCompleted: any;
+    masterKeyArr: any;
+    masterKeyNameArr: any;
+    showTitle: Boolean;
+    showSave: any;
+    title: any;
+    hideGrid: any;
+    clearScreen: any;
+    setScreen: any;
+    WEEKShow: any;
+    showToolBar: any;
+    useAutoSave: any;
+}

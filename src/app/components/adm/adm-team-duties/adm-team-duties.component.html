@@ -1,0 +1,14 @@
+<div>
+    <legend class="k-form-legend" >{{title }}</legend>
+    <app-adm-team-form 
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+          (saveCompletedOutput)="saveCompletedHandler($event)" 
+          (setParamsOutput) = "setParamsHandler($event)"
+		  [setComponentConfig_Input]="ADM_TEAMFormConfig">
+    </app-adm-team-form>
+    
+    <app-adm-user-duty-grid [detail_Input]="grid_ADM_USER_DUTY"  
+				 [setComponentConfig_Input]="ADM_USER_DUTYGridConfig">
+    </app-adm-user-duty-grid>
+</div>

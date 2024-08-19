@@ -1,0 +1,10 @@
+<div>
+    <app-adm-team-form 
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+                  (saveCompletedOutput)="saveCompletedHandler($event)">
+    </app-adm-team-form>
+    
+    <app-adm-user-information-grid [detail_Input]="grid_adm_user_information" 
+    [triggersaveChanges_Input]="masterSaved" ></app-adm-user-information-grid>
+</div>

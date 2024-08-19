@@ -1,0 +1,30 @@
+.example {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.k-stepper {
+    align-self: center;
+}
+.k-step {
+    pointer-events: none;
+}
+.k-button.prev {
+    margin-right: 16px;
+}
+.example .content {
+    align-self: center;
+}
+.k-form-separator {
+    margin-top: 40px;
+}
+.k-buttons-end {
+    justify-content: space-between;
+    align-content: center;
+}
+.page {
+    align-self: center;
+}
+/* .k-form {
+    width: 450px;
+} */

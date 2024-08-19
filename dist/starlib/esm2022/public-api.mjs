@@ -1,0 +1,6 @@
+/*
+ * Public API Surface of starlib
+ */
+export * from './lib/starlib.service';
+export * from './lib/starlib.component';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL3N0YXJsaWIvc3JjL3B1YmxpYy1hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7O0dBRUc7QUFFSCxjQUFjLHVCQUF1QixDQUFDO0FBQ3RDLGNBQWMseUJBQXlCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIHN0YXJsaWJcbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL2xpYi9zdGFybGliLnNlcnZpY2UnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvc3RhcmxpYi5jb21wb25lbnQnO1xuIl19

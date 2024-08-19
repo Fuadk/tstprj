@@ -1,0 +1,104 @@
+<div>
+    <p *ngIf="!componentConfig.isMaster" class="mb-2"><strong>{{ title }}</strong></p>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+		<div #focusElement tabindex="1000"></div>
+
+<div class="wrap" style="display: none;">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FORM_NAME" text="Form Name"></kendo-label>
+		<kendo-combobox  #FORM_NAME class="form-field-combobox" [formControlName]="'FORM_NAME'"
+		[data]="lkpArrFORM_NAME" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[readonly]="primarKeyReadOnlyArr.isFORM_NAMEreadOnly"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap" [style.display]="componentConfig.formMode == 'page_new' ? 'flex' : 'none'">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_NO" text="Page No"></kendo-label>
+		<input class="form-input" formControlName="PAGE_NO" kendoTextBox #PAGE_NO
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted }"  required
+		[readonly]="primarKeyReadOnlyArr.isPAGE_NOreadOnly" />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_ORDER" text="Page Order"></kendo-label>
+		<input class="form-input" formControlName="PAGE_ORDER" kendoTextBox #PAGE_ORDER  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_TYPE" text="Page Type"></kendo-label>
+		<kendo-combobox  #PAGE_TYPE class="form-field-combobox" [formControlName]="'PAGE_TYPE'"
+		[data]="lkpArrPAGE_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_TITLE" text="Page Title"></kendo-label>
+		<input class="form-input" formControlName="PAGE_TITLE" kendoTextBox #PAGE_TITLE  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_ICON" text="Page Icon"></kendo-label>
+		<kendo-combobox  #PAGE_ICON class="form-field-combobox" [formControlName]="'PAGE_ICON'"
+		[data]="lkpArrPAGE_ICON" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_HELP" text="Page Help"></kendo-label>
+		<input class="form-input" formControlName="PAGE_HELP" kendoTextBox #PAGE_HELP  />
+	</kendo-formfield>
+
+</div>
+
+
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+

@@ -1,0 +1,13 @@
+<div>
+    <legend>{{ title }}</legend>
+    <app-dsp-work-orders-grid
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="DSP_WORK_ORDERSGridConfig">
+    </app-dsp-work-orders-grid>
+    
+    <app-dsp-work-orders-form 
+				 [setComponentConfig_Input]="DSP_WORK_ORDERSFormConfig">
+    </app-dsp-work-orders-form>
+</div>

@@ -1,0 +1,43 @@
+<div>
+    
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="tree-container">
+                <div class="mb-3">
+                    <kendo-menu   style="display: inline-block; float:right;" [items]="langitems" (select)="onSelectLang($event)"></kendo-menu>
+                    <kendo-menu [items]="mainMenus" (select)="selectMainMenu($event)"></kendo-menu>
+                    <h3>{{ currentMainMenu }}</h3>
+                </div>
+                <p *ngIf="panelItems.length == 0 && currentMainMenu != ''" style="text-align: center; color: grey; margin-top: 20px">There is no data to show</p>
+                
+                <kendo-treeview 
+                    [nodes]="panelItems" 
+                    textField="title" 
+                    kendoTreeViewExpandable 
+                    kendoTreeViewSelectable
+                    kendoTreeViewHierarchyBinding 
+                    kendoTreeViewDragAndDrop
+                    kendoTreeViewDragAndDropEditing
+                    [(selectedKeys)]="selectedMenuItems"
+                    childrenField="children"
+                    (nodeDrop)="handleDrop($event)"
+                    (click)="selectMenuItem()">
+                </kendo-treeview>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <legend>{{ title }}</legend>
+
+            <h3 *ngIf="!selectMenuObject" style="text-align: center; color: grey; margin-top: 50px">Select a menu item first!</h3>
+
+            <app-menus-form *ngIf="selectMenuObject" [executeQueryInput]="form_MENUS" (readCompletedOutput)="readCompletedHandler($event)"
+                (clearCompletedOutput)="clearCompletedHandler($event)"
+                (saveCompletedOutput)="saveCompletedHandler($event)" [setComponentConfig_Input]="MENUSFormConfig">
+            </app-menus-form>
+
+            <app-routines-form *ngIf="selectMenuObject" [executeQueryInput]="form_ROUTINES" [setComponentConfig_Input]="ROUTINESFormConfig">
+            </app-routines-form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div>
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+	<custom-tool 	[text]="'Favourite sport'"	></custom-tool>
+	<kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="HOST_ID" [text]="starServices.getNLS([],'HOST_ID','Host Id')" ></kendo-label>
+		<input class="form-input" formControlName="HOST_ID" kendoTextBox #HOST_ID  required 
+		[readonly]="primarKeyReadOnlyArr.isHOST_IDreadOnly"
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.HOST_ID.errors }" />
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="HTTP_METHOD" text="HTTP_METHOD"></kendo-label>
+		<kendo-combobox  #HTTP_METHOD class="form-field-combobox" [formControlName]="'HTTP_METHOD'"
+		[data]="lkpArrHTTP_METHOD" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.HTTP_METHOD.errors }"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-input-double"  [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="URL" text="URL"></kendo-label>
+		<input class="form-input" formControlName="URL" kendoTextBox #URL equired 
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.URL.errors }"  />
+	</kendo-formfield>
+</div>
+
+<!--div class="wrap">
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PROTOCOL" text="PROTOCOL"></kendo-label>
+		<input class="form-input" formControlName="PROTOCOL" kendoTextBox #PROTOCOL  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="HOST" text="Host"></kendo-label>
+		<input class="form-input" formControlName="HOST" kendoTextBox #HOST  />
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PORT" text="Port"></kendo-label>
+		<input class="form-input" formControlName="PORT" kendoTextBox #PORT  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PATH_NAME" text="PATH_NAME"></kendo-label>
+		<input class="form-input" formControlName="PATH_NAME" kendoTextBox #PATH_NAME  />
+	</kendo-formfield>
+
+</div-->
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_HEADER" text="Header"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="RULE_HEADER" kendoTextBox #RULE_HEADER ></textarea>
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_AUTHORIZATION" text="Authorization"></kendo-label>
+		<input class="form-input" formControlName="RULE_AUTHORIZATION" kendoTextBox #RULE_AUTHORIZATION  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="SUCCESS_MSG" text="Success Msg"></kendo-label>
+		<input class="form-input" formControlName="SUCCESS_MSG" kendoTextBox #SUCCESS_MSG  />
+	</kendo-formfield>
+
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="CONTENT_TYPE" text="Content Type"></kendo-label>
+		<input class="form-input" formControlName="CONTENT_TYPE" kendoTextBox #CONTENT_TYPE  />
+	</kendo-formfield-->
+	
+</div>
+
+
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+

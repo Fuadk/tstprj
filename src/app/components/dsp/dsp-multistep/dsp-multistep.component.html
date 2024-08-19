@@ -1,0 +1,51 @@
+<div class="example">
+    <legend>{{ title }}</legend>
+    <kendo-stepper #stepper *ngIf="showStepper" [steps]="steps" [stepType]="'full'" (click)="stepperClicked()" 
+    [(currentStep)]="currentStep" [style.width.px]="400">
+    </kendo-stepper>
+
+    <div class="content">
+        <app-dsp-dynamic-rw-form [hidden]="!fieldsFormOpened"
+            (saveCompletedOutput)="saveFormCompletedHandler($event)"
+            [setComponentConfig_Input]="DSP_DYNAMIC_RWFormConfig"
+            (formValidationChangedOutput)="formValidationChanged($event)"
+            [setLanguageChanged]="languageChanged"
+            [style.pointer-events]="isReadOnly ? 'none' : 'all'">
+        </app-dsp-dynamic-rw-form>
+
+        <app-dsp-dynamic-rw-grid 
+            [detail_Input]="grid_DSP_DYNAMIC_RW" 
+            [hidden]="!fieldsOpened" 
+            (saveCompletedOutput)="saveCompletedHandler($event)" 
+            [setComponentConfig_Input]="DSP_DYNAMIC_RWGridConfig"
+            [setLanguageChanged]="languageChanged"
+            [style.pointer-events]="isReadOnly ? 'none' : 'all'">
+        </app-dsp-dynamic-rw-grid>
+
+        <form class="form-layout" class="k-form k-form-horizontal">
+            <!--span class="k-form-separator"></span-->
+            <div class="k-form-buttons k-buttons-end">
+                <span *ngIf="showStepper" class="page">
+          {{starServices.getNLS([],"STEP","Step")}} {{ currentStep + 1 }} {{starServices.getNLS([],"OF","Of")}} {{totalSteps+1}}
+        </span>
+                <div>
+                    <button kendoButton class="k-button prev k-primary" *ngIf="currentStep !== 0" (click)="prev()">
+            {{starServices.getNLS([],"PREVIOUS","Previous")}}
+          </button>
+                    <button kendoButton class="k-button k-primary" (click)="next()" *ngIf="currentStep !== totalSteps" [disabled]="!isFormValid">
+            {{starServices.getNLS([],"NEXT","Next")}}
+          </button>
+                    <!--p class="k-block"  >
+            <button kendoButton style="vertical-align: top;" class="col-xs-12 col-sm-6 col-lg-3 k-primary" (click)="showMultiStepForm(0)">Preview Form</button>
+        </p-->
+
+                    <button kendoButton class="k-button k-primary" (click)="submit()" *ngIf="currentStep === totalSteps && !isReadOnly" [disabled]="!isFormValid">
+            {{starServices.getNLS([],"SUBMIT","Submit")}}
+          </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</div>

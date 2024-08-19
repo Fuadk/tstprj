@@ -1,0 +1,125 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid 
+    
+    templateDetailBinding  id="grid" [sortable]="true" [height]="gridHeight"
+    [resizable] ="true"
+    (cellClick)="cellClickHandler($event)" 
+    (add)="addHandler()"
+    (remove)="removeHandler($event)"
+    [filter]="state.filter"
+    [filterable]= "isFilterable"
+    [columnMenu]="isColumnMenu"
+    (dataStateChange)="dataStateChange($event)"
+    [resizable]="true"
+    [sortable]="true">
+
+    
+    
+        <ng-template kendoGridToolbarTemplate>
+        <legend>{{ title }}</legend>
+        
+        <kendo-toolbar class="form-toolbar" *ngIf="showToolBar" kendoGridToolbarTemplate>
+        <kendo-toolbar-button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild"></kendo-toolbar-button >
+        <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+    
+        <kendo-toolbar-separator></kendo-toolbar-separator>
+            <kendo-toolbar-button   [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></kendo-toolbar-button >
+            <kendo-toolbar-button   [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></kendo-toolbar-button >
+            <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></kendo-toolbar-button >
+        <kendo-toolbar-separator></kendo-toolbar-separator>
+        
+            <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand></kendo-toolbar-button >
+            <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand>Remove</kendo-toolbar-button >
+        <kendo-toolbar-separator></kendo-toolbar-separator>        
+            <kendo-toolbar-button  [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></kendo-toolbar-button >
+            <kendo-toolbar-button  [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></kendo-toolbar-button >
+            <kendo-toolbar-button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></kendo-toolbar-button >
+            <kendo-toolbar-button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></kendo-toolbar-button >
+    
+    </kendo-toolbar>
+    </ng-template>
+
+    <kendo-grid-column field="TEMPLATE_NAME"
+    title="Name" [width]="60" [editable]="istemplateDetailEnable"></kendo-grid-column>
+
+	<kendo-grid-column field="WO_TYPE" title="Type" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetWO_TYPE(dataItem.WO_TYPE)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrWO_TYPE"  textField="CODETEXT_LANG" valueField="CODE"
+		[valuePrimitive]="true" [formControl]="formGroup.get('WO_TYPE')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+<kendo-grid-column field="SEQUENCE_NAME"
+    title="Seq" [width]="20"></kendo-grid-column>
+<kendo-grid-column field="TEMPLATE_ORDER"
+    title="Order" [width]="20"></kendo-grid-column>
+
+<kendo-grid-column field="DEPT" title="DEPT" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDEPT(dataItem.DEPT)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="lkpArrDEPT"  textField="CODETEXT_LANG" valueField="CODE"
+        (valueChange)="valueChangeDEPT($event)"
+		[valuePrimitive]="true" [formControl]="formGroup.get('DEPT')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+    
+    <kendo-grid-column field="DIV" title="Div" [width]="100">
+        <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDIV(dataItem.DIVS)?.CODETEXT_LANG}} </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="getlkpArrDIV()"  textField="CODETEXT_LANG" valueField="CODE"
+        (valueChange)="valueChangeDIV($event)"
+        [valuePrimitive]="true" [formControl]="formGroup.get('DIV')">
+        </kendo-dropdownlist>
+        </ng-template>
+    </kendo-grid-column>
+
+	<kendo-grid-column field="ASSIGNEE_TYPE" title="ASSIGNEE_TYPE" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetASSIGNEE_TYPE(dataItem.ASSIGNEE_TYPE)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="lkpArrASSIGNEE_TYPE"  textField="CODETEXT_LANG" valueField="CODE"
+        (valueChange)="valueChangeASSIGNEE_TYPE($event)"
+		[valuePrimitive]="true" [formControl]="formGroup.get('ASSIGNEE_TYPE')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+	<kendo-grid-column field="ASSIGNEE" title="ASSIGNEE" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetASSIGNEE(dataItem.ASSIGNEE,dataItem.ASSIGNEE_TYPE)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="getlkpArrASSIGNEE()"  textField="CODETEXT_LANG" valueField="CODE"
+		[valuePrimitive]="true" [formControl]="formGroup.get('ASSIGNEE')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+    <kendo-grid-column field="DURATION"
+    title="Duration" [width]="60"></kendo-grid-column>
+
+    <kendo-grid-column field="DEPENDANT_ORDER_TYPE"
+    title="Dependant" [width]="60"></kendo-grid-column>
+
+                       <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                        <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                        <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                         <div class="page-template">
+                            <div class="header">
+                              <div style="float: center">{{ title }}</div>
+                            </div>
+                            <div class="footer">
+                              Page {{ pageNum }} of {{ totalPages }}
+                            </div>
+                          </div>
+                        </ng-template>
+                    </kendo-grid-pdf>
+                    <kendo-grid-excel fileName="ExcelfileName" ></kendo-grid-excel>
+    
+    </kendo-grid>
+    
+    
+    </kendo-pdf-export>
+    
+  

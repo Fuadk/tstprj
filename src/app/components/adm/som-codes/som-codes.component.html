@@ -1,0 +1,13 @@
+<div>
+    <legend>{{ title }}</legend>
+    <app-som-tabs-codes-spec-form [executeQueryInput]="form_som_tabs_codes_spec"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+                  (saveCompletedOutput)="saveCompletedHandler($event)"
+                  [setComponentConfig_Input]="SOM_TABS_CODES_SPECFormConfig">
+    </app-som-tabs-codes-spec-form>
+    
+    <app-som-tabs-codes-grid [detail_Input]="grid_som_tabs_codes"  
+                [setComponentConfig_Input]="SOM_TABS_CODESGridConfig">
+    </app-som-tabs-codes-grid>
+</div>

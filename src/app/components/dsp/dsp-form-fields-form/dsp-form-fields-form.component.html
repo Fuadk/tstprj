@@ -1,0 +1,283 @@
+<div>
+    <p *ngIf="!componentConfig.isMaster" class="mb-2"><strong>{{ title }}</strong></p>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+		<div #focusElement tabindex="1000"></div>
+
+<div class="wrap" style="display: none;">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FORM_NAME" text="Form Name"></kendo-label>
+		<input class="form-input" formControlName="FORM_NAME" kendoTextBox #FORM_NAME
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.FORM_NAME.errors }"  required
+		[readonly]="primarKeyReadOnlyArr.isFORM_NAMEreadOnly" />
+	</kendo-formfield>
+</div>
+
+<div class="wrap" style="display: none;">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PAGE_NO" text="Page No"></kendo-label>
+		<input class="form-input" formControlName="PAGE_NO" kendoTextBox #PAGE_NO
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.PAGE_NO.errors }"  required
+		[readonly]="primarKeyReadOnlyArr.isPAGE_NOreadOnly" />
+	</kendo-formfield>
+</div>
+
+<div class="wrap" style="display: none;">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="AREA_NO" text="Area No"></kendo-label>
+		<input class="form-input" formControlName="AREA_NO" kendoTextBox #AREA_NO
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.AREA_NO.errors }"  required
+		[readonly]="primarKeyReadOnlyArr.isAREA_NOreadOnly" />
+	</kendo-formfield>
+</div>
+
+<div *ngIf="isNew" class="alert alert-danger alert-dismissible" role="alert">
+	Please note that <strong>ID</strong> is unique and cannot be changed after saving. But you can delete the field
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_ID" text="ID"></kendo-label>
+		<input class="form-input" formControlName="FIELD_ID" kendoTextBox #FIELD_ID
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.FIELD_ID.errors }"  required
+		[readonly]="primarKeyReadOnlyArr.isFIELD_IDreadOnly" />
+	</kendo-formfield>
+</div>
+
+<div class="wrap" style="display: none;">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_ROW" text="Row"></kendo-label>
+		<input class="form-input" formControlName="FIELD_ROW" kendoTextBox #FIELD_ROW  />
+	</kendo-formfield>
+</div>
+
+<div class="wrap" style="display: none;">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_ORDER" text="Order"></kendo-label>
+		<input class="form-input" formControlName="FIELD_ORDER" kendoTextBox #FIELD_ORDER  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_NAME" text="Title"></kendo-label>
+		<input class="form-input" formControlName="FIELD_NAME" kendoTextBox #FIELD_NAME  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_TYPE" text="Type"></kendo-label>
+		<kendo-combobox  #FIELD_TYPE class="form-field-combobox" [formControlName]="'FIELD_TYPE'"
+		[data]="lkpArrFIELD_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_LOOKUP" text="Lookup"></kendo-label>
+		<kendo-combobox  
+			#FIELD_LOOKUP 
+			class="form-field-combobox" 
+			[formControlName]="'FIELD_LOOKUP'"
+			[data]="lkpArrFIELD_LOOKUP" 
+			[textField]="'CODETEXT_LANG'"  
+			[valueField]="'CODE'"
+			[valuePrimitive]="true"  
+			(valueChange)="valueChangeFIELD_LOOKUP($event)" 
+			[kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+
+		<!-- <kendo-dropdownlist 
+			#FIELD_LOOKUP
+			[data]="lkpArrFIELD_LOOKUP" 
+			textField="CODETEXT_LANG" 
+			valueField="CODE" 
+			(valueChange)="valueChangeFIELD_LOOKUP($event)" 
+			[valuePrimitive]="true" 
+			[formControlName]="'FIELD_LOOKUP'">
+		</kendo-dropdownlist> -->
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_DEFAULT" text="Default"></kendo-label>
+		<input class="form-input" formControlName="FIELD_DEFAULT" kendoTextBox #FIELD_DEFAULT (click)="inputClicked('FIELD_DEFAULT', 'editor')"  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_REQUIRED" text="Required"></kendo-label>
+		<input class="form-input" formControlName="FIELD_REQUIRED"  #FIELD_REQUIRED kendoCheckBox type="checkbox"/>
+
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_FORMAT" text="Format"></kendo-label>
+		<input class="form-input" formControlName="FIELD_FORMAT" kendoTextBox #FIELD_FORMAT (click)="inputClicked('FIELD_FORMAT', 'format')"  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_HELP" text="Help text"></kendo-label>
+		<input class="form-input" formControlName="FIELD_HELP" kendoTextBox #FIELD_HELP (click)="inputClicked('FIELD_HELP', 'help')"  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_PROTECTED" text="Protected"></kendo-label>
+		<input class="form-input" formControlName="FIELD_PROTECTED"  #FIELD_PROTECTED kendoCheckBox type="checkbox"/>
+
+	</kendo-formfield>
+
+</div>
+
+<!-- <div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_ENABLER" text="Is field enabler"></kendo-label>
+		<input class="form-input" formControlName="FIELD_ENABLER" kendoTextBox #FIELD_ENABLER  />
+	</kendo-formfield>
+
+</div> -->
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIELD_SHOW_IF" text="Show if"></kendo-label>
+		<input class="form-input" formControlName="FIELD_SHOW_IF" kendoTextBox #FIELD_SHOW_IF  />
+	</kendo-formfield>
+
+</div>
+
+
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+
+<div *ngIf="editorFormOpened">
+    <kendo-dialog title="Form" (close)="editorFormOpened = false" resizable="true" [minWidth]="700" [width]="700" [height]="500">
+        <app-dsp-editor-form (saveCompletedOutput)="saveFormCompletedHandler($event)" [setComponentConfig_Input]="DSP_EDITORFormConfig">
+        </app-dsp-editor-form>
+    </kendo-dialog>
+</div>
+
+<div *ngIf="formatEditorOpened">
+    <kendo-dialog title="Field format" (close)="formatEditorOpened = false" [minWidth]="700" [width]="700" [height]="500">
+		<form class="form-layout" class="k-form k-form-horizontal" [formGroup]="formatForm" >
+			<fieldset class="form-fieldset"  class="k-form-fieldset">
+
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_CURRENCY" text="Currency"></kendo-label>
+						<input class="form-input" formControlName="currency" kendoTextBox #FORMAT_CURRENCY
+						[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && ff.currency.errors }" />
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_MIN_FRAC" text="Min fraction digits"></kendo-label>
+						<input class="form-input" type="number" formControlName="minimumFractionDigits" kendoTextBox #FORMAT_MIN_FRAC
+						[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && ff.minimumFractionDigits.errors }" />
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_MAX_FRAC" text="Max fraction digits"></kendo-label>
+						<input class="form-input" type="number" formControlName="maximumFractionDigits" kendoTextBox #FORMAT_MAX_FRAC
+						[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && ff.maximumFractionDigits.errors }" />
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_STEP" text="Step"></kendo-label>
+						<input class="form-input" type="number" formControlName="step" kendoTextBox #FORMAT_STEP
+						[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && ff.step.errors }" />
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_MIN" text="Min"></kendo-label>
+						<input class="form-input" type="number" formControlName="min" kendoTextBox #FORMAT_MIN
+						[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && ff.min.errors }" />
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_MAX" text="Max"></kendo-label>
+						<input class="form-input" type="number" formControlName="max" kendoTextBox #FORMAT_MAX
+						[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && ff.max.errors }" />
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_SPINNERS" text="Spinners"></kendo-label>
+						<input class="form-input" formControlName="spinners" #FORMAT_SPINNERS kendoCheckBox type="checkbox"/>
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_GROUPING" text="Use grouping"></kendo-label>
+						<input class="form-input" formControlName="useGrouping" #FORMAT_GROUPING kendoCheckBox type="checkbox"/>
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_STYLE" text="Style"></kendo-label>
+						<kendo-combobox class="form-field-combobox" [data]="formatStyles" [allowCustom]="false" formControlName="style" #FORMAT_STYLE></kendo-combobox>
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="FORMAT_CURRENCY_DISPLAY" text="Currency display"></kendo-label>
+						<kendo-combobox class="form-field-combobox" [data]="currencyDisplays" [allowCustom]="false" formControlName="currencyDisplay" #FORMAT_CURRENCY_DISPLAY></kendo-combobox>
+					</kendo-formfield>
+				</div>
+
+			</fieldset>
+		</form>
+
+		<kendo-dialog-actions>
+			<button kendoButton (click)="formatEditorOpened = false">Cancel</button>
+			<button kendoButton (click)="submitFormat()" [primary]="true">Update</button>
+		</kendo-dialog-actions>
+    </kendo-dialog>
+</div>

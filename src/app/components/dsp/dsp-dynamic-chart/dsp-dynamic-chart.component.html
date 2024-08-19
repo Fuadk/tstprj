@@ -1,0 +1,105 @@
+    
+    <ng-template kendoGridToolbarTemplate>
+      <legend class="k-form-legend" >{{ title }}</legend>
+      
+    
+      <kendo-toolbar  kendoGridToolbarTemplate>
+          <kendo-toolbar-button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></kendo-toolbar-button >
+          <kendo-toolbar-button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></kendo-toolbar-button >
+    </kendo-toolbar>
+    </ng-template>
+    
+    <div *ngIf="showParams">
+        <kendo-grid
+           id="gridParams"
+          [kendoGridBinding]="gridParamsData"
+          scrollable="none"
+          (cellClick)="cellClickHandler($event)" 
+          >
+      <ng-template kendoGridToolbarTemplate>
+        <legend class="k-form-legend" >Select Parameters</legend>
+        </ng-template>
+      
+        <kendo-grid-column
+        *ngFor="let column of columns"
+        field="{{column.field}}"
+        title="{{column.title}}"
+        format="{{column.format}}"
+        
+            >
+            <p *ngIf="column.lookup">
+              <ng-template kendoGridCellTemplate  let-dataItem> {{lkpArrGetfield(column.field, dataItem)?.CODETEXT_LANG}} </ng-template>
+            </p>
+              <!--ng-template kendoGridEditTemplate  let-dataItem >
+                  <kendo-dropdownlist  {{[data]=lkpArrGetfieldArr(column.field)}}  textField="CODETEXT_LANG" valueField="CODE"
+                  [valuePrimitive]="true" {{[formControl]="formGroup.get(column.field)"}}>
+                </kendo-dropdownlist>
+              </ng-template-->
+          </kendo-grid-column>
+        </kendo-grid>
+        </div>
+      
+  
+<kendo-chart [categoryAxis]="{ categories: categories }"  >
+        <kendo-chart-area class="content-pane" [margin]="30" [height]="height" [width]="width">
+        </kendo-chart-area>
+    <kendo-chart-title text={{title}}></kendo-chart-title>
+    <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+    <kendo-chart-tooltip ></kendo-chart-tooltip>
+
+    <kendo-chart-series *ngIf=chartBarLike>
+        <kendo-chart-series-item  *ngFor="let item of series" [stack]="stack"
+        [type]="chartType"  [data]="item.data" [name]="item.name">
+        </kendo-chart-series-item>
+    </kendo-chart-series>
+
+    <kendo-chart-series *ngIf=chartPieLike>
+      <kendo-chart-series-item   [type]="chartType"  [data]="series"   field={{chartValue}}  categoryField={{chartCategory}}     [labels]="{ visible: true }" >
+      </kendo-chart-series-item>
+
+  </kendo-chart-series>
+
+  
+  </kendo-chart>
+
+
+    
+  <kendo-dialog title={{dialogTitle}} *ngIf="lookupOpened" (close)="lookupClose()" 
+  resizable="true"
+    [minWidth]="400" [width]="500" [height]="450">
+      <kendo-grid
+        id="grid2"
+        [kendoGridBinding]="lookupData"
+        scrollable="scrollable"
+        [filterable]= "true"
+        (cellClick)="cellClickHandlerLookup($event)" 
+        >
+        
+        <kendo-grid-column field="CODE" 
+            title="Code" [width]="100" ></kendo-grid-column>
+        <kendo-grid-column field="CODETEXT_LANG" 
+            title="Text" [width]="150" ></kendo-grid-column>
+      </kendo-grid>
+      </kendo-dialog>
+    
+
+
+      <kendo-dialog title={{dialogDateTitle}} *ngIf="dateOpened" (close)="dateClose()" 
+           [minWidth]="400" [width]="500" [height]="250">
+
+          <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="formDate" >
+            <fieldset class="form-fieldset"  class="k-form-fieldset">
+              <div class="wrap">
+                <kendo-formfield class="form-field" [orientation]="'horizontal'">
+                  <kendo-label class="form-label" [for]="DYNAMIC_FIELD" text="Date"></kendo-label>
+                  <kendo-datepicker format="this.paramConfig.DateFormat" class="form-field-date" formControlName="DYNAMIC_FIELD" 
+                  (valueChange)="valueChangeDYNAMIC_FIELDE($event)"
+                  #DYNAMIC_FIELD ></kendo-datepicker>
+                </kendo-formfield>
+              </div>
+            </fieldset>
+            </form>
+
+      </kendo-dialog>
+    
+    

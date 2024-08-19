@@ -1,0 +1,113 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid id="grid" [sortable]="true" [height]="componentConfig.gridHeight" (cellClick)="cellClickHandler($event)" (add)="addHandler()" (remove)="removeHandler($event)" [filter]="state.filter" [filterable]="isFilterable" [columnMenu]="isColumnMenu"
+        (dataStateChange)="dataStateChange($event)" [resizable]="true" [sortable]="true">
+
+
+
+        <ng-template kendoGridToolbarTemplate>
+            <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+
+
+            
+                <button kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild">
+                </button>
+                <button kendoButton [icon]="'print'" title="print" (click)="printScreen()"></button>
+
+                
+                <button kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button>
+                <button kendoButton [icon]="'reload'" title="Execute Query" (click)="executeQuery(grid);">
+                </button>
+                <button kendoButton [icon]="'cancel'" title="Cancel" (click)="cancelHandler()"></button>
+                
+
+                <button [icon]="'plus-outline'" title="Insert Record" kendoGridAddCommand></button>
+                <button [icon]="'minus-outline'" title="Delete Record" kendoGridRemoveCommand>Remove
+                </button>
+                
+                <button kendoButton [icon]="'filter'" title="Show/Hide Filter options" (click)="toggleFilter()">
+                </button>
+                <button kendoButton [icon]="'menu'" title="Show/Hide Menu" (click)="toggleColumnMenu()">
+                </button>
+                <button [icon]="'file-pdf'" title="Export to PDF" kendoGridPDFCommand></button>
+                <button [icon]="'file-excel'" title="Export to Excel" kendoGridExcelCommand>
+                </button>
+
+            
+        </ng-template>
+
+
+        <!--kendo-grid-column field="FORM_NAME" title="Form" [width]="80" [editable]="isFORM_NAMEEnable"></kendo-grid-column>
+        <kendo-grid-column field="PAGE_NO" title="Page" [width]="60" [editable]="isPAGE_NOEnable"></kendo-grid-column>
+        <kendo-grid-column field="AREA_NO" title="Area" [width]="60" [editable]="isAREA_NOEnable"></kendo-grid-column-->
+        <kendo-grid-column field="FIELD_ID" title="Id" [editable]="!primarKeyReadOnlyArr.isFIELD_IDreadOnly" [width]="80">
+        </kendo-grid-column>
+        <kendo-grid-column field="FIELD_ROW" title="Row" [width]="40"></kendo-grid-column>
+        <kendo-grid-column field="FIELD_ORDER" title="Order" [width]="40"></kendo-grid-column>
+        <kendo-grid-column field="FIELD_NAME" title="Title" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="FIELD_TYPE" title="Type" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetFIELD_TYPE(dataItem.FIELD_TYPE)?.CODETEXT_LANG}}
+            </ng-template>
+            <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                <kendo-dropdownlist [data]="lkpArrFIELD_TYPE" textField="CODETEXT_LANG" valueField="CODE" (valueChange)="valueChangeFIELD_TYPE($event)" [valuePrimitive]="true" [formControl]="formGroup.get('FIELD_TYPE')">
+                </kendo-dropdownlist>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="FIELD_LOOKUP" title="Lookup" [width]="100">
+            <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetFIELD_LOOKUP(dataItem.FIELD_LOOKUP)?.CODETEXT_LANG}}
+            </ng-template>
+            <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                <kendo-dropdownlist [data]="lkpArrFIELD_LOOKUP" textField="CODETEXT_LANG" valueField="CODE" (valueChange)="valueChangeFIELD_LOOKUP($event)" [valuePrimitive]="true" [formControl]="formGroup.get('FIELD_LOOKUP')">
+                </kendo-dropdownlist>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="FIELD_DEFAULT" title="Default" [width]="100"></kendo-grid-column>
+        <kendo-grid-column field="FIELD_FORMAT" title="Format" [width]="100"></kendo-grid-column>
+
+        <kendo-grid-column field="FIELD_REQUIRED" title="Req." editor="boolean" [width]="40">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <input type="checkbox" [checked]="dataItem.FIELD_REQUIRED" />
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="FIELD_HELP" title="Help text" [width]="120"></kendo-grid-column>
+
+        <kendo-grid-column field="FIELD_PROTECTED" title="Prot." editor="boolean" [width]="40">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <input type="checkbox" [checked]="dataItem.FIELD_PROTECTED" />
+            </ng-template>
+        </kendo-grid-column>
+        
+        <kendo-grid-column field="FIELD_SHOW_IF" title="Show if" [width]="100"></kendo-grid-column>
+
+        <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+            <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+            <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                <div class="page-template">
+                    <div class="header">
+                        <div style="float: center">{{ title }}</div>
+                    </div>
+                    <div class="footer">
+                        Page {{ pageNum }} of {{ totalPages }}
+                    </div>
+                </div>
+            </ng-template>
+        </kendo-grid-pdf>
+        <kendo-grid-excel fileName="ExcelfileName"></kendo-grid-excel>
+
+    </kendo-grid>
+
+
+</kendo-pdf-export>
+
+
+<div *ngIf="editorFormOpened">
+    <kendo-dialog title="Form" (close)="editorFormClose()" resizable="true" [minWidth]="700" [width]="700" [height]="500">
+
+
+        <app-dsp-editor-form (saveCompletedOutput)="saveFormCompletedHandler($event)" [setComponentConfig_Input]="DSP_EDITORFormConfig">
+        </app-dsp-editor-form>
+    </kendo-dialog>
+</div>

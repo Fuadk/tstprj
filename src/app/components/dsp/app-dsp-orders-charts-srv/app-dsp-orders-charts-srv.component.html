@@ -1,0 +1,177 @@
+<legend>Service creation</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+	<kendo-toolbar-button kendoButton [icon]="'print'" title="print" (click)="print()"></kendo-toolbar-button>
+
+	<kendo-toolbar-separator></kendo-toolbar-separator>
+
+	<kendo-toolbar-button [icon]="'search'" title="Execute Query" (click)="executeQuery(form.value)">
+	</kendo-toolbar-button>
+	<kendo-toolbar-button [icon]="'cancel'" title="Cancel" (click)="onCancel($event)"></kendo-toolbar-button>
+</kendo-toolbar>
+
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+	<div class="form-borders">
+		<form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form">
+
+			<fieldset class="form-fieldset" class="k-form-fieldset">
+
+				<div >
+					<button class="k-button k-primary" kendoButton (click)="executeQuery(form.value)" icon="search"
+					style="margin: 1px 15px 1px 1px;">Search</button>
+					<button  kendoButton class="k-button btn-rounded" style="float: right;" (click)="addNewRequest()" title="Add new request">+</button>
+					</div>
+					<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="ORDER_TYPE" text="Type"></kendo-label>
+						<kendo-combobox #ORDER_TYPE class="form-field-combobox" [formControlName]="'ORDER_TYPE'"
+							[data]="lkpArrORDER_TYPE" [textField]="'CODETEXT_LANG'" [valueField]="'CODE'"
+							[valuePrimitive]="true" [kendoDropDownFilter]="{ operator: 'contains' }"
+							[ngClass]="{ 'ng-invalid-required ng-touched': submitted && form.value.ORDER_TYPE.errors }">
+						</kendo-combobox>
+					</kendo-formfield>
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="ORDER_STATUS" text="Status"></kendo-label>
+						<kendo-combobox #ORDER_STATUS class="form-field-combobox" [formControlName]="'ORDER_STATUS'"
+							[data]="lkpArrORDER_STATUS" [textField]="'CODETEXT_LANG'" [valueField]="'CODE'"
+							[valuePrimitive]="true" [kendoDropDownFilter]="{ operator: 'contains' }"
+							[ngClass]="{ 'ng-invalid-required ng-touched': submitted && form.value.ORDER_STATUS.errors }">
+						</kendo-combobox>
+					</kendo-formfield>
+				</div>
+				<div class="wrap">
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type"></kendo-label>
+						<kendo-combobox #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+							[readonly]="isAsigneeTypeReadOnly" [data]="lkpArrASSIGNEE_TYPE"
+							[textField]="'CODETEXT_LANG'" [valueField]="'CODE'" [valuePrimitive]="true"
+							[kendoDropDownFilter]="{ operator: 'contains' }">
+						</kendo-combobox>
+					</kendo-formfield>
+
+					<kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="ASSIGNEE" text="Assignee"></kendo-label>
+						<kendo-combobox #ASSIGNEE class="form-field-combobox" [formControlName]="'ASSIGNEE'"
+							[readonly]="isAsigneeReadOnly" [data]="lkpArrASSIGNEE" [textField]="'CODETEXT_LANG'"
+							[valueField]="'CODE'" [valuePrimitive]="true"
+							[kendoDropDownFilter]="{ operator: 'contains' }">
+						</kendo-combobox>
+					</kendo-formfield>
+
+					<!-- <kendo-formfield class="form-field" [orientation]="'horizontal'">
+						<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type"></kendo-label>
+						<kendo-combobox #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+							[data]="lkpArrASSIGNEE_TYPE" [textField]="'CODETEXT_LANG'" [valueField]="'CODE'"
+							[valuePrimitive]="true" [kendoDropDownFilter]="{ operator: 'contains' }"
+							[ngClass]="{ 'ng-invalid-required ng-touched': submitted && form.value.ASSIGNEE_TYPE.errors }">
+						</kendo-combobox>
+					</kendo-formfield>					 -->
+
+			
+				</div>
+				<div class="wrap">
+					<!-- <button class="k-button k-primary" kendoButton (click)="addNewRequest()" icon="plus-outline"
+						style="margin: 1px 15px 1px 1px;">Add new request</button> -->
+						<!-- <button  kendoButton class="k-button btn-rounded" (click)="addNewRequest()" title="Add new request">+</button> -->
+						
+				</div>
+			</fieldset>
+		</form>
+	</div>
+
+	<div class="wrap">
+		<div style="width: 70%;">
+			<app-dsp-orders-grid [detail_Input]="grid_DSP_ORDERS" (readCompletedOutput)="readCompletedHandler($event)"
+				(clearCompletedOutput)="clearCompletedHandler($event)"
+				(saveCompletedOutput)="saveCompletedHandler($event)" [setComponentConfig_Input]="DSP_ORDERSGridConfig">
+			</app-dsp-orders-grid>
+		</div>
+
+
+
+		<div class="col-md-12" style="width: 30%;">
+			<app-dsp-dynamic-chart
+			[setComponentConfig_Input]="CRC_CRC_STATConfig">
+			</app-dsp-dynamic-chart >
+			<p></p>
+			<app-dsp-dynamic-chart [setComponentConfig_Input]="CRC_CRC_STATConfig2">
+			</app-dsp-dynamic-chart>
+
+		</div>
+
+
+	</div>
+
+</kendo-pdf-export>
+
+<div [hidden]="!newRequestOpened">
+	<kendo-dialog title="Add a new request" resizable="false" (close)="newRequestOpened = false" width="70%"
+		height="90%">
+		<kendo-toolbar class="form-toolbar">
+			<kendo-toolbar-button kendoButton [icon]="'print'" title="print" (click)="print()"></kendo-toolbar-button>
+		</kendo-toolbar>
+		<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+			<div class="form-borders">
+				<form class="form-layout" class="k-form k-form-horizontal" [formGroup]="addForm">
+					<fieldset class="form-fieldset" class="k-form-fieldset">
+						<div class="wrap">
+							<kendo-formfield class="form-field" [orientation]="'horizontal'">
+								<kendo-label class="form-label" [for]="ORDER_TYPE" text="Type"></kendo-label>
+								<kendo-combobox #ORDER_TYPE class="form-field-combobox" [formControlName]="'ORDER_TYPE'"
+									[data]="lkpArrORDER_TYPE" [textField]="'CODETEXT_LANG'" [valueField]="'CODE'"
+									[valuePrimitive]="true" [kendoDropDownFilter]="{ operator: 'contains' }"
+									(valueChange)="valueChangeORDER_TYPE($event)"
+									[ngClass]="{ 'ng-invalid-required ng-touched': submitted && addForm.value.ORDER_TYPE.errors }">
+								</kendo-combobox>
+							</kendo-formfield>
+
+							<kendo-formfield class="form-field" [orientation]="'horizontal'">
+								<kendo-label class="form-label" [for]="TEMPLATE_NAME" text="Template"></kendo-label>
+								<kendo-combobox #TEMPLATE_NAME class="form-field-combobox"
+									[formControlName]="'TEMPLATE_NAME'" [data]="lkpArrTEMPLATE_NAME"
+									[textField]="'CODETEXT_LANG'" [valueField]="'TEMPLATE_NAME'" [valuePrimitive]="true"
+									[kendoDropDownFilter]="{ operator: 'contains' }" [placeholder]="'select a Template'"
+									(valueChange)="valueChangeTEMPLATE_NAME($event)"
+									[ngClass]="{ 'ng-invalid-required ng-touched': submitted && addForm.value.TEMPLATE_NAME.errors }">
+								</kendo-combobox>
+							</kendo-formfield>
+
+							<kendo-upload [disabled]="false" [autoUpload]="true" [saveUrl]="uploadSaveUrl"
+								[removeUrl]="uploadRemoveUrl" (select)="selectEventHandler($event)"
+								(remove)="removeEventHandler_not_used($event)" (complete)="completeEventHandler($event)"
+								(upload)="uploadEventHandler($event)" [(ngModel)]="myFiles"
+								[ngModelOptions]="{standalone: true}" class="mt-2 ms-2">
+								<ng-template kendoUploadFileTemplate let-files let-state="state">
+									<div>
+										<a href="{{AttDwnUrl}}{{files[0].name}}">
+											{{files[0].name}} Size: {{files[0].size}} bytes
+										</a>
+									</div>
+									<button (click)="removeFile(files[0].name)" class="k-icon k-delete k-i-x"
+										class="k-button" style="position: absolute; right: .2em;">x</button>
+								</ng-template>
+							</kendo-upload>
+						</div>
+
+						<div class="wrap">
+							<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+								<kendo-label class="form-label" [for]="NOTES" text="Notes"></kendo-label>
+								<textarea kendoTextArea style="resize: both;" class="form-input-double"
+									formControlName="NOTES" kendoTextBox #NOTES></textarea>
+							</kendo-formfield>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+
+			<app-dsp-multistep *ngIf="showMultistep" (saveCompletedOutput)="saveCompletedOutputHandler($event)"
+				[setComponentConfig_Input]="DSP_MULTISTEPFormConfig">
+			</app-dsp-multistep>
+		</kendo-pdf-export>
+
+		<!-- <kendo-dialog-actions>
+			<button kendoButton (click)="newRequestOpened = false">Cancel</button>
+			<button kendoButton (click)="submitAction()" [primary]="true">Submit request</button>
+		</kendo-dialog-actions> -->
+	</kendo-dialog>
+</div>

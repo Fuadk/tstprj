@@ -1,0 +1,103 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid [rowClass]="ROW_CLASS"
+    
+    id="grid" [sortable]="true" [height]="componentConfig.gridHeight"
+    [resizable] ="true"
+    [height]="gridHeight"
+    (cellClick)="cellClickHandler($event)" 
+    (add)="addHandler()"
+    (remove)="removeHandler($event)"
+    [filter]="state.filter"
+    [filterable]= "isFilterable"
+    [columnMenu]="isColumnMenu"
+    (dataStateChange)="dataStateChange($event)"
+    [resizable]="true"
+    [sortable]="true">
+
+    
+    
+        <ng-template kendoGridToolbarTemplate *ngIf="showToolBar">
+        <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ this.starServices.getNLS([],"log_trans_grid.trans.component_title","Log Trans") }}</legend>
+        
+
+        
+        <button  kendoButton [icon]="'save'" title="{{starServices.getNLS([],'SAVE','Save')}}" (click)="saveChanges(grid);" *ngIf="!isChild && componentConfig.updateable"></button >
+            <button  kendoButton [icon]="'print'" title="{{starServices.getNLS([],'PRINT','Print')}}" (click)="printScreen()" ></button >
+    
+        
+            <button   kendoButton [icon]="'eye'" title="{{starServices.getNLS([],'ENTER_QUERY','Enter Query')}}" (click)="enterQuery(grid);" *ngIf="componentConfig.queryable"></button >
+            <button   kendoButton [icon]="'search'"  title="{{starServices.getNLS([],'EXECUTE_QUERY','Execute Query')}}"  (click)="executeQuery(grid);" *ngIf="componentConfig.queryable"></button >
+            <button   kendoButton [icon]="'cancel'" title="{{starServices.getNLS([],'CANCEL','Cancel')}}"  (click)="cancelHandler()" ></button >
+                
+        
+
+	    <button  kendoButton [icon]="'filter'" title="{{starServices.getNLS([],'SHOW_HIDE_FILTER','Show/Hide Filter options')}}"  (click)="toggleFilter()" ></button >
+            <button  kendoButton [icon]="'menu'" title="{{starServices.getNLS([],'SHOW_HIDE_MENU','Show/Hide Menu')}}"  (click)="toggleColumnMenu()" ></button >
+            <button  [icon]="'file-pdf'" title="{{starServices.getNLS([],'EXPORT_TO_PDF','Export to PDF')}}"  kendoGridPDFCommand ></button >
+            <button  [icon]="'file-excel'" title="{{starServices.getNLS([],'EXPORT_TO_EXCEL','Export to Excel')}}"  kendoGridExcelCommand ></button >
+	        
+
+            <button  [icon]="'plus-outline'" title="{{starServices.getNLS([],'INSERT_RECORD','Insert Record')}}"  kendoGridAddCommand *ngIf="componentConfig.insertable"></button >
+
+          
+            <button  [icon]="'minus-outline'" title="{{starServices.getNLS([],'DELETE_RECORD','Delete Record')}}"  kendoGridRemoveCommand *ngIf="componentConfig.removeable">Remove</button >
+
+
+    
+    </ng-template>
+
+
+	<kendo-grid-column field="LOGDATE"  [width]="100"	filter="date"	 editor="date"  title="{{starServices.getNLS([],'log_trans_grid.trans.LOGDATE','Logdate')}}" 
+        [editable]="false"
+		[format]="paramConfig.DateTimeFormat">
+		<ng-template KendoGridEditTemplate  let-dataItem>
+		<kendo-datetimepicker [format]="this.paramConfig.DateTimeFormat" ngDefaultControl	 #datepicker>
+		 (valueChange)="valueChangeLOGDATE($event)" 		</kendo-datetimepicker>
+		</ng-template>
+		</kendo-grid-column>
+
+	<kendo-grid-column field="LOGNAME" title="{{starServices.getNLS([],'log_trans_grid.trans.LOGNAME','Logname')}}" [width]="100"  
+    		[editable]="!primarKeyReadOnlyArr.isLOGNAMEreadOnly"
+>
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetLOGNAME(dataItem.LOGNAME)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrLOGNAME"  textField="CODETEXT_LANG" valueField="CODE"
+		 (valueChange)="valueChangeLOGNAME($event)" 
+		[valuePrimitive]="true" [formControl]="formGroup.get('LOGNAME')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+	<kendo-grid-column 		 title="{{starServices.getNLS([],'log_trans_grid.trans.TRANS','Trans')}}" 
+        [editable]="false"  [width]="100">
+		 <ng-template kendoGridCellTemplate let-dataItem> {{dataItem.TRANS}}</ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<input  (blur)="onBlur_TRANS()"  [formControl]="formGroup.get('TRANS')" [placeholder]="starServices.getNLS([],'log_trans_grid.trans.TRANS_Hint','Please enter TRANS')" />
+		</ng-template>
+		</kendo-grid-column>
+
+
+
+
+    
+                       <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                        <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                        <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                         <div class="page-template">
+                            <div class="header">
+                              <div style="float: center">{{ title }}</div>
+                            </div>
+                            <div class="footer">
+                              Page {{ pageNum }} of {{ totalPages }}
+                            </div>
+                          </div>
+                        </ng-template>
+                    </kendo-grid-pdf>
+                    <kendo-grid-excel [fileName]="ExcelfileName" ></kendo-grid-excel>
+    
+    </kendo-grid>
+    
+    
+    </kendo-pdf-export>
+

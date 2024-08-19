@@ -1,0 +1,165 @@
+<div>
+    <legend>{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div class="wrap">
+
+	
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="showAssignee">
+		<kendo-label class="form-label" [for]="ASSIGNEE" text="Assignee"></kendo-label>
+		<kendo-combobox  #ASSIGNEE class="form-field-combobox" [formControlName]="'ASSIGNEE'"
+		[data]="lkpArrASSIGNEE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WO_STATUS" text="Wo Status"></kendo-label>
+		<kendo-combobox  #WO_STATUS class="form-field-combobox" [formControlName]="'WO_STATUS'"
+		[data]="lkpArrWO_STATUS" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+</div>
+
+<!--div class="wrap">
+	
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type"></kendo-label>
+		<kendo-combobox  #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+		[data]="lkpArrASSIGNEE_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WO_TYPE" text="Wo Type"></kendo-label>
+		<input class="form-input" formControlName="WO_TYPE" kendoTextBox #WO_TYPE  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WO_ORDER_NO" text="Wo Order No"></kendo-label>
+		<input class="form-input" formControlName="WO_ORDER_NO" kendoTextBox #WO_ORDER_NO   		[ngClass]="{ 'ng-invalid-required 
+ ng-touched': submitted && f.WO_ORDER_NO.errors }"
+ />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="SUBNO" text="Subno"></kendo-label>
+		<input class="form-input" formControlName="SUBNO" kendoTextBox #SUBNO  />
+	</kendo-formfield>
+<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="TEMPLATE_ORDER" text="Subno"></kendo-label>
+		<input class="form-input" formControlName="TEMPLATE_ORDER" kendoTextBox #TEMPLATE_ORDER  />
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+	
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="TEMPLATE_NAME" text="Template Name"></kendo-label>
+		<kendo-combobox  #TEMPLATE_NAME class="form-field-combobox" [formControlName]="'TEMPLATE_NAME'"
+		[data]="lkpArrTEMPLATE_NAME" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DIV" text="Div"></kendo-label>
+		<kendo-combobox  #DIV class="form-field-combobox" [formControlName]="'DIV'"
+		[data]="lkpArrDIV" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DEPT" text="Dept"></kendo-label>
+		<kendo-combobox  #DEPT class="form-field-combobox" [formControlName]="'DEPT'"
+		[data]="lkpArrDEPT" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+	
+
+
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PROMISED_DATE" text="PROMISED_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="PROMISED_DATE"  #PROMISED_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="COMPLETION_DATE" text="COMPLETION_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="COMPLETION_DATE"  #COMPLETION_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="NOTES" text="Notes"></kendo-label>
+		<input class="form-input" formControlName="NOTES" kendoTextBox #NOTES  />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PARENT_ORDER_TYPE" text="Parent Order Type"></kendo-label>
+		<input class="form-input" formControlName="PARENT_ORDER_TYPE" kendoTextBox #PARENT_ORDER_TYPE  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ORDER_NO" text="Order No"></kendo-label>
+		<input class="form-input" formControlName="ORDER_NO" kendoTextBox #ORDER_NO  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ACTUAL_START_DATE" text="ACTUAL_START_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="ACTUAL_START_DATE"  #ACTUAL_START_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ACTUAL_END_DATE" text="ACTUAL_END_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="ACTUAL_END_DATE"  #ACTUAL_END_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ORDERED_DATE" text="Ordered Date"></kendo-label>
+		<input class="form-input" formControlName="ORDERED_DATE" kendoTextBox #ORDERED_DATE  />
+	</kendo-formfield>
+
+
+</div-->
+
+    </fieldset>
+    </form>
+
+    <app-dsp-work-orders-grid 
+		  [setComponentConfig_Input]="DSP_WORK_ORDERSGridConfig"
+		   >
+    </app-dsp-work-orders-grid>
+    
+
+</kendo-pdf-export>
+</div>
+
+

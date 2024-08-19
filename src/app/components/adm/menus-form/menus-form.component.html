@@ -1,0 +1,109 @@
+<div >
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar" >
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator *ngIf="!hideOthers"></kendo-toolbar-separator>
+    <kendo-toolbar-button *ngIf="!hideOthers"  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button *ngIf="!hideOthers"  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button *ngIf="!hideOthers"   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator *ngIf="!hideOthers"></kendo-toolbar-separator>
+    <kendo-toolbar-button *ngIf="!hideOthers"  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button *ngIf="!hideOthers"  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button *ngIf="!hideOthers"   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button *ngIf="!hideOthers"  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <div class="form-borders">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset" class="k-form-fieldset">
+
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="MENU" text="Menu"></kendo-label>
+<input class="form-input" formControlName="MENU" kendoTextBox #MENU  
+required [readonly]="primarKeyReadOnlyArr.isMENUreadOnly"/>
+</kendo-formfield>
+
+<kendo-formfield class="form-field" [orientation]="'horizontal'">
+    <kendo-label class="form-label" [for]="CHOICE" text="Choice"></kendo-label>
+    <input class="form-input" formControlName="CHOICE" kendoTextBox #CHOICE />
+</kendo-formfield>
+
+<kendo-formfield class="form-field" [orientation]="'horizontal'">
+    <kendo-label class="form-label" [for]="MENU_TYPE" text="Menu Type"></kendo-label>
+    <kendo-combobox  #MENU_TYPE class="form-field-combobox" [formControlName]="'MENU_TYPE'"
+    [data]="lkpArrMENU_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+    [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+    </kendo-combobox>
+</kendo-formfield>
+
+
+
+</div>
+
+
+<div class="wrap">
+
+<kendo-formfield class="form-field" [orientation]="'horizontal'">
+    <kendo-label class="form-label" [for]="LANGUAGE_NAME" text="Language"></kendo-label>
+    <kendo-combobox  #LANGUAGE_NAME class="form-field-combobox" [formControlName]="'LANGUAGE_NAME'"
+    [data]="lkpArrLANGUAGE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+    [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+    </kendo-combobox>
+</kendo-formfield>
+
+
+
+<kendo-formfield class="form-field" [orientation]="'horizontal'">
+    <kendo-label class="form-label" [for]="LINE" text="Line"></kendo-label>
+    <input class="form-input" formControlName="LINE" kendoTextBox #LINE />
+</kendo-formfield>
+
+
+
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="TEXT" text="Text"></kendo-label>
+<input class="form-input-double"  formControlName="TEXT" kendoTextBox #TEXT />
+</kendo-formfield>
+
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="EN_TEXT" text="En Text"></kendo-label>
+<input class="form-input" formControlName="EN_TEXT" kendoTextBox #EN_TEXT />
+</kendo-formfield-->
+
+
+
+
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="AR_TEXT" text="Ar Text"></kendo-label>
+<input class="form-input" formControlName="AR_TEXT" kendoTextBox #AR_TEXT />
+</kendo-formfield-->
+
+</div>
+
+<div class="wrap">
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="FMODE" text="Fmode"></kendo-label>
+<input class="form-input" formControlName="FMODE" kendoTextBox #FMODE />
+</kendo-formfield-->
+</div>
+
+    </fieldset>
+    </form>
+    </div>
+</kendo-pdf-export>
+</div>
+
+

@@ -1,0 +1,72 @@
+<div>
+    <legend>{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div [ngClass]="isPhonePortrait ? 'standard' : 'wrap' ">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="LOGDATE" [text]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.LOGDATE','Logdate')"></kendo-label>
+		<kendo-datetimepicker [format]="this.paramConfig.DateTimeFormat" class="form-field-date" formControlName="LOGDATE"  #LOGDATE 
+
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.LOGDATE.errors }"  required 
+		[readonly]="primarKeyReadOnlyArr.isLOGDATEreadOnly" [placeholder]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.LOGDATE_Hint','Please enter LOGDATE')"
+		 ></kendo-datetimepicker>
+	</kendo-formfield>
+
+    <kendo-formfield class="form-field" [orientation]="'horizontal'" >
+        <kendo-label class="form-label" [for]="LOGDATE_TO" [text]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.LOGDATE_TO','Logdate')"></kendo-label>
+        <kendo-datetimepicker [format]="this.paramConfig.DateTimeFormat" class="form-field-date" formControlName="LOGDATE_TO"  #LOGDATE_TO 
+
+        [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.LOGDATE_TO.errors }"  required 
+        [readonly]="primarKeyReadOnlyArr.isLOGDATEreadOnly" [placeholder]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.LOGDATE_Hint','Please enter LOGDATE_TO')"
+            ></kendo-datetimepicker>
+    </kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="LOGNAME" [text]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.LOGNAME','Logname')"></kendo-label>
+		<kendo-combobox  #LOGNAME class="form-field-combobox" [formControlName]="'LOGNAME'"
+		[data]="lkpArrLOGNAME" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+
+		
+		[readonly]="primarKeyReadOnlyArr.isLOGNAMEreadOnly" [placeholder]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.LOGNAME_Hint','Please enter LOGNAME')"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+	<kendo-formfield *ngIf="false" class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="TRANS" [text]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.TRANS','Trans')"></kendo-label>
+		<input class="form-input" formControlName="TRANS" kendoTextBox #TRANS  [placeholder]="starServices.getNLS([],'log_trans_form_nodb_grid_form.trans.TRANS_Hint','Please enter TRANS')"
+ />
+	</kendo-formfield>
+</div>
+
+    </fieldset>
+    </form>
+
+    <app-log-trans-grid [detail_Input]="grid_LOG_TRANS"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="LOG_TRANSGridConfig"
+		   >
+    </app-log-trans-grid>
+    
+    <app-log-trans-form [detail_Input]="form_LOG_TRANS_3"  
+				 [setComponentConfig_Input]="LOG_TRANSFormConfig_3">
+    </app-log-trans-form>
+
+</kendo-pdf-export>
+</div>
+
+

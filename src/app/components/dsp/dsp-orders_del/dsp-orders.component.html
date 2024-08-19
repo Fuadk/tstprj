@@ -1,0 +1,105 @@
+
+<kendo-grid 
+
+ordersBinding  id="grid" [pageSize]="10" [pageable]="true" [sortable]="true" [height]="500"
+[resizable] ="true"
+(cellClick)="cellClickHandler($event)" 
+(add)="addHandler($event)"
+(remove)="removeHandler($event)"
+>
+
+<ng-template kendoGridToolbarTemplate>
+    <legend>Orders</legend>
+    <kendo-toolbar class="form-toolbar" kendoGridToolbarTemplate>
+        <kendo-toolbar-button  [icon]="'save'" title="save" (click)="saveChanges(grid);"></kendo-toolbar-button>
+        
+        <kendo-toolbar-separator></kendo-toolbar-separator>
+            <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></kendo-toolbar-button>
+            <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></kendo-toolbar-button>
+            <kendo-toolbar-button  [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></kendo-toolbar-button>
+        <kendo-toolbar-separator></kendo-toolbar-separator>
+
+        <kendo-toolbar-button [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand></kendo-toolbar-button>
+        <kendo-toolbar-button [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand>Remove</kendo-toolbar-button>
+  
+    </kendo-toolbar>
+</ng-template>
+
+<kendo-grid-column field="ORDER_TYPE"
+                   title="Type" [width]="40"></kendo-grid-column>
+<kendo-grid-column field="ORDER_NO"
+                   title="Order" [width]="40">
+                </kendo-grid-column>
+<kendo-grid-column field="SUBNO"
+                   title="Subno" [width]="80"></kendo-grid-column>
+<kendo-grid-column field="ORDER_STATUS"
+                   title="Status" [width]="60"></kendo-grid-column>
+<kendo-grid-column field="DIVS"
+                   title="Div" [width]="40"></kendo-grid-column>
+<!--kendo-grid-column field="DEPT"
+                   title="Dept" [width]="40">
+                </kendo-grid-column-->
+
+                <kendo-grid-column field="DEPT" title="Dept" [width]="40">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                      {{getDept(dataItem.DEPT)?.DEPTName}}
+                    </ng-template>
+                    <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+                      <kendo-dropdownlist [data]="depts" textField="DEPTName" valueField="DEPT" [formControl]="formGroup.get('DEPT')" [valuePrimitive]="true">
+                      </kendo-dropdownlist>
+                    </ng-template>
+                  </kendo-grid-column>
+
+<kendo-grid-column field="ASSIGNEE"
+                   title="Assignee" [width]="60"></kendo-grid-column>
+       <kendo-grid-column field="PROMISED_DATE"
+                title="Promised" [width]="100"
+                filter="date"
+                editor="date"
+                format="{0:dd/MM/yyyy}">
+                <ng-template kendoGridCellTemplate let-dataItem let-filter let-column="column">
+                    {{ dataItem.PROMISED_DATE  }}
+                </ng-template>
+                <ng-template KendoGridEditTemplate
+                    let-dataItem="dataItem"
+                    let-column="column"
+                    let-formGroup="formGroup">
+                    <kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl
+                        #PROMISED_DATE
+                        [format]="'dd/MM/yyyy'"
+                        [value]="dataItem[column.field]"
+                        [formControl]="formGroup?.controls[column.field]">
+                        <kendo-datepicker-messages today="Hoy"
+                            toggle="Cambiar calendario">
+                        </kendo-datepicker-messages>
+                    </kendo-datepicker>
+                </ng-template>
+            </kendo-grid-column>          
+
+    <kendo-grid-column field="ORDERED_DATE"
+            title="Ordered" [width]="100"
+            filter="date"
+            editor="date"
+            format="{0:dd/MM/yyyy}">
+            <ng-template kendoGridCellTemplate let-dataItem let-filter let-column="column">
+                {{ dataItem.ORDERED_DATE  }}
+            </ng-template>
+            <ng-template KendoGridEditTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup">
+                <kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl
+                    #ORDERED_DATE
+                    [format]="'dd/MM/yyyy'"
+                    [value]="dataItem[column.field]"
+                    [formControl]="formGroup?.controls[column.field]">
+                    <kendo-datepicker-messages today="Hoy"
+                        toggle="Cambiar calendario">
+                    </kendo-datepicker-messages>
+                </kendo-datepicker>
+            </ng-template>
+        </kendo-grid-column>     
+<kendo-grid-column field="NOTES"
+                   title="Notes" [width]="100"></kendo-grid-column>
+
+</kendo-grid>

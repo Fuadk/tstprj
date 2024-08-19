@@ -1,0 +1,117 @@
+<div>
+    <legend *ngIf="!componentConfig.isMaster&&componentConfig.showTitle" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'preview'" title="Preview Report/Chart" (click)="openTest()"></kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div class="wrap">
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="QUERY_ID" text="Query ID"></kendo-label>
+		<input class="form-input" formControlName="QUERY_ID" kendoTextBox #QUERY_ID 
+		[readonly]="primarKeyReadOnlyArr.isQUERY_IDreadOnly" />
+	</kendo-formfield-->
+
+	<kendo-formfield class="form-input-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="QUERY_NAME" text="Query Name"></kendo-label>
+		<input class="form-input" formControlName="QUERY_NAME" kendoTextBox #QUERY_NAME  />
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="QUERY_TYPE" text="Type"></kendo-label>
+		<kendo-combobox  #QUERY_TYPE class="form-field-combobox" [formControlName]="'QUERY_TYPE'"
+		[data]="lkpArrQUERY_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="MODULE" text="Module"></kendo-label>
+		<kendo-combobox  #MODULE class="form-field-combobox" [formControlName]="'MODULE'"
+		[data]="lkpArrMODULE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+	</div>
+<div class="wrap">
+    <kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="SELECT_CLAUSE" text="SELECT_CLAUSE"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="SELECT_CLAUSE" kendoTextBox #SELECT_CLAUSE ></textarea>
+	</kendo-formfield>
+</div>
+
+
+<div class="wrap">
+    <kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FROM_CLAUSE" text="FROM_CLAUSE"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="FROM_CLAUSE" kendoTextBox #FROM_CLAUSE ></textarea>
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+    <kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WHERE_CLAUSE" text="WHERE_CLAUSE"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="WHERE_CLAUSE" kendoTextBox #WHERE_CLAUSE ></textarea>
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+    <kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WHERE_MAND_CLAUSE" text="WHERE_MAND_CLAUSE"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="WHERE_MAND_CLAUSE" kendoTextBox #WHERE_MAND_CLAUSE ></textarea>
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+    <kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="GROUP_ORDER_BY_CLAUSE" text="GROUP_ORDER_BY_CLAUSE"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="GROUP_ORDER_BY_CLAUSE" kendoTextBox #GROUP_ORDER_BY_CLAUSE ></textarea>
+	</kendo-formfield>
+</div>
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+
+<kendo-dialog title="Test Report" *ngIf="reportOpened" 
+		width="90%" height="90%"
+		(close)="reportClose()" >
+	<app-dsp-reports
+	[setComponentConfig_Input]="DSP_REPORTSConfig"
+	>
+
+	</app-dsp-reports>
+</kendo-dialog>
+
+<kendo-dialog title="Test Chart" *ngIf="chartOpened" 
+		width="90%" height="90%"
+		(close)="chartClose()" >
+	<app-dsp-dynamic-chart
+	[setComponentConfig_Input]="DSP_CHARTConfig"
+	>
+
+	</app-dsp-dynamic-chart>
+</kendo-dialog>

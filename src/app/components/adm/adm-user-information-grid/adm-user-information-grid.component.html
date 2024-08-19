@@ -1,0 +1,125 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+  <kendo-grid 
+  
+  id="grid" [sortable]="true" [height]="componentConfig.gridHeight"
+  [resizable] ="true"
+  (cellClick)="cellClickHandler($event)" 
+  (add)="addHandler()"
+  (remove)="removeHandler($event)"
+  [filter]="state.filter"
+  [filterable]= "isFilterable"
+  [columnMenu]="isColumnMenu"
+  (dataStateChange)="dataStateChange($event)"
+  [resizable]="true"
+  [sortable]="true">
+
+  
+  
+      <ng-template kendoGridToolbarTemplate>
+      <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+      
+
+      
+      <button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild"></button >
+      <button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></button >
+  
+      
+          <button   kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button >
+          <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></button >
+          <button   kendoButton [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></button >
+      
+      
+          <button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand></button >
+          <button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand>Remove</button >
+              
+          <button  kendoButton [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></button >
+          <button  kendoButton [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></button >
+          <button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></button >
+          <button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></button >
+  
+  
+  </ng-template>
+
+
+<kendo-grid-column field="USERNAME" 
+     title="Username" [width]="48" [editable]="isUSERNAMEEnable"></kendo-grid-column>
+<!--kendo-grid-column field="FULLNAME" 
+     title="Fullname" [width]="240"></kendo-grid-column>
+<kendo-grid-column field="SIGN" 
+     title="Sign" [width]="24"></kendo-grid-column>
+<kendo-grid-column field="DIV" 
+     title="Div" [width]="48"></kendo-grid-column-->
+<kendo-grid-column field="DEPT" title="Dept" [width]="100"  >
+  <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDEPT(dataItem.DEPT)?.CODETEXT_LANG}} </ng-template>
+  <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+  <kendo-dropdownlist  [data]="lkpArrDEPT"  textField="CODETEXT_LANG" valueField="CODE"
+  (valueChange)="valueChangeDEPT($event)"
+  [valuePrimitive]="true" [formControl]="formGroup.get('DEPT')">
+  </kendo-dropdownlist>
+  </ng-template>
+</kendo-grid-column>
+
+<!--kendo-grid-column field="PHONE" 
+     title="Phone" [width]="48"></kendo-grid-column>
+<kendo-grid-column field="GROUPNAME" 
+     title="Groupname" [width]="48"></kendo-grid-column>
+<kendo-grid-column field="LANGUAGE_NAME" 
+     title="Language" [width]="18"></kendo-grid-column>
+<kendo-grid-column field="IP_RESTRICT" 
+     title="Ip Restrict" [width]="6"></kendo-grid-column>
+<kendo-grid-column field="WEB_ENABLED" 
+     title="Web Enabled" [width]="6"></kendo-grid-column>
+<kendo-grid-column field="WEB_BROWSER" 
+     title="Web Browser" [width]="768"></kendo-grid-column-->
+
+
+
+
+
+<!--kendo-grid-column field="DEFAULT_PRINTER" 
+     title="Default Printer" [width]="240"></kendo-grid-column>
+<kendo-grid-column field="EXTRA_PERC" 
+     title="Extra Perc" [width]="40"></kendo-grid-column>
+<kendo-grid-column field="FIN_ADMIN" 
+     title="Fin Admin" [width]="6"></kendo-grid-column>
+
+
+<kendo-grid-column field="PASSWORD" 
+     title="Password" [width]="300"></kendo-grid-column-->
+<kendo-grid-column field="TEAM" 
+     title="Team" [width]="48" [editable]="isTEAMEnable"></kendo-grid-column>
+<kendo-grid-column field="LEADER"
+title="LEADER"  editor="boolean" [width]="15"><ng-template kendoGridCellTemplate let-dataItem>
+<input type="checkbox" [checked]="dataItem.LEADER"/>
+</ng-template></kendo-grid-column>
+
+<kendo-grid-column field="TODAY" 
+     title="Today" [width]="18"></kendo-grid-column>
+<kendo-grid-column field="TOMORROW" 
+     title="Tomorrow" [width]="18"></kendo-grid-column>
+<!--kendo-grid-column field="NOTES" 
+     title="Notes" [width]="1530"></kendo-grid-column-->
+
+
+
+  
+                     <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                      <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                      <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                       <div class="page-template">
+                          <div class="header">
+                            <div style="float: center">{{ title }}</div>
+                          </div>
+                          <div class="footer">
+                            Page {{ pageNum }} of {{ totalPages }}
+                          </div>
+                        </div>
+                      </ng-template>
+                  </kendo-grid-pdf>
+                  <kendo-grid-excel [fileName]="ExcelfileName" ></kendo-grid-excel>
+  
+  </kendo-grid>
+  
+  
+  </kendo-pdf-export>

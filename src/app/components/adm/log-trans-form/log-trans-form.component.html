@@ -1,0 +1,68 @@
+<div>
+    <legend  class="k-form-legend">{{ this.starServices.getNLS([],"log_trans_form.trans.component_title","Log Trans") }}</legend>
+<div class="form-toolbar"> </div>
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="{{starServices.getNLS([],'SAVE','Save')}}" (click)="saveChanges( form)" *ngIf="!isChild && componentConfig.updateable"></kendo-toolbar-button>
+     <kendo-toolbar-button  kendoButton [icon]="'print'" title="{{starServices.getNLS([],'PRINT','Print')}}" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator>
+
+    <kendo-toolbar-button   text="{{starServices.getNLS([],'ENTER_QUERY','Enter Query')}}" title="{{starServices.getNLS([],'ENTER_QUERY','Enter Query')}}" (click)="enterQuery( form);" *ngIf="componentConfig.queryable"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'search'"  title="{{starServices.getNLS([],'EXECUTE_QUERY','Execute Query')}}"  (click)="executeQuery( form.value);" *ngIf="componentConfig.queryable"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="{{starServices.getNLS([],'CANCEL','Cancel')}}"  (click)="onCancel($event)" *ngIf="componentConfig.queryable"></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="{{starServices.getNLS([],'FIRST_RECORD','First Record')}}" (click)="goRecord( 'first');" *ngIf="componentConfig.navigable"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="{{starServices.getNLS([],'PREVIOUS_RECORD','Previous Record')}}"  (click)="goRecord(  'prev');" *ngIf="componentConfig.navigable"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="{{starServices.getNLS([],'NEXT_RECORD','Next Record')}}"  (click)="goRecord('next')" *ngIf="componentConfig.navigable"></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="{{starServices.getNLS([],'LAST_RECORD','Last Record')}}" (click)="goRecord('last')" *ngIf="componentConfig.navigable"></kendo-toolbar-button>
+
+<kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="{{starServices.getNLS([],'INSERT_RECORD','Insert Record')}}" (click)="onNew($event);"  *ngIf="componentConfig.insertable"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator><kendo-toolbar-separator></kendo-toolbar-separator>    
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="{{starServices.getNLS([],'DELETE_RECORD','Delete Record')}}" (click)="onRemove( form);"  *ngIf="componentConfig.removeable">Remove</kendo-toolbar-button>
+
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset" [disabled]="!componentConfig.enabled">
+
+
+<div [ngClass]="isPhonePortrait ? 'standard' : 'wrap' " >
+    <kendo-formfield class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="LOGDATE" [text]="starServices.getNLS([],'log_trans_form.trans.LOGDATE','Logdate')"></kendo-label>
+		<kendo-datetimepicker [format]="this.paramConfig.DateTimeFormat" class="form-field-date" formControlName="LOGDATE"  #LOGDATE 
+
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.LOGDATE.errors }"  required 
+		[readonly]="primarKeyReadOnlyArr.isLOGDATEreadOnly" [placeholder]="starServices.getNLS([],'log_trans_form.trans.LOGDATE_Hint','Please enter LOGDATE')" (valueChange)="onValueChange_LOGDATE($event)" 
+		 ></kendo-datetimepicker>
+	</kendo-formfield>
+
+
+  
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="LOGNAME" [text]="starServices.getNLS([],'log_trans_form.trans.LOGNAME','Logname')"></kendo-label>
+		<input class="form-input" formControlName="LOGNAME" kendoTextBox #LOGNAME
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.LOGNAME.errors }"  required 
+		[readonly]="primarKeyReadOnlyArr.isLOGNAMEreadOnly" [placeholder]="starServices.getNLS([],'log_trans_form.trans.LOGNAME_Hint','Please enter LOGNAME')"
+ (change)="onChange_LOGNAME($event)"  />
+	</kendo-formfield>
+
+</div>
+
+<div [ngClass]="isPhonePortrait ? 'standard' : 'wrap' ">
+	<kendo-formfield class="form-input-full" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="TRANS" [text]="starServices.getNLS([],'log_trans_form.trans.TRANS','Trans')"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-full" formControlName="TRANS" kendoTextBox #TRANS ></textarea>
+	</kendo-formfield>
+
+    
+</div>
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+

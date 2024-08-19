@@ -1,0 +1,23 @@
+<div>
+
+
+   
+    <app-dsp-template-form [executeQueryInput]="form_dsp_template"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+                  (saveCompletedOutput)="saveCompletedHandler($event)" 
+                  (copiedTemplateOutput)="handleCopiedTemplateOutput($event)" 
+                  [setComponentConfig_Input]="DSP_ORDERSFormConfig"
+                  >
+                   
+    </app-dsp-template-form>
+    
+    <app-dsp-template-detail-grid [detail_Input]="grid_dsp_template_detail"
+                        [setComponentConfig_Input]="DSP_TEMPLATE_DETAILGridConfig"
+                        [copiedTemplateOutput]="copiedTemplate">
+    </app-dsp-template-detail-grid>
+
+
+
+   
+  </div>

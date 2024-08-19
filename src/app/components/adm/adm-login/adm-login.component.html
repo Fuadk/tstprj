@@ -1,0 +1,72 @@
+
+
+
+
+ <div class = "body">
+
+  
+    <br>
+    <br>
+
+
+<br>
+<br>
+
+<div class="wrapper fadeInDown">
+
+    
+    <div class="bg-img" > </div>
+    
+
+
+    <br>
+<br>
+   
+<div class="login">
+<form  [formGroup]="loginForm"  style="width:290px;">
+  
+  <h1>Star Suite</h1>
+  <br>
+
+    
+      <input  #usern type="text" formControlName="username" placeholder= "User Name" kendoTextBox #username [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+              <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                  <div *ngIf="f.username.errors.required">Username is required</div>
+              </div>
+     
+      
+      
+             
+          <input #passw type="password" formControlName="password" placeholder= "Password" kendoTextBox #password [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">password is required</div>
+          </div>
+  <br>
+  <br>
+  
+          <input type="submit" (click) = "onSubmit(usern.value,passw.value)"   value="Sign In">
+  
+  
+
+</form>
+
+</div>
+<div class="shadow"></div>
+
+</div>
+
+<br>
+<br>
+
+ <br>
+    
+   
+ <div class="footer"> Copyright © Genovity</div> 
+
+
+
+
+
+    
+    
+

@@ -1,0 +1,65 @@
+<div>
+    <kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+        <div class="row" style="padding: 10px 0 0 0">
+            <div class="col-md-6">
+                <legend class="k-form-legend float-start" style="width: auto !important">{{ title }}</legend>
+            </div>
+
+            <div class="col-md-6">
+                <div class="wrap">
+                    <label class="k-checkbox-label" for="showHistory">Show history</label>
+                    <input type="checkbox" id="showHistory" (change)="showHistory()" [(ngModel)]="showHistoryCheck"
+                        kendoCheckBox />
+                </div>
+            </div>
+        </div>
+
+        <kendo-toolbar class="form-toolbar" style="width: 100% !important">
+            <kendo-toolbar-button kendoButton [icon]="'print'" title="print" (click)="printScreen()">
+            </kendo-toolbar-button>
+            <kendo-toolbar-button [icon]="'reload'" title="Execute Query" (click)="getWorkOrdersApprove(showHistoryCheck ? '%' : paramConfig.CREATED)">
+            </kendo-toolbar-button>
+        </kendo-toolbar>
+        <kendo-grid id="grid" [height]=150 [selectable]="true" [kendoGridBinding]="gridData"
+            (cellClick)="cellClickHandler($event)" 
+            (selectionChange)="gridUserSelectionChange($event)">
+            <kendo-grid-column field="TEMPLATE_NAME" title="Template Name" [width]="70">
+            </kendo-grid-column>
+            <kendo-grid-column field="ASSIGNEE_TYPE" title="Ass. Type" [width]="70">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="ASSIGNEE" title="Assignee" [width]="100">
+            </kendo-grid-column>
+            <kendo-grid-column field="WO_STATUS" title="Status" [width]="100">
+                <ng-template kendoGridCellTemplate let-dataItem> {{ parseApprvalFlag(dataItem['WO_STATUS']) }}
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="ORDER_NO" title="Order No" [width]="60">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="WO_ORDER_NO" title="No" [width]="60">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="WO_TYPE" title="WO Job" [width]="100">
+            </kendo-grid-column>
+        </kendo-grid>
+
+        <app-dsp-diagram-wrap
+        [setComponentConfig_Input]="app_dsp_diagram_wrapConfig">
+        </app-dsp-diagram-wrap>
+
+
+        <div [style.display]="showForm ? 'block' : 'none'">
+            <app-dsp-orders-form (getOrderOutput)="readCompletedHandler($event)"
+                (orderStatusOutput)="orderStatusHandler($event)" [setComponentConfig_Input]="DSP_ORDERSFormConfig">
+            </app-dsp-orders-form>
+
+            <app-dsp-multistep *ngIf="showMultistep" (saveCompletedOutput)="saveCompletedOutputHandler($event)"
+                [setComponentConfig_Input]="DSP_MULTISTEPFormConfig">
+            </app-dsp-multistep>
+        </div>
+    </kendo-pdf-export>
+
+
+</div>

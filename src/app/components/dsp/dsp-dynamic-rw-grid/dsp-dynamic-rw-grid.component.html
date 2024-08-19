@@ -1,0 +1,119 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid id="grid" [kendoGridBinding]="gridData" [sortable]="true" [height]="componentConfig.gridHeight" [resizable]="true" (cellClick)="cellClickHandler($event)" (add)="addHandler()" (remove)="removeHandler($event)" [filter]="state.filter" [filterable]="isFilterable"
+        [columnMenu]="isColumnMenu" (dataStateChange)="dataStateChange($event)" [resizable]="true" [sortable]="true" >
+
+
+
+        <ng-template *ngIf="componentConfig.showToolBar && formType != 'PRINT'" kendoGridToolbarTemplate >
+            <legend class="k-form-legend" *ngIf="componentConfig.showTitle" [style]="legend_color">{{ title }}</legend>
+            <p style="margin: 0 0 10px 0; opacity: .6" >{{ areaHelp }}</p>
+
+            
+                <button kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild && areaProtected == 0" >
+                </button>
+                <button kendoButton [icon]="'print'" title="print" (click)="printScreen()"></button>
+
+                
+                <!--button   [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button >
+          <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></button -->
+                <button kendoButton [icon]="'cancel'" title="Cancel" (click)="cancelHandler()"></button>
+                
+
+                <button [icon]="'plus-outline'" title="Insert Record" kendoGridAddCommand ></button>
+                <button kendoButton [icon]="'minus-outline'" title="Delete Record" (click)="removeButton(grid)" >Remove
+                </button>
+                
+                <button kendoButton [icon]="'filter'" title="Show/Hide Filter options" (click)="toggleFilter()">
+                </button>
+                <button kendoButton [icon]="'menu'" title="Show/Hide Menu" (click)="toggleColumnMenu()">
+                </button>
+                <button [icon]="'file-pdf'" title="Export to PDF" kendoGridPDFCommand></button>
+                <button [icon]="'file-excel'" title="Export to Excel" kendoGridExcelCommand>
+                </button>
+
+            
+        </ng-template>
+
+        <kendo-grid-column *ngFor="let column of columns" field="{{column.field}}" title="{{column.title}}" 
+        [headerStyle]="header_style"
+        format="{{column.format}}" type="{{column.type}}" 
+        [width]="100" >
+            <p *ngIf="column.lookup">
+                <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetfield(column.field, dataItem)?.CODETEXT_LANG}}
+                </ng-template>
+                <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                    <kendo-dropdownlist [data]="getlkpArrField(column.field)" textField="CODETEXT_LANG" valueField="CODE" [valuePrimitive]="true" name={{column.field}} [formControl]="formGroup.get(column.field)">
+                    </kendo-dropdownlist>
+                </ng-template>
+            </p>
+
+            <p *ngIf="column.datefield">
+                <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                    <kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl #datepicker>
+                    </kendo-datepicker>
+                </ng-template>
+            </p>
+
+            <!--p *ngIf="column.dateInputfield">
+  <ng-template KendoGridEditTemplate  let-dataItem>
+<kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+</kendo-datepicker>
+</ng-template>
+</p-->
+            <p *ngIf="column.dateInputfield">
+                <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                    <kendo-dateinput [format]="column.format" name={{column.field}} [formControl]="formGroup.get(column.field)" ngDefaultControl>
+                    </kendo-dateinput>
+                </ng-template>
+            </p>
+
+            <p *ngIf="column.checkboxfield">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <input type="checkbox" name={{column.field}} [checked]="formGroup.get(column.field)" />
+                </ng-template>
+            </p>
+
+            <p *ngIf="column.passwordfield">
+                <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                    <input type="password" name={{column.field}} [formControl]="formGroup.get(column.field)" />
+                </ng-template>
+            </p>
+
+            <p *ngIf="column.emailboxfield">
+                <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                    <input email="true" type="email" name={{column.field}} [formControl]="formGroup.get(column.field)" />
+                </ng-template>
+            </p>
+
+            <p *ngIf="column.numericboxfield">
+                <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                    <kendo-numerictextbox [spinners]="column.numericSpinner" [step]="column.numericStep" [min]="column.numericMin" [max]="column.numericMax" [format]="column.format" ngDefaultControl name={{column.field}} [formControl]="formGroup.get(column.field)">
+                    </kendo-numerictextbox>
+                </ng-template>
+            </p>
+
+        </kendo-grid-column>
+
+
+
+
+        <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+            <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+            <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                <div class="page-template">
+                    <div class="header">
+                        <div style="float: center">{{ title }}</div>
+                    </div>
+                    <div class="footer">
+                        Page {{ pageNum }} of {{ totalPages }}
+                    </div>
+                </div>
+            </ng-template>
+        </kendo-grid-pdf>
+        <kendo-grid-excel fileName="ExcelfileName"></kendo-grid-excel>
+    </kendo-grid>
+
+
+
+</kendo-pdf-export>

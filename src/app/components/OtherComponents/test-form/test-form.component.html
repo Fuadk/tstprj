@@ -1,0 +1,176 @@
+
+
+<div>
+	<kendo-pdf-export #pdf paperSize="A4" margin="2cm"
+	[forceProxy]="doProxyURL"
+	[proxyURL]="pdfexportURL"
+	[proxyData]="proxyData"
+
+	>
+    <legend  class="k-form-legend">{{ title }}</legend>
+
+
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="USERNAME" text="Username"></kendo-label>
+		<input class="form-input" formControlName="USERNAME" kendoTextBox #USERNAME  required 		
+		
+/>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FULLNAME" text="Fullname"></kendo-label>
+		<input class="form-input" formControlName="FULLNAME" kendoTextBox #FULLNAME />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="SIGN" text="Sign"></kendo-label>
+		<input class="form-input" formControlName="SIGN" kendoTextBox #SIGN />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-upload
+	[autoUpload]="true"
+	[saveUrl]="uploadSaveUrl"
+	[removeUrl]="uploadRemoveUrl"
+
+	(select)="selectEventHandler($event)"
+	(clear)="clearEventHandler($event)"
+	(remove)="removeEventHandler($event)"
+	(complete)="completeEventHandler($event)"
+	(upload)="uploadEventHandler($event)">
+</kendo-upload>
+</div>
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DIV" text="Div"></kendo-label>
+		<input class="form-input" formControlName="DIV" kendoTextBox #DIV />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DEPT" text="Dept"></kendo-label>
+		<input class="form-input" formControlName="DEPT" kendoTextBox #DEPT />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PHONE" text="Phone"></kendo-label>
+		<input class="form-input" formControlName="PHONE" kendoTextBox #PHONE />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="GROUPNAME" text="Groupname"></kendo-label>
+		<input class="form-input" formControlName="GROUPNAME" kendoTextBox #GROUPNAME />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="LANGUAGE_NAME" text="Language"></kendo-label>
+		<input class="form-input" formControlName="LANGUAGE_NAME" kendoTextBox #LANGUAGE_NAME />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="IP_RESTRICT" text="Ip Restrict"></kendo-label>
+		<input class="form-input" formControlName="IP_RESTRICT" kendoTextBox #IP_RESTRICT />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WEB_ENABLED" text="Web Enabled"></kendo-label>
+		<input class="form-input" formControlName="WEB_ENABLED" kendoTextBox #WEB_ENABLED />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="WEB_BROWSER" text="Web Browser"></kendo-label>
+		<input class="form-input" formControlName="WEB_BROWSER" kendoTextBox #WEB_BROWSER />
+	</kendo-formfield>
+
+
+
+
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DEFAULT_PRINTER" text="Default Printer"></kendo-label>
+		<input class="form-input" formControlName="DEFAULT_PRINTER" kendoTextBox #DEFAULT_PRINTER />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="EXTRA_PERC" text="Extra Perc"></kendo-label>
+		<input class="form-input" formControlName="EXTRA_PERC" kendoTextBox #EXTRA_PERC />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="FIN_ADMIN" text="Fin Admin"></kendo-label>
+		<input class="form-input" formControlName="FIN_ADMIN" kendoTextBox #FIN_ADMIN />
+	</kendo-formfield>
+
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PASSWORD" text="Password"></kendo-label>
+		<input class="form-input" formControlName="PASSWORD" kendoTextBox #PASSWORD />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="TEAM" text="Team"></kendo-label>
+		<input class="form-input" formControlName="TEAM" kendoTextBox #TEAM />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="LEADER" text="Leader"></kendo-label>
+		<input class="form-input" formControlName="LEADER" kendoTextBox #LEADER />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="TODAY" text="Today"></kendo-label>
+		<input class="form-input" formControlName="TODAY" kendoTextBox #TODAY />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="TOMORROW" text="Tomorrow"></kendo-label>
+		<input class="form-input" formControlName="TOMORROW" kendoTextBox #TOMORROW />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="NOTES" text="Notes"></kendo-label>
+		<input class="form-input" formControlName="NOTES" kendoTextBox #NOTES />
+	</kendo-formfield>
+
+
+
+</div>
+
+    </fieldset>
+	</form>
+</kendo-pdf-export>
+</div>
+
+<div class="example-config">
+	<button class="k-button" (click)="pdf.saveAs('document.pdf')">
+	  Save As PDF...
+	</button>
+	<button class="k-button" (click)="pdfExport()">
+		Export...
+	  </button>
+  </div>

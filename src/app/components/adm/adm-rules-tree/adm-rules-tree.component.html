@@ -1,0 +1,76 @@
+<div style="display: flex;justify-content: flex-start;">
+    <div style="display: inline-block;">
+        <div   style="display: flex;justify-content: flex-start;">
+          
+              
+        
+        </div>
+        <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+         
+            <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+                <div class="wrap" >
+                    <button  kendoButton icon="home" look="flat" (click)="home()"  >Home</button>
+                    
+                    <!-- <button *ngIf="(starServices.USERNAME_DB == starServices.USERNAME)"
+                    kendoButton icon="user"  look="flat" (click)="SetResources()"  >WorkSpaces   </button> -->
+                </div>
+                <div class="wrap" >
+
+                <kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf=enableAppID>
+                    <!-- <kendo-label  [for]="MODULE" text="App:"></kendo-label>  -->
+                    <kendo-combobox  #MODULE class="form-field-combobox" [formControlName]="'MODULE'"
+                    [data]="lkpArrMODULE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+                    (valueChange)="valueChangeMODULE($event)"
+                    placeholder="Select Application"
+                    [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+                    </kendo-combobox>
+                </kendo-formfield>
+               
+            </div>
+        </fieldset>
+        </form> 
+        <!-- <div class="example-config">
+            Expanded keys: {{ expandedKeys.join(",") }}
+          </div> -->
+        <div class="form-borders" style="display: inline-block; height:600px; vertical-align: top;overflow: auto; width: 300px;margin-right: 20px;">
+                <kendo-treeview
+                [nodes]="data"
+                textField="text"
+                kendoTreeViewExpandable
+               
+                kendoTreeViewHierarchyBinding
+                childrenField="items"
+                kendoTreeViewSelectable
+                (selectionChange)="handleSelection($event)"
+                [selectBy]="'i'"
+                kendoTreeViewSelectable
+                [(selectedKeys)]="selectedKeys"
+                expandBy="i"
+                [(expandedKeys)]="expandedKeys"
+                >
+
+                <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                    <span [ngClass]="iconClass(dataItem)"></span>
+                    {{dataItem.text}}
+                </ng-template>
+
+            </kendo-treeview>
+        </div>
+    </div>
+  
+    <div style="display: inline-block;  width: 80%;min-width: width 700px;" >
+
+  
+
+
+        <app-adm-rules  *ngIf="showApp"
+        [triggersaveChanges_Input]="masterSaved" 
+        [setComponentConfig_Input]="APG_APPFormConfig" 
+        ></app-adm-rules>
+
+        <app-adm-rules  *ngIf="showSqlWB"
+        [triggersaveChanges_Input]="masterSaved" 
+        [setComponentConfig_Input]="APG_APPFormConfig" 
+        ></app-adm-rules>
+

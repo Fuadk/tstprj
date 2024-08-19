@@ -1,0 +1,82 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid id="grid" [sortable]="true" [height]="componentConfig.gridHeight" [resizable]="true" (cellClick)="cellClickHandler($event)" (add)="addHandler()" (remove)="removeHandler($event)" [filter]="state.filter" [filterable]="isFilterable" [columnMenu]="isColumnMenu"
+        (dataStateChange)="dataStateChange($event)" [resizable]="true" [sortable]="true">
+
+
+
+        <ng-template kendoGridToolbarTemplate>
+            <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+
+
+            
+                <button kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild">
+                </button>
+                <button kendoButton [icon]="'print'" title="print" (click)="printScreen()"></button>
+
+                
+                <button kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button>
+                <button kendoButton [icon]="'reload'" title="Execute Query" (click)="executeQuery(grid);">
+                </button>
+                <button kendoButton [icon]="'cancel'" title="Cancel" (click)="cancelHandler()"></button>
+                
+
+                <button [icon]="'plus-outline'" title="Insert Record" kendoGridAddCommand></button>
+                <button [icon]="'minus-outline'" title="Delete Record" kendoGridRemoveCommand>Remove
+                </button>
+                
+                <button kendoButton [icon]="'filter'" title="Show/Hide Filter options" (click)="toggleFilter()">
+                </button>
+                <button kendoButton [icon]="'menu'" title="Show/Hide Menu" (click)="toggleColumnMenu()">
+                </button>
+                <button [icon]="'file-pdf'" title="Export to PDF" kendoGridPDFCommand></button>
+                <button [icon]="'file-excel'" title="Export to Excel" kendoGridExcelCommand>
+                </button>
+
+            
+        </ng-template>
+
+
+        <kendo-grid-column field="FORM_NAME" title="Form Name" [width]="120" [editable]="isFORM_NAMEEnable">
+        </kendo-grid-column>
+        <kendo-grid-column field="PAGE_NO" title="Page No" [width]="40" [editable]="isPAGE_NOEnable"></kendo-grid-column>
+        <kendo-grid-column field="AREA_NO" title="Area No" [editable]="!primarKeyReadOnlyArr.isAREA_NOreadOnly" [width]="40">
+        </kendo-grid-column>
+        <kendo-grid-column field="AREA_TYPE" title="Area Type" [width]="100">
+            <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetAREA_TYPE(dataItem.AREA_TYPE)?.CODETEXT_LANG}}
+            </ng-template>
+            <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+                <kendo-dropdownlist [data]="lkpArrAREA_TYPE" textField="CODETEXT_LANG" valueField="CODE" (valueChange)="valueChangeAREA_TYPE($event)" [valuePrimitive]="true" [formControl]="formGroup.get('AREA_TYPE')">
+                </kendo-dropdownlist>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="AREA_TITLE" title="Title" [width]="140"></kendo-grid-column>
+
+        <kendo-grid-column field="AREA_HELP" title="Help" [width]="140"></kendo-grid-column>
+
+        <kendo-grid-column field="AREA_PROTECTED" title="Prot." editor="boolean" [width]="40">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <input type="checkbox" [checked]="dataItem.AREA_PROTECTED" />
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+            <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+            <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                <div class="page-template">
+                    <div class="header">
+                        <div style="float: center">{{ title }}</div>
+                    </div>
+                    <div class="footer">
+                        Page {{ pageNum }} of {{ totalPages }}
+                    </div>
+                </div>
+            </ng-template>
+        </kendo-grid-pdf>
+        <kendo-grid-excel fileName="ExcelfileName"></kendo-grid-excel>
+
+    </kendo-grid>
+
+
+</kendo-pdf-export>

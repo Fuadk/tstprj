@@ -1,0 +1,157 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid
+
+    id="grid" [sortable]="true" [height]="gridHeight"
+    [resizable] ="true"
+    (cellClick)="cellClickHandler($event)"
+    (edit)="editHandler($event)"
+    (add)="addHandler()"
+    (remove)="removeHandler($event)"
+    [filter]="state.filter"
+    [filterable]= "isFilterable"
+    [columnMenu]="isColumnMenu"
+    (dataStateChange)="dataStateChange($event)"
+    [resizable]="true"
+    [sortable]="true">
+
+
+
+        <ng-template kendoGridToolbarTemplate>
+        <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+
+
+        
+        <button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild"></button >
+        <button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></button >
+
+        
+            <button   kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button >
+            <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></button >
+            <button   kendoButton [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></button >
+        
+
+            <button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand></button >
+            <button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand>Remove</button >
+        
+            <button  kendoButton [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></button >
+            <button  kendoButton [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></button >
+            <button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></button >
+            <button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></button >
+
+    
+    </ng-template>
+
+
+	<kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="TEMPLATE_NAME"
+		   title="Template Name" [width]="60" [editable]="isTEMPLATE_NAMEEnable"></kendo-grid-column>
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="SEQUENCE_NAME"
+      [editable]="!primarKeyReadOnlyArr.isSEQUENCEreadOnly"
+		   title="Sequence" [width]="40"></kendo-grid-column>
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="TEMPLATE_ORDER"
+        title="Order" [width]="40"></kendo-grid-column>
+
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="WO_TYPE" title="Type" [width]="100">
+        <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetWO_TYPE(dataItem.WO_TYPE)?.CODETEXT_LANG}} </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="lkpArrWO_TYPE"  textField="CODETEXT_LANG" valueField="CODE"
+        [valuePrimitive]="true" [formControl]="formGroup.get('WO_TYPE')">
+        </kendo-dropdownlist>
+        </ng-template>
+      </kendo-grid-column>
+
+
+       <!--kendo-grid-column field="DEPT" title="DEPT" [width]="100">
+        <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDEPT(dataItem.DEPT)?.CODETEXT_LANG}} </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="lkpArrDEPT"  textField="CODETEXT_LANG" valueField="CODE"
+        (valueChange)="valueChangeDEPT($event)"
+        [valuePrimitive]="true" [formControl]="formGroup.get('DEPT')">
+        </kendo-dropdownlist>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="DIV" title="Div" [width]="100">
+        <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDIV(dataItem.DIV)?.CODETEXT_LANG}} </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="getlkpArrDIV()"  textField="CODETEXT_LANG" valueField="CODE"
+        (valueChange)="valueChangeDIV($event)"
+        [valuePrimitive]="true" [formControl]="formGroup.get('DIV')">
+        </kendo-dropdownlist>
+        </ng-template>
+    </kendo-grid-column-->
+
+      <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="ASSIGNEE_TYPE" title="Assignee Type" [width]="80">
+        <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetASSIGNEE_TYPE(dataItem.ASSIGNEE_TYPE)?.CODETEXT_LANG}} </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="lkpArrASSIGNEE_TYPE"  textField="CODETEXT_LANG" valueField="CODE"
+        (valueChange)="valueChangeASSIGNEE_TYPE($event)"
+        [valuePrimitive]="true" [formControl]="formGroup.get('ASSIGNEE_TYPE')">
+        </kendo-dropdownlist>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="ASSIGNEE" title="Assignee" [width]="100">
+        <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetASSIGNEE(dataItem.ASSIGNEE,dataItem.ASSIGNEE_TYPE)?.CODETEXT_LANG}} </ng-template>
+        <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+        <kendo-dropdownlist  [data]="getlkpArrASSIGNEE()"  textField="CODETEXT_LANG" valueField="CODE"
+        [valuePrimitive]="true" [formControl]="formGroup.get('ASSIGNEE')">
+        </kendo-dropdownlist>
+        </ng-template>
+      </kendo-grid-column>
+
+	<kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="DURATION"
+       title="Days" [width]="40"></kendo-grid-column>
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="DEPENDANT_WO_ORDER"
+		   title="Parent" [width]="60" ></kendo-grid-column>
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="APPROVE_SEQ"
+  title="Seq if Approved" [width]="60"></kendo-grid-column>
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="REJECT_SEQ"
+  title="Seq if Rejected" [width]="60"></kendo-grid-column>
+
+  <kendo-grid-column [headerStyle]="{'white-space': 'pre-wrap'}" field="FORM_PAGES_NO"
+       title="Form Pages" [width]="40" ></kendo-grid-column>
+
+  <kendo-grid-command-column [headerStyle]="{'white-space': 'pre-wrap'}" title="View" [width]="60">
+        <ng-template kendoGridCellTemplate>
+            <button kendoGridEditCommand [primary]="true" [icon]="'form-element'">Form</button>
+        </ng-template>
+    </kendo-grid-command-column>
+
+
+
+
+
+                       <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                        <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                        <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                         <div class="page-template">
+                            <div class="header">
+                              <div style="float: center">{{ title }}</div>
+                            </div>
+                            <div class="footer">
+                              Page {{ pageNum }} of {{ totalPages }}
+                            </div>
+                          </div>
+                        </ng-template>
+                    </kendo-grid-pdf>
+                    <kendo-grid-excel fileName="ExcelfileName" ></kendo-grid-excel>
+
+    </kendo-grid>
+
+    <app-dsp-diagram-wrap
+    [setComponentConfig_Input]="app_dsp_diagram_wrapConfig">
+    </app-dsp-diagram-wrap>
+    
+    </kendo-pdf-export>
+    <div [hidden]="!multiStepFormOpened" >
+      <kendo-dialog [title]="DSP_MULTISTEPFormConfig?.masterParams?.formName || 'Form title'" (close)="multiStepFormClose()"
+        resizable="true"
+        [minWidth]="700" [width]="700" [height]="fieldGridHeight+200">
+
+        <app-dsp-multistep
+        (saveCompletedOutput)="savemultiStepFormCompletedHandler($event)"
+        [setComponentConfig_Input]="DSP_MULTISTEPFormConfig">
+        </app-dsp-multistep>
+      </kendo-dialog>
+      </div>

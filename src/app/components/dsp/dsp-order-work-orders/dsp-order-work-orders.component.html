@@ -1,0 +1,13 @@
+<div>
+    <legend class="k-form-legend" >{{title }}</legend>
+    <app-dsp-orders-form 
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="DSP_ORDERSFormConfig">
+    </app-dsp-orders-form>
+    
+    <app-dsp-work-orders-grid [detail_Input]="grid_DSP_WORK_ORDERS"  
+				 [setComponentConfig_Input]="DSP_WORK_ORDERSGridConfig">
+    </app-dsp-work-orders-grid>
+</div>

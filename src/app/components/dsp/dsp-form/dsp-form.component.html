@@ -1,0 +1,24 @@
+<div>
+    <legend>{{ title }}</legend>
+
+
+    <app-dsp-form-page-form-org [detail_Input]="form_DSP_FORM_PAGE"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="DSP_FORM_PAGEFormConfig"
+		   >
+    </app-dsp-form-page-form-org>
+    
+    <app-dsp-form-area-grid [detail_Input]="grid_DSP_FORM_AREA"  
+                 (readCompletedOutput)="readCompletedHandlerGrid($event)"
+				 [setComponentConfig_Input]="DSP_FORM_AREAGridConfig">
+    </app-dsp-form-area-grid>
+
+    <app-dsp-form-fields-grid [detail_Input]="grid_DSP_FORM_FIELDS"  
+				 [setComponentConfig_Input]="DSP_FORM_FIELDSGridConfig">
+    </app-dsp-form-fields-grid>
+
+</div>
+
+

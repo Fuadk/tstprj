@@ -1,0 +1,108 @@
+<div>
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar" >
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <div class="form-borders">
+     <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset" class="k-form-fieldset">
+
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="CODENAME" text="Codename"></kendo-label>
+<input class="form-input" formControlName="CODENAME" kendoTextBox #CODENAME  required />
+</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="CODETEXT" text="Codetext"></kendo-label>
+<input class="form-input" formControlName="CODETEXT" kendoTextBox #CODETEXT />
+</kendo-formfield>
+
+<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+    <kendo-label class="form-label" [for]="PARTCODENAME" text="Part codename"></kendo-label>
+    <input class="form-input" formControlName="PARTCODENAME" kendoTextBox #PARTCODENAME />
+    </kendo-formfield-->
+</div>
+
+<!--div class="wrap">
+    <kendo-formfield  class="form-field" [orientation]="'horizontal'">
+        <kendo-label class="form-label" [for]="CODEALFA" text="Code"></kendo-label>
+        <kendo-combobox  #CODEALFA  class="form-field-combobox" [formControlName]="'CODEALFA'"
+            [data]="lkpArrCODEALFA" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  >
+        </kendo-combobox>
+    </kendo-formfield>
+
+    <kendo-formfield  class="form-field" [orientation]="'horizontal'">
+        <kendo-label class="form-label" [for]="VALUEALFA" text="Value"></kendo-label>
+        <kendo-combobox  #VALUEALFA  class="form-field-combobox" [formControlName]="'VALUEALFA'"
+            [data]="lkpArrCODEALFA" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  >
+        </kendo-combobox>
+    </kendo-formfield>
+
+
+    <kendo-formfield class="form-field" [orientation]="'horizontal'">
+        <kendo-label class="form-label" [for]="CODE_PRIV" text="Code Priv"></kendo-label>
+        <input class="form-input" formControlName="CODE_PRIV" kendoTextBox #CODE_PRIV />
+        </kendo-formfield>
+    
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="CODELENGTH" text="Code length"></kendo-label>
+<input class="form-input" formControlName="CODELENGTH" kendoTextBox #CODELENGTH />
+</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="VALUELENGTH" text="Value length"></kendo-label>
+<input class="form-input" formControlName="VALUELENGTH" kendoTextBox #VALUELENGTH />
+</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="TEXTLENGTH" text="Text length"></kendo-label>
+<input class="form-input" formControlName="TEXTLENGTH" kendoTextBox #TEXTLENGTH />
+</kendo-formfield>
+</div>
+
+<div class="wrap">
+
+
+
+    <kendo-formfield  class="form-field" [orientation]="'horizontal'">
+        <kendo-label class="form-label" [for]="VALUE_UNIQUE" text="Value Unique"></kendo-label>
+        <kendo-combobox  #VALUE_UNIQUE  class="form-field-combobox" [formControlName]="'VALUE_UNIQUE'"
+            [data]="lkpArrYESNO" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  >
+        </kendo-combobox>
+    </kendo-formfield>
+
+</div-->
+<div></div>
+
+    </fieldset>
+    </form>
+</div>
+</kendo-pdf-export>
+</div>
+
+

@@ -1,0 +1,47 @@
+<div>
+    <legend>{{ title }}</legend>
+
+    <kendo-tabstrip  [keepTabContent]="true">
+    
+        <kendo-tabstrip-tab  [selected]="true" >
+          <ng-template   kendoTabTitle>
+            <legend>Rules </legend>
+           </ng-template>
+          <ng-template kendoTabContent>
+            <app-adm-rule-def-form [detail_Input]="form_ADM_RULE_DEF"  
+                (readCompletedOutput)="readCompletedHandler($event)"
+                (clearCompletedOutput)="clearCompletedHandler($event)"
+                (saveCompletedOutput)="saveCompletedHandler($event)" 
+                [setComponentConfig_Input]="ADM_RULE_DEFFormConfig"
+                >
+            </app-adm-rule-def-form>
+
+            <app-adm-rule-item-grid [detail_Input]="grid_ADM_RULE_ITEM"  
+                    [setComponentConfig_Input]="ADM_RULE_ITEMGridConfig">
+            </app-adm-rule-item-grid>
+
+            <app-adm-rule-action-grid [detail_Input]="grid_ADM_RULE_ACTION"  
+                [setComponentConfig_Input]="ADM_RULE_ACTIONGridConfig">
+            </app-adm-rule-action-grid>
+          </ng-template>
+        </kendo-tabstrip-tab>
+        
+        <kendo-tabstrip-tab >
+          <ng-template   kendoTabTitle>
+            <legend>Rule Log </legend>
+           </ng-template>
+          <ng-template kendoTabContent>
+              <app-adm-rule-log-grid
+              [setComponentConfig_Input]="ADM_RULE_LOGGridConfig">
+
+              </app-adm-rule-log-grid>
+          </ng-template>
+        </kendo-tabstrip-tab>
+      
+      </kendo-tabstrip>
+      
+
+
+</div>
+
+

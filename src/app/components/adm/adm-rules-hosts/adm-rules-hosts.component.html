@@ -1,0 +1,14 @@
+<div>
+<legend>{{ title }}</legend>
+    <app-adm-rule-host-form 
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+  		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="ADM_RULE_HOSTFormConfig">
+    </app-adm-rule-host-form>
+    
+    <app-adm-rule-host-map-form [executeQueryInput]="form_ADM_RULE_HOST_MAP"  
+				 [setComponentConfig_Input]="ADM_RULE_HOST_MAPFormConfig">
+    </app-adm-rule-host-map-form>
+</div>
+

@@ -1,0 +1,12 @@
+<div>
+    <app-adm-user-information-form  [executeQueryInput]="form_ADM_USER_INFORMATION"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+                  (saveCompletedOutput)="saveCompletedHandler($event)"
+                  [setComponentConfig_Input]="ADM_USER_INFORMATIONFormConfig">
+    </app-adm-user-information-form>
+    
+    <app-adm-authority-grid [detail_Input]="grid_ADM_AUTHORITY" 
+       [setComponentConfig_Input]="ADM_AUTHORITYGridConfig" >
+    </app-adm-authority-grid>
+</div>

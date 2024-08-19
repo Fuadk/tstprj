@@ -1,0 +1,285 @@
+
+<div>
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar" >
+	
+    <kendo-toolbar-button *ngIf="!hideOthers"  kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" ></kendo-toolbar-button>
+	<kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+		
+		
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+	<kendo-toolbar-button  *ngIf="!hideOthers" [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+	<kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+
+<kendo-toolbar-separator *ngIf="!hideOthers"></kendo-toolbar-separator>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers" [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+	<kendo-toolbar-button  *ngIf="!hideForCreate && !hideOthers"  [icon]="'select-box'" title="Show Form" (click)="showMultiStepForm( form.value);"></kendo-toolbar-button>
+	<kendo-toolbar-button *ngIf="!hide_log && !hideOthers" kendoButton [icon]="'folder'" title="RuleLog" (click)="logOpen(form.value);" ></kendo-toolbar-button >
+	
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+	<div class="form-borders">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset" class="k-form-fieldset" >
+
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideForCreate && !hideOthers" >
+		<kendo-label class="form-label" [for]="ORDER_NO" [text]="starServices.getNLS([],'ORDER_NO','Order No')"></kendo-label>
+		<input class="form-input" formControlName="ORDER_NO" kendoTextBox #ORDER_NO	
+		[readonly]="primarKeyReadOnlyArr.isORDER_NOreadOnly" />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="TEMPLATE_NAME" [text]="hideOthers ? 'Type' : 'Template'"></kendo-label>
+		<kendo-combobox  #TEMPLATE_NAME class="form-field-combobox" [formControlName]="'TEMPLATE_NAME'"
+		[data]="lkpArrTEMPLATE_NAME" [textField]="'CODETEXT_LANG'"  [valueField]="'TEMPLATE_NAME'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }"
+		[placeholder]="'select a Template'"
+		(valueChange)="valueChangeTEMPLATE_NAME($event)"
+		[readonly]="primarKeyReadOnlyArr.isTEMPLATE_NAMEreadOnly || hideOthers"
+		[ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.TEMPLATE_NAME.errors }" >
+		</kendo-combobox>
+	</kendo-formfield>
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideForCreate && !hideOthers">
+		<kendo-label class="form-label" [for]="ORDER_STATUS" text="Status"></kendo-label>
+		<kendo-combobox  #ORDER_STATUS class="form-field-combobox" [formControlName]="'ORDER_STATUS'"
+		[data]="lkpArrORDER_STATUS" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+	<button *ngIf="hideOthers && showButtons && woApprovalFlag == paramConfig.CREATED" type="button" class="btn btn-outline-primary btn-sm mt-2 ms-3" (click)="changeWOStatus(paramConfig.APPROVED)">Approve</button>
+	<button *ngIf="hideOthers && showButtons && woApprovalFlag == paramConfig.CREATED" type="button" class="btn btn-outline-primary btn-sm mt-2 ms-1" (click)="changeWOStatus(paramConfig.REJECTED)">Reject</button>
+	
+	<p *ngIf="woApprovalFlag == paramConfig.APPROVED" class="mt-2 ms-3 mb-0">Work order status: <strong class="text-success">Approved</strong></p>
+	<p *ngIf="woApprovalFlag == paramConfig.REJECTED" class="mt-2 ms-3 mb-0">Work order status: <strong class="text-danger">Rejected</strong></p>
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideOthers">
+		<kendo-label class="form-label" [for]="SUBNO" text="Subno"></kendo-label>
+		<input class="form-input" formControlName="SUBNO" kendoTextBox #SUBNO 
+		[ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.SUBNO.errors }" />
+	</kendo-formfield>
+	
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideOthers">
+		<kendo-label class="form-label" [for]="ORDER_TYPE" text="Type"></kendo-label>
+		<kendo-combobox  #ORDER_TYPE class="form-field-combobox" [formControlName]="'ORDER_TYPE'"
+		[data]="lkpArrORDER_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }"
+		
+		[ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.ORDER_TYPE.errors }" >
+		</kendo-combobox>
+	</kendo-formfield>
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideOthers" [style.pointer-events]="hideOthers ? 'none' : 'all'">
+		<kendo-label class="form-label" [for]="PROMISED_DATE" text="Promised"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="PROMISED_DATE"  #PROMISED_DATE 
+		[ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.PROMISED_DATE.errors }" [style.pointer-events]="hideOthers ? 'none' : 'all'" ></kendo-datepicker>
+	</kendo-formfield>
+</div>
+
+
+<div class="wrap" >
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DEPT" text="Dept"></kendo-label>
+		<kendo-combobox  #DEPT class="form-field-combobox" [formControlName]="'DEPT'"
+		[data]="lkpArrDEPT" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="DIV" text="Div"></kendo-label>
+		<kendo-combobox  #DIV class="form-field-combobox" [formControlName]="'DIV'"
+		[data]="lkpArrDIV" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield-->
+
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type"></kendo-label>
+		<kendo-combobox  #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+		[data]="lkpArrASSIGNEE_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ASSIGNEE" text="Assignee"></kendo-label>
+		<kendo-combobox  #ASSIGNEE class="form-field-combobox" [formControlName]="'ASSIGNEE'"
+		[data]="lkpArrASSIGNEE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield-->	
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type"></kendo-label>
+		<input class="form-input" formControlName="ASSIGNEE_TYPE" kendoTextBox #ASSIGNEE_TYPE [readonly]="true"
+		  />
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ASSIGNEE" text="Assignee"></kendo-label>
+		<input class="form-input" formControlName="ASSIGNEE" kendoTextBox #ASSIGNEE [readonly]="true"
+		 />
+	</kendo-formfield-->
+	
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideOthers">
+		<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type1"></kendo-label>
+		<kendo-combobox  #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+		[readonly]="isAsigneeTypeReadOnly"
+		[data]="lkpArrASSIGNEE_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="!hideOthers">
+		<kendo-label class="form-label" [for]="ASSIGNEE" text="Assignee"></kendo-label>
+		<kendo-combobox  #ASSIGNEE class="form-field-combobox" [formControlName]="'ASSIGNEE'"
+		[readonly]="isAsigneeReadOnly"
+		[data]="lkpArrASSIGNEE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>	
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="ORDERED_DATE" text="Ordered"></kendo-label>
+		<kendo-datepicker [readonly]="hideOthers" [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="ORDERED_DATE"  #ORDERED_DATE 
+		[ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.ORDERED_DATE.errors }" ></kendo-datepicker>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="hideOthers" [style.pointer-events]="hideOthers ? 'none' : 'all'">
+		<kendo-label class="form-label" [for]="PROMISED_DATE" text="Promised"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="PROMISED_DATE"  #PROMISED_DATE 
+		[ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.PROMISED_DATE.errors }" [style.pointer-events]="hideOthers ? 'none' : 'all'"></kendo-datepicker>
+	</kendo-formfield>
+</div>
+
+
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field-double"  [orientation]="'horizontal'" *ngIf="false">
+		<kendo-label class="form-label" [for]="ATTACHMENTS" text="ATTACHMENTS"></kendo-label>
+		<input class="form-input" formControlName="ATTACHMENTS" kendoTextBox #ATTACHMENTS />
+	</kendo-formfield>
+	
+</div>
+<div class="wrap">
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="NOTES" text="Notes"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="NOTES" kendoTextBox #NOTES [readonly]="hideOthers"></textarea>
+	</kendo-formfield>
+
+	<kendo-formfield *ngIf=false class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ORDER_FIELDS" text="ORDER_FIELDS"></kendo-label>
+		<textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="ORDER_FIELDS" kendoTextBox #ORDER_FIELDS></textarea>
+	</kendo-formfield>
+
+
+	<kendo-upload
+	class="ms-2"
+	[disabled]="false"
+	[autoUpload]="!hideOthers"
+	[saveUrl]="uploadSaveUrl"
+	[removeUrl]="uploadRemoveUrl"
+	(select)="selectEventHandler($event)"
+	(clear)="clearEventHandler($event)"
+	(remove)="removeEventHandler_not_used($event)"
+	(complete)="completeEventHandler($event)"
+	(upload)="uploadEventHandler($event)"
+	
+	[(ngModel)]="myFiles" [ngModelOptions]="{standalone: true}">
+		<ng-template kendoUploadFileTemplate let-files let-state="state">
+			<div><a target="_blank" href="{{AttDwnUrl}}{{files[0].name}}"> {{files[0].name}} Size: {{files[0].size}} bytes</a></div>
+			<button *ngIf="!hideOthers" (click)="removeFile(files[0].name)"  class="k-icon k-delete k-i-x" class="k-button" style="position: absolute; right: .2em;">x</button>
+		</ng-template>
+		<ng-template [hidden]="!hideOthers" *ngFor="let file of attachements">
+			<div>
+				<a href="{{AttDwnUrl}}{{file.name}}" target="_blank"> {{file.name}} Size: {{file.size}} bytes</a>
+			</div>
+			<button (click)="removeFile(file.name)"  class="k-icon k-delete k-i-x" class="k-button" style="position: absolute; right: .2em;">x</button>
+		</ng-template>
+	</kendo-upload>
+</div>
+	
+
+
+<!--div>	
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="COMPLETION_DATE" text="COMPLETION_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="COMPLETION_DATE"  #COMPLETION_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PARENT_ORDER_TYPE" text="Parent Order Type"></kendo-label>
+		<input class="form-input" formControlName="PARENT_ORDER_TYPE" kendoTextBox #PARENT_ORDER_TYPE />
+	</kendo-formfield>
+
+</div-->
+
+<!--div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PARENT_ORDER_NO" text="Parent Order No"></kendo-label>
+		<input class="form-input" formControlName="PARENT_ORDER_NO" kendoTextBox #PARENT_ORDER_NO />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ACTUAL_START_DATE" text="ACTUAL_START_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="ACTUAL_START_DATE"  #ACTUAL_START_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ACTUAL_END_DATE" text="ACTUAL_END_DATE"></kendo-label>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="ACTUAL_END_DATE"  #ACTUAL_END_DATE ></kendo-datepicker>
+	</kendo-formfield>
+
+</div-->
+
+
+
+
+    </fieldset>
+	</form>
+</div>
+
+
+</kendo-pdf-export>
+</div>
+<!--div style ="{{screenStyle}}" [hidden]="!multiStepFormOpened" -->	
+<div [hidden]="!multiStepFormOpened || hideOthers" >
+	<kendo-dialog title="Form" (close)="multiStepFormClose()" 
+	  resizable="true"
+		[height]="fieldGridHeight+200">
+
+		<app-dsp-multistep
+		(saveCompletedOutput)="savemultiStepFormCompletedHandler($event)" 
+		[setComponentConfig_Input]="DSP_MULTISTEPFormConfig">
+		</app-dsp-multistep>
+	</kendo-dialog>
+	</div>
+
+
+	<div [hidden]="!logOpened || hideOthers" >
+        <kendo-dialog title="Logs"  (close)="logClose()" 
+    [minWidth]="400" [width]="950" [height]="650">
+      <app-adm-rule-log-grid
+      [setComponentConfig_Input]="ADM_RuleLogGridConfig">
+      </app-adm-rule-log-grid>
+      </kendo-dialog>
+    </div>

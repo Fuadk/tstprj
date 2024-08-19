@@ -1,0 +1,51 @@
+<div>
+    <legend class="k-form-legend" *ngIf="!hideOptions">{{ title }}</legend>
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" *ngIf="!hideOptions">
+        <fieldset class="form-fieldset"  class="k-form-fieldset">
+            <div class="wrap" >
+                <kendo-toolbar  *ngIf="showToolBar" >
+                        <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+                    <kendo-toolbar-separator></kendo-toolbar-separator>                        
+                        <kendo-toolbar-button  kendoButton [text]="'Options'" [icon]="'more-horizontal'" title="print" (click)="openShowParams()" ></kendo-toolbar-button >            
+                </kendo-toolbar>    
+            
+                <kendo-formfield class="form-field" [orientation]="'horizontal'" *ngIf="showParams">
+                    <kendo-label class="form-label" [for]="DASHBOARD_ID" text="Select Dashboard"></kendo-label>
+                    <kendo-combobox  #DASHBOARD_ID class="form-field-combobox" [formControlName]="'DASHBOARD_ID'"
+                    [data]="lkpArrDASHBOARD_ID" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+                    [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+                    </kendo-combobox>
+                </kendo-formfield>
+                <!--kendo-toolbar  class="form-toolbar" *ngIf="showToolBar" >
+                    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+                </kendo-toolbar-->
+            
+
+            </div>
+
+        </fieldset>
+        </form> 
+
+  <kendo-sortable
+    [kendoSortableBinding]="dashboard"
+    [itemStyle]="{'float':'left', 'display': 'inline-block',  'color': '#000aed',
+                  'background-color': '#fffaed', 'margin': '4px' , 'border': '1px solid black', 'cursor': 'move'}">
+     
+      <ng-template let-chart="item">
+
+   
+        {{chart.name}}
+        <div >
+            <app-dsp-dynamic-chart
+            [setComponentConfig_Input]=chart.config>
+        </app-dsp-dynamic-chart>
+        </div>
+
+    </ng-template>
+  </kendo-sortable>
+
+
+
+  
+
+      </div>

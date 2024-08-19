@@ -1,0 +1,14 @@
+<div>
+    <legend class="k-form-legend" >{{title }}</legend>
+    <app-menus-form [executeQueryInput]="form_MENUS"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+  		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="MENUSFormConfig">
+    </app-menus-form>
+    
+    <app-routines-form [executeQueryInput]="form_ROUTINES"  
+				 [setComponentConfig_Input]="ROUTINESFormConfig">
+    </app-routines-form>
+</div>
+

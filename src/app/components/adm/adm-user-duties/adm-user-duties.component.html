@@ -1,0 +1,13 @@
+<div>
+    <legend class="k-form-legend" >{{title }}</legend>
+    <app-adm-resource-information-form
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="ADM_USER_INFORMATIONFormConfig">
+    </app-adm-resource-information-form>
+    
+    <app-adm-user-duty-grid [detail_Input]="grid_ADM_USER_DUTY"  
+				 [setComponentConfig_Input]="ADM_USER_DUTYGridConfig">
+    </app-adm-user-duty-grid>
+</div>

@@ -1,0 +1,89 @@
+<div>
+
+    <legend>{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar" >
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+	<kendo-toolbar-separator></kendo-toolbar-separator>
+	<!--kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button-->
+    <kendo-toolbar-button   [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+	<kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+</kendo-toolbar>
+
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+	<div class="form-borders">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset" class="k-form-fieldset" >
+
+
+	<div class="wrap">
+		<kendo-formfield class="form-field" [orientation]="'horizontal'">
+			<kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assigned"></kendo-label>
+			<kendo-combobox  #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+			[data]="lkpArrASSIGNEE_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+			[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+			</kendo-combobox>
+		</kendo-formfield>
+
+        <kendo-formfield class="form-field" [orientation]="'horizontal'" >
+			<kendo-label class="form-label" [for]="ORDER_STATUS" text="Status"></kendo-label>
+			<kendo-combobox  #ORDER_STATUS class="form-field-combobox" [formControlName]="'ORDER_STATUS'"
+			[data]="lkpArrORDER_STATUS" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+			[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+			</kendo-combobox>
+		</kendo-formfield>
+
+
+		<kendo-formfield class="form-field" [orientation]="'horizontal'">
+			<kendo-label class="form-label" [for]="SUBNO" text="Subno"></kendo-label>
+			<input class="form-input" formControlName="SUBNO" kendoTextBox #SUBNO 
+			 />
+		</kendo-formfield>
+
+		<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+			<kendo-label class="form-label" [for]="DEPT" text="Dept"></kendo-label>
+			<kendo-combobox  #DEPT class="form-field-combobox" [formControlName]="'DEPT'"
+			[data]="lkpArrDEPT" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+			[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+			</kendo-combobox>
+		</kendo-formfield>
+
+		<kendo-formfield class="form-field" [orientation]="'horizontal'">
+			<kendo-label class="form-label" [for]="DIV" text="Div"></kendo-label>
+			<kendo-combobox  #DIV class="form-field-combobox" [formControlName]="'DIV'"
+			[data]="lkpArrDIV" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+			[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+			</kendo-combobox>
+		</kendo-formfield-->
+
+        <kendo-formfield class="form-field" [orientation]="'horizontal'"  >
+			<kendo-label class="form-label" [for]="ORDER_NO" text="Order No"></kendo-label>
+			<input class="form-input" formControlName="ORDER_NO" kendoTextBox #ORDER_NO	 />
+		</kendo-formfield>
+		
+	</div>
+
+
+
+    </fieldset>
+	</form>
+	</div>
+
+
+    <app-dsp-orders-grid [detail_Input]="grid_DSP_ORDERS"  
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="DSP_ORDERSGridConfig"
+		  >
+    </app-dsp-orders-grid>
+    
+    <app-dsp-work-orders-grid [detail_Input]="grid_DSP_WORK_ORDERS"  
+				 [setComponentConfig_Input]="DSP_WORK_ORDERSGridConfig">
+    </app-dsp-work-orders-grid>
+</kendo-pdf-export>
+
+</div>
+
+

@@ -1,0 +1,147 @@
+<div>
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div class="wrap">
+    
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="MODULE" text="Module"></kendo-label>
+		<kendo-combobox  #MODULE class="form-field-combobox" [formControlName]="'MODULE'"
+		[data]="lkpArrMODULE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.MODULE.errors }"  required 
+		[readonly]="primarKeyReadOnlyArr.isMODULEreadOnly"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield>
+
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_ID" text="Rule Id"></kendo-label>
+        <input class="form-input" formControlName="RULE_ID" kendoTextBox #RULE_ID
+        [readonly]="primarKeyReadOnlyArr.isRULE_IDreadOnly"
+        [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.MODULE.errors }" />
+    </kendo-formfield>
+    <kendo-formfield class="form-field" [orientation]="'horizontal'">
+        <kendo-label class="form-label" [for]="DISABLED" text="Disabled"></kendo-label>
+        <kendo-switch formControlName="DISABLED" #DISABLED></kendo-switch>
+    </kendo-formfield>
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_TRIGGER" text="Trigger"></kendo-label>
+		<kendo-combobox  #RULE_TRIGGER class="form-field-combobox" [formControlName]="'RULE_TRIGGER'"
+		[data]="lkpArrRULE_TRIGGER" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.RULE_TRIGGER.errors }"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+    </kendo-formfield>
+        <kendo-formfield class="form-input-double"  [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="RULE_DESCRIPTION" text="Description"></kendo-label>
+            <input class="form-input" formControlName="RULE_DESCRIPTION" kendoTextBox #RULE_DESCRIPTION 
+            />
+        </kendo-formfield>
+    <!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="QUERY_DEF" text="Transaction"></kendo-label>
+        <input class="form-input" formControlName="QUERY_DEF" kendoTextBox #QUERY_DEF 
+        [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.QUERY_DEF.errors }" />
+    </kendo-formfield-->
+
+</div>
+
+<div class="wrap"> 
+    <kendo-formfield class="form-field-double"  [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="QUERY_DEF" text="Transaction"></kendo-label>
+		<kendo-combobox  #QUERY_DEF class="form-field-combobox" [formControlName]="'QUERY_DEF'"
+        [data]="lkpArrQUERY_DEF" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+        (valueChange)="valueChangeQUERY_DEF($event)"
+        [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.QUERY_DEF.errors }"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+    </kendo-formfield>
+    <kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_KEY" text="Rule Key"></kendo-label>
+        <input class="form-input" formControlName="RULE_KEY" kendoTextBox #RULE_KEY 
+        [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.RULE_KEY.errors }" />
+    </kendo-formfield>
+    <kendo-toolbar>
+		<kendo-toolbar-button  kendoButton [text]="'Rule Keys'" [icon]="'filter'" title="Select Rule Keys" (click)="keysOpen()" >Select Rule Keys</kendo-toolbar-button >
+		<kendo-toolbar-separator></kendo-toolbar-separator>	
+        <kendo-toolbar-button  kendoButton [text]="'Host Def'" [icon]="'form-element'" title="Host Def" (click)="viewHost()" >Host Def</kendo-toolbar-button >
+	</kendo-toolbar>  
+
+
+</div>
+
+<div *ngIf=!isROUTINEreadOnly  class="wrap">
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ROUTINE_NAME" text="Routine_name"></kendo-label>
+		<kendo-combobox  #ROUTINE_NAME class="form-field-combobox" [formControlName]="'ROUTINE_NAME'"
+		[data]="lkpArrROUTINE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+        [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.ROUTINE_NAME.errors }"
+        [readonly]="isROUTINEreadOnly"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+    </kendo-formfield>  
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RESPONSE_DATA_ID" text="Response ID"></kendo-label>
+        <input class="form-input" formControlName="RESPONSE_DATA_ID" kendoTextBox #RESPONSE_DATA_ID />
+    </kendo-formfield>	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RESPONSE_DATA_NAME" text="Response Data "></kendo-label>
+        <input class="form-input" formControlName="RESPONSE_DATA_NAME" kendoTextBox #RESPONSE_DATA_NAME/>
+    </kendo-formfield>
+
+  
+</div>
+
+
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+
+<kendo-dialog title="Host Definition" *ngIf="hostOpened" (close)="hostClose()" 
+[minWidth]="400" [width]="950" [height]="550">
+	<app-adm-rules-hosts
+	[detail_Input]="grid_adm_rule_host_def"  >
+	</app-adm-rules-hosts>
+  </kendo-dialog>
+
+<div [hidden]="!keysOpened" >
+  <kendo-dialog title="Keys" resizable="true" [minWidth]="400" [width]="500" [height]="450" (close)="keysClose()">
+    <app-adm-rule-keys-grid
+        (saveCompletedOutput)="saveCompletedHandler($event)" 
+        [setComponentConfig_Input]="grid_adm_rule_keys">
+    </app-adm-rule-keys-grid>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onCancelKeys($event)">Cancel</button>
+        <button class="k-button k-primary" (click)="onSaveKeys($event)">Save</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+</div>
+

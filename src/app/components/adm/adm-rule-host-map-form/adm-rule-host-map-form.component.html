@@ -1,0 +1,69 @@
+<div>
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="HOST_ID" text="Host Id"></kendo-label>
+		<input class="form-input" formControlName="HOST_ID" kendoTextBox #HOST_ID  required 
+		[readonly]="primarKeyReadOnlyArr.isHOST_IDreadOnly"
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.HOST_ID.errors }" />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="MAP_ID" text="Map Id"></kendo-label>
+		<input class="form-input" formControlName="MAP_ID" kendoTextBox #MAP_ID  required 
+		[readonly]="primarKeyReadOnlyArr.isMAP_IDreadOnly"
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.MAP_ID.errors }" />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="MAP_NAME" text="Map Name"></kendo-label>
+		<input class="form-input" formControlName="MAP_NAME" kendoTextBox #MAP_NAME  required 
+		
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.MAP_NAME.errors }" />
+	</kendo-formfield>
+
+</div>
+
+<div class="wrap">
+	
+		<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+			<kendo-label class="form-label" [for]="XSLT_SEND" text="XSLT Send"></kendo-label>
+			<textarea kendoTextArea  style="resize: both;" class="form-input-triple" formControlName="XSLT_SEND" kendoTextBox #XSLT_SEND ></textarea>
+		</kendo-formfield>
+		<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+			<kendo-label class="form-label" [for]="XSLT_RECEIVE" text="XSLT Receive"></kendo-label>
+			<textarea kendoTextArea  style="resize: both;" class="form-input-triple" formControlName="XSLT_RECEIVE" kendoTextBox #XSLT_RECEIVE ></textarea>
+		</kendo-formfield>
+	
+	
+</div>
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+

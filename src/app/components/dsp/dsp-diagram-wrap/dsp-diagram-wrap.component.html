@@ -1,0 +1,34 @@
+
+<kendo-tabstrip [keepTabContent]="true" *ngIf="showDiagram" style="height:180px;">
+    <kendo-tabstrip-tab  [selected]="true"> 
+      <ng-template kendoTabTitle>
+        <legend>View3</legend>
+      </ng-template>
+      <ng-template kendoTabContent>
+        <div class="diagram-parent">
+          <app-diagram [url]="diagramUrl" (importDone)="handleImported($event)"
+         
+          [setComponentConfig_Input]="app_diagramConfigView">
+          </app-diagram>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+    <kendo-tabstrip-tab *ngIf="ModelShow">
+      <ng-template kendoTabTitle>
+        <legend>Model </legend>
+      </ng-template>
+      <ng-template kendoTabContent>
+        <div class="diagram-parent">
+          <app-diagram [url]="diagramUrl" (importDone)="handleImported($event)"
+          (saveCompletedOutput)="saveFormCompletedHandler($event)"
+          [setComponentConfig_Input]="app_diagramConfig">
+          </app-diagram>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+
+
+
+
+  </kendo-tabstrip>

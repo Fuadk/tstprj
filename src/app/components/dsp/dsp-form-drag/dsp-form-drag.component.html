@@ -1,0 +1,248 @@
+<div>
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-center align-items-center stepper-container">
+      <kendo-stepper *ngIf="currentPages.length > 0" #stepper [linear]="false" [steps]="currentPages" [stepType]="'full'" [(currentStep)]="currentPage"
+        (click)="selectPage()" style="width: 600px; display: inline-grid">
+      </kendo-stepper>
+
+      <button *ngIf="currentForm" kendoButton class="k-button btn-rounded" (click)="addPage()" title="Add new page">+</button>
+
+      <button *ngIf="currentPages.length > 0" kendoButton [icon]="'select-box'" class="k-button btn-rounded ms-1 p-2 me-1" title="Preview Form"
+        (click)="showMultiStepForm(0)"></button>
+      <button *ngIf="currentPages.length > 0" kendoButton [icon]="'form-element'" class="k-button btn-rounded p-2" title="Preview Page"
+        (click)="showMultiStepForm(1)"></button>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <!-- left side -->
+    <div class="col-md-8" [class.col-md-12]="!selectedElement">
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="row">
+            <div class="col-md-6 mx-auto">
+              <p style="margin-bottom: 5px;">Current selected form</p>
+              <kendo-combobox class="form-field-combobox" (click)="selectElement('form')"
+                style="width: calc(100% - 260px)" placeholder="Please select a form" [data]="lkpArrFORM_NAME"
+                [textField]="'CODETEXT_LANG'" #FORM_NAME [valueField]="'CODE'"
+                (selectionChange)="selectionChange($event)"
+                [ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.FORM_NAME.errors }" required
+                [readonly]="primarKeyReadOnlyArr.isFORM_NAMEreadOnly" [valuePrimitive]="true"
+                [kendoDropDownFilter]="{ operator: 'contains' }"></kendo-combobox>
+                
+              <button kendoButton class="k-button p-3 ms-2" style="height:40px; font-size: 14px;" (click)="formDefOpen()" title="Add or delete form">Add / delete form</button>
+              <button kendoButton *ngIf="currentForm && !isLoading" class="k-button p-3 ms-1" style="height:40px; font-size: 14px;" (click)="openCopyDialog()">Copy form</button>
+            </div>
+            <div *ngIf="currentForm && currentPages.length > 0" class="col-md-6 d-flex justify-content-center align-items-center">
+              <button [title]="area.AREA_TYPE" *ngFor="let area of currentAreas; let i = index" [look]="currentArea != i ? 'flat' : 'default'"
+                kendoButton class="k-button ps-3 pe-3 me-1" (click)="selectArea(area, i); selectElement('area', area)"
+                style="height: 40px;margin-top: 24px;">
+                <span class="k-icon {{ area.AREA_TYPE == 'FORM' ? 'k-i-form-element' : 'k-i-layout' }}" style="font-size: 20px; margin-right: 6px;"></span>
+                {{ area.AREA_TYPE + ': ' + area.AREA_TITLE  }}
+              </button>
+
+              <button *ngIf="currentAreas.length < 2" (click)="addArea()" kendoButton class="k-button ps-3 pe-3" style="height:40px; margin-top: 24px;" title="Add new area">
+                <span *ngIf="currentAreas.length > 0" style="font-size: 30px">+</span>
+                <span *ngIf="currentAreas.length == 0">Add new area</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <div class="form-builder">
+            <div *ngIf="currentAreas.length > 0 && currentAreas[currentArea].AREA_TYPE != 'GRID'" class="p-1 clearfix" style="height: 35px">
+              <button kendoButton class="k-button p-2 mb-1 float-end" (click)="addRow()" title="Add new row">Add row</button>
+            </div>
+
+            <div #fieldContainer class="fields-container">
+              <div ngxDroppable="row"
+                *ngFor="let columns of currentFields; let i = index"
+                (model)="currentFields[i]" 
+                (drop)="onDrop($event)" class="row">
+
+                <div
+                  *ngFor="let field of columns; let j = index"
+                  [class.col-md-4]="currentAreas[currentArea].AREA_TYPE == 'FORM'"
+                  [class.col-md-12]="currentAreas[currentArea].AREA_TYPE == 'GRID'"
+                  ngxDraggable
+                  model="currentFields[i][j]"
+                  (click)="selectElement('field', field)"
+                  [hidden]="showChangesOnly ? !field.isNew : false">
+                  <div class="form-item clearfix"
+                    [class.active]="selectedElement?.type == 'field' && selectedElement?.data.field.FIELD_ID == field.field.FIELD_ID">
+                    <div style="padding: 10px; background: white; margin-right: 10px">
+                      <span class="k-icon {{ getIconByFieldType(field.field.FIELD_TYPE) }}" style="font-size: 20px"></span>
+                    </div>
+                    <p class="id">{{ field.field.FIELD_ID }}</p>
+                    <p>{{ field.field.FIELD_NAME }}</p>
+
+                    <i class="fas fa-trash-alt delete" (click)="deleteField(field, i, j, $event)"></i>
+                  </div>
+                </div>
+
+                <button kendoButton class="k-button btn-rounded" (click)="addField(i)" ngxDraggable  title="Add new field">+</button>
+              </div>
+            </div>
+
+            <kendo-loader *ngIf="isLoading" style="position: absolute; top: 50%; left: 50%" type="converging-spinner"
+              themeColor="primary" size="medium">
+            </kendo-loader>
+            <p *ngIf="!currentForm && !isLoading"
+              style="position: absolute;top: 50%;left: 50%;opacity: .5;transform: translate(-50%, -50%);font-size: 20px;">
+              Select a Form and Area to load fields
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right side -->
+    <div class="col-md-3" *ngIf="selectedElement">
+      <div class="row">
+        <div class="col-12" style="margin-top: 74px;">
+          <div class="form-properties">
+            <div>
+              <app-dsp-form-def-form
+                [detail_Input]="form_DSP_FORM_DEF"
+                [setComponentConfig_Input]="DSP_FORM_DEFFormConfig"
+                [executeQueryInput]="selectedElement"
+                *ngIf="selectedElement?.type == 'form'">
+              </app-dsp-form-def-form>
+
+              <app-dsp-form-page-form
+                (saveCompletedOutput)="saveCompletedHandler($event)"
+                (readCompletedOutput)="readCompletedHandler($event)"
+                [detail_Input]="form_DSP_FORM_PAGE"
+                [setComponentConfig_Input]="DSP_FORM_PAGEFormConfig"
+                [executeQueryInput]="selectedElement"
+                *ngIf="selectedElement?.type == 'page'">
+              </app-dsp-form-page-form>
+
+              <app-dsp-form-area-form
+                (saveCompletedOutput)="saveCompletedHandler($event)"
+                (readCompletedOutput)="readCompletedHandler($event)"
+                [detail_Input]="form_DSP_FORM_AREA"
+                [setComponentConfig_Input]="DSP_FORM_AREAFormConfig"
+                [executeQueryInput]="selectedElement"
+                *ngIf="selectedElement?.type == 'area'">
+              </app-dsp-form-area-form>
+
+              <app-dsp-form-fields-form
+                (saveCompletedOutput)="saveCompletedHandler($event)"
+                (readCompletedOutput)="readCompletedHandler($event)"
+                [detail_Input]="form_DSP_FORM_FIELDS"
+                [setComponentConfig_Input]="DSP_FORM_FIELDSFormConfig"
+                [executeQueryInput]="selectedElement"
+                *ngIf="selectedElement?.type == 'field'">
+              </app-dsp-form-fields-form>
+            </div>
+            <div class="options">
+              <button kendoButton class="k-button mx-2" *ngIf="!useAutosave" icon="save"
+                title="Save changes" (click)="saveChanges()"></button>
+
+              <button kendoButton class="k-button mx-2" *ngIf="selectedElement?.type == 'page' || selectedElement?.type == 'area'" icon="delete" style="flex: 3; color: red"
+                [title]="selectedElement?.type == 'area' ? 'Delete area' : 'Delete page'" (click)="selectedElement?.type == 'area' ? deleteArea() : deletePage()"></button>
+
+              <button kendoButton class="k-button" look="outline" icon="arrow-right" title="Cancel"
+                (click)="selectedElement = null"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div [hidden]="!multiStepFormOpened">
+  <kendo-dialog (close)="multiStepFormOpened = false" resizable="true" [minWidth]="700" width="70%"
+    [height]="700" [title]="DSP_MULTISTEPFormConfig?.masterParams?.formName || 'Form title'">
+    <app-dsp-multistep (saveCompletedOutput)="multiStepFormOpened = false"
+      [setComponentConfig_Input]="DSP_MULTISTEPFormConfig"></app-dsp-multistep>
+  </kendo-dialog>
+</div>
+
+<div [hidden]="!newPageOpened">
+  <kendo-dialog (close)="newPageOpened = false" resizable="true" [minWidth]="700" [width]="700"
+    [height]="fieldGridHeight+200" title="Add new page">
+    
+    <app-dsp-form-page-form 
+      *ngIf="newPageOpened"
+      [setComponentConfig_Input]="DSP_PAGEConfig"
+      (saveCompletedOutput)="saveCompletedHandler($event)">
+    </app-dsp-form-page-form>
+
+    <kendo-dialog-actions>
+      <button kendoButton (click)="cancelNewPage()">Cancel</button>
+      <button kendoButton (click)="submitNewPage()" [primary]="true">Save</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+</div>
+
+<div [hidden]="!newAreaOpened">
+  <kendo-dialog (close)="newAreaOpened = false" resizable="true" [minWidth]="700" [width]="700"
+    [height]="fieldGridHeight+200" title="Add new area">
+    
+    <app-dsp-form-area-form 
+      *ngIf="newAreaOpened"
+      [setComponentConfig_Input]="DSP_AREAConfig"
+      (saveCompletedOutput)="saveCompletedHandler($event)">
+    </app-dsp-form-area-form>
+
+    <kendo-dialog-actions>
+      <button kendoButton (click)="cancelNewArea()">Cancel</button>
+      <button kendoButton (click)="submitNewArea()" [primary]="true">Save</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+</div>
+
+<div [hidden]="!newFormOpened">
+    <kendo-dialog title="Add new form" resizable="true" [minWidth]="600" [width]="800" [height]="550" (close)="formDefClose()">
+        <app-som-tabs-codes-grid 
+        (saveCompletedOutput)="onSaveFormDef($event)"
+          [detail_Input]="grid_som_tabs_codes" 
+          [setComponentConfig_Input]="SOM_TABS_CODESGridConfig">
+        </app-som-tabs-codes-grid>
+    </kendo-dialog>
+</div>
+
+<div [hidden]="!newFieldOpened">
+  <kendo-dialog title="Add new field" resizable="false" (close)="newFieldOpened = false">
+    <div class="alert alert-secondary alert-dismissible" role="alert">
+      Please note that <strong>Field ID</strong> is unique and cannot be changed after saving. But you can delete the field
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <div class="wrap">
+      <kendo-formfield class="form-field" [orientation]="'horizontal'" style="flex-basis: 100%;">
+        <kendo-label class="form-label" [for]="FIELD_ID" text="Field ID"></kendo-label>
+        <input class="form-input form-control" placeholder=" Please note that Field ID is unique and cannot be changed after saving." [(ngModel)]="newFieldId" kendoTextBox #FIELD_ID />
+      </kendo-formfield>
+    </div>  
+    
+    <kendo-dialog-actions>
+      <button kendoButton (click)="newFieldOpened = false; newFieldId = null">Cancel</button>
+      <button kendoButton (click)="saveNewField()" [primary]="true">Add field</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+</div>
+
+<div [hidden]="!copyFormOpened">
+  <kendo-dialog title="Copy form" resizable="false" [minWidth]="700" [width]="700" [height]="200" (close)="copyFormOpened = false">      
+      <kendo-loader *ngIf="isCopying" style="position: absolute; top: 50%; left: 50%" type="converging-spinner"
+          themeColor="primary" size="medium">
+      </kendo-loader>
+      
+      <div *ngIf="!isCopying" class="wrap">
+          <kendo-formfield class="form-field" [orientation]="'horizontal'" style="flex-basis: 100%;">
+              <kendo-label class="form-label" [for]="TEMPLATE_NAME" text="Form name"></kendo-label>
+              <input class="form-input form-control" placeholder="Type new form copy name" [(ngModel)]="copyFormName" kendoTextBox #TEMPLATE_NAME />
+          </kendo-formfield>
+      </div>  
+      
+      <kendo-dialog-actions *ngIf="!isCopying">
+          <button kendoButton (click)="copyFormOpened = false; copyFormName = null">Cancel</button>
+          <button kendoButton (click)="copyForm()" [primary]="true">Copy form</button>
+      </kendo-dialog-actions>
+  </kendo-dialog>
+</div>

@@ -1,0 +1,101 @@
+<div>
+    <!--div [style.width]="divWidth" -->
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <div class="form-borders" > 
+        <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="formWeek" >
+            <fieldset class="form-fieldset" class="k-form-fieldset">
+                <kendo-formfield style="width:300px" *ngIf="componentConfig.WEEKShow" class="form-field" [orientation]="'horizontal'">
+                    <kendo-label class="form-label" [for]="WEEK_DATE" text="Week"></kendo-label>
+                    <kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="WEEK_DATE"  #WEEK_DATE 
+                    ></kendo-datepicker>
+                </kendo-formfield>
+                
+            </fieldset>
+        </form>
+    
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="form-fieldset" class="k-form-fieldset">
+
+
+<div class="wrap">
+                    <kendo-formfield class="form-field" [orientation]="'horizontal'">
+                        <kendo-label class="form-label" [for]="TEAM" text="Team"></kendo-label>
+                        <input class="form-input" formControlName="TEAM" kendoTextBox #TEAM 
+                        [readonly]="primarKeyReadOnlyArr.isTEAMreadOnly"
+                        required/>
+                    </kendo-formfield>
+                    
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="FULLNAME" text="Fullname"></kendo-label>
+<input class="form-input" formControlName="FULLNAME" kendoTextBox #FULLNAME />
+</kendo-formfield>
+
+
+</div>
+
+<div class="wrap">
+
+                    <kendo-formfield class="form-field" [orientation]="'horizontal'">
+                        <kendo-label class="form-label" [for]="DEPT" text="DEPT"></kendo-label>
+                        <kendo-combobox  #DEPT class="form-field-combobox" [formControlName]="'DEPT'"
+                            [data]="lkpArrDEPT" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+                            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+                        </kendo-combobox>
+                    </kendo-formfield>
+
+                    <kendo-formfield class="form-field" [orientation]="'horizontal'">
+                    <kendo-label class="form-label" [for]="DIV" text="Div"></kendo-label>
+                    <kendo-combobox  #DIV class="form-field-combobox" [formControlName]="'DIV'"
+                    [data]="lkpArrDIV" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+                        [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+                    </kendo-combobox>
+                </kendo-formfield>
+</div>
+            
+<div class="wrap">
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="PHONE" text="Phone"></kendo-label>
+<input class="form-input" formControlName="PHONE" kendoTextBox #PHONE />
+</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+<kendo-label class="form-label" [for]="DEFAULT_PRINTER" text="Default Printer"></kendo-label>
+<input class="form-input" formControlName="DEFAULT_PRINTER" kendoTextBox #DEFAULT_PRINTER />
+</kendo-formfield>
+</div>
+
+                <div >
+                    <kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+                        <kendo-label class="form-label" [for]="NOTES" text="Notes"></kendo-label>
+                        <textarea kendoTextArea   class="form-input-double" formControlName="NOTES" kendoTextBox #NOTES ></textarea>
+                    </kendo-formfield>
+                </div>
+
+    </fieldset>
+    </form>
+    </div>
+</kendo-pdf-export>
+</div>
+
+

@@ -1,0 +1,47 @@
+<ul>
+    <li>Reorder the charts</li>
+    <li>Reorder the colors in charts</li>
+    <li>Move colors between charts</li>
+  </ul>
+  <kendo-sortable
+    [kendoSortableBinding]="charts"
+    [itemStyle]="{'float':'left', 'display': 'inline-block',  'color': '#000aed',
+                  'background-color': '#fffaed', 'margin': '4px' , 'border': '1px solid black', 'cursor': 'move'}">
+     
+      <ng-template let-chart="item">
+
+        <kendo-grid [kendoGridBinding]=chart.paramData id=chart.paramId  scrollable="none" >
+            <kendo-grid-column
+            *ngFor="let column of chart.paramColumns"
+            field="{{column.field}}"
+            title="{{column.title}}"
+            format="{{column.format}}"
+            
+            type="{{column.type}}"
+                >
+                <p *ngIf="column.lookup">
+                    <ng-template kendoGridCellTemplate  let-dataItem> {{lkpArrGetfield(column.field, dataItem)?.CODETEXT_LANG}} </ng-template>
+                  </p>
+            
+            </kendo-grid-column>
+        </kendo-grid>
+      
+   
+        {{chart.name}}
+        <br/><br/>
+        <div >
+            <kendo-chart [categoryAxis]="{ categories: chart.categories }"  >
+                <kendo-chart-area background="#eee" [margin]="30" [height]=chart.height [width]=chart.width>
+                </kendo-chart-area>
+            <kendo-chart-title text={{chart.name}}></kendo-chart-title>
+            <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+            <kendo-chart-tooltip format="{0}%"></kendo-chart-tooltip>
+            <kendo-chart-series>
+                <kendo-chart-series-item *ngFor="let item of chart.series"
+                    [type]="chart.type" [data]="item.data" [name]="item.name">
+                </kendo-chart-series-item>
+            </kendo-chart-series>
+        </kendo-chart>
+        </div>
+      </ng-template>
+  </kendo-sortable>

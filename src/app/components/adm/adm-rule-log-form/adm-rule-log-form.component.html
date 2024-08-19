@@ -1,0 +1,115 @@
+
+<div>
+    <legend *ngIf="!componentConfig.isMaster" class="k-form-legend">{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)" *ngIf="!isChild && insertable"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);" *ngIf="insertable"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);" *ngIf="insertable">Remove</kendo-toolbar-button>
+
+</kendo-toolbar>
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+	
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form"  >
+    <fieldset class="form-fieldset"  class="k-form-fieldset" >
+
+
+<div class="wrap">
+	<!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_ID" text="Rule Id"></kendo-label>
+		<kendo-combobox  #RULE_ID class="form-field-combobox" [formControlName]="'RULE_ID'"
+		[data]="lkpArrRULE_ID" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.RULE_ID.errors }"
+		[valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+		</kendo-combobox>
+	</kendo-formfield-->
+	
+	<kendo-formfield class="form-field" [orientation]="'horizontal'" >
+		<kendo-label class="form-label" [for]="RULE_ID" text="Rule Id"></kendo-label>
+		<input [readonly]="isReadOnly" class="form-input" formControlName="RULE_ID" kendoTextBox #RULE_ID  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="ACTION_ID" text="Action Id"></kendo-label>
+		<input [readonly]="isReadOnly" class="form-input" formControlName="ACTION_ID" kendoTextBox #ACTION_ID  />
+	</kendo-formfield>
+</div>
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="STATUS" text="Status"></kendo-label>
+		<input [readonly]="isReadOnly" class="form-input" formControlName="STATUS" kendoTextBox #STATUS  />
+	</kendo-formfield>
+
+	<kendo-formfield class="form-field" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="SENT_DATE" text="SENT_DATE"></kendo-label>
+		<kendo-datetimepicker [readonly]="isReadOnly" [format]="this.paramConfig.DateTimeFormat" class="form-field-date" formControlName="SENT_DATE"  #SENT_DATE 
+		[ngClass]="{ 'ng-invalid-required  ng-touched': submitted && f.SENT_DATE.errors }"
+ 		></kendo-datetimepicker>
+	</kendo-formfield>
+
+
+</div>
+
+<div class="wrap">	
+
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="RULE_KEY" text="RULE KEY"></kendo-label>
+		<textarea [readonly]="isReadOnly" kendoTextArea  style="resize: both;" class="form-input-double" formControlName="RULE_KEY" kendoTextBox #RULE_KEY ></textarea>
+	</kendo-formfield>		
+
+
+</div>
+
+<div class="wrap">
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="MSG_RESPONSE" text="MSG RESPONSE"></kendo-label>
+		<textarea [readonly]="isReadOnly" kendoTextArea  style="resize: both;" class="form-input-double" formControlName="MSG_RESPONSE" kendoTextBox #MSG_RESPONSE ></textarea>
+	</kendo-formfield>	
+</div>
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="MSG_RECEIVED" text="MSG RECEIVED"></kendo-label>
+		<textarea [readonly]="isReadOnly" kendoTextArea  style="resize: both;" class="form-input-double" formControlName="MSG_RECEIVED" kendoTextBox #MSG_RECEIVED ></textarea>
+	</kendo-formfield>		
+</div>
+
+<div class="wrap">
+
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="PARAMETER_SENT" text="PARAMETER SENT"></kendo-label>
+		<textarea [readonly]="isReadOnly" kendoTextArea  style="resize: both;" class="form-input-double" formControlName="PARAMETER_SENT" kendoTextBox #PARAMETER_SENT ></textarea>
+	</kendo-formfield>		
+
+</div>
+
+<div class="wrap">
+
+
+	<kendo-formfield class="form-field-double" [orientation]="'horizontal'">
+		<kendo-label class="form-label" [for]="BODY_SENT" text="BODY_SENT"></kendo-label>
+		<textarea [readonly]="isReadOnly" kendoTextArea  style="resize: both;" class="form-input-double" formControlName="BODY_SENT" kendoTextBox #BODY_SENT ></textarea>
+	</kendo-formfield>		
+
+</div>
+
+    </fieldset>
+    </form>
+</kendo-pdf-export>
+</div>
+

@@ -1,0 +1,161 @@
+<div>
+    <legend>{{ title }}</legend>
+
+<kendo-toolbar class="form-toolbar" *ngIf="showToolBar" >
+    <kendo-toolbar-button kendoButton [icon]="'save'" title="save" (click)="saveChanges( form)"></kendo-toolbar-button>
+    <kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button >
+
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'zoom'" title="Enter Query" (click)="enterQuery( form);"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button >
+<kendo-toolbar-separator></kendo-toolbar-separator>
+    <kendo-toolbar-button  [icon]="'arrow-double-60-left'" title="First Record" (click)="goRecord( 'first');"></kendo-toolbar-button>
+    <kendo-toolbar-button  [icon]="'arrow-60-left'"  title="Previous Record"  (click)="goRecord(  'prev');"></kendo-toolbar-button>
+    <kendo-toolbar-button   [icon]="'arrow-60-right'" title="Next Record"  (click)="goRecord('next')" ></kendo-toolbar-button >
+    <kendo-toolbar-button  [icon]="'arrow-double-60-right'" title="Last Record" (click)="goRecord('last')"></kendo-toolbar-button>
+<kendo-toolbar-separator></kendo-toolbar-separator>
+<kendo-toolbar-button  [icon]="'plus-outline'" title="Insert Record" (click)="onNew($event);"></kendo-toolbar-button>
+<kendo-toolbar-button  [icon]="'minus-outline'" title="Delete Record" (click)="onRemove( form);">Remove</kendo-toolbar-button>
+<kendo-toolbar-separator *ngIf="showClone"></kendo-toolbar-separator>
+    <kendo-toolbar-button *ngIf="showClone" [icon]="'copy'" title="Copy template" (click)="openCopyDialog()">Copy</kendo-toolbar-button>
+</kendo-toolbar>
+
+
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+    <div class="form-borders">
+    <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+    <fieldset class="k-form-fieldset">
+    <div class="wrap">
+        <kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="TEMPLATE_NAME" text="Template Name"></kendo-label>
+            <input class="form-input" formControlName="TEMPLATE_NAME" kendoTextBox #TEMPLATE_NAME  required
+            [readonly]="primarKeyReadOnlyArr.isTEMPLATE_NAMEreadOnly"
+            [ngClass]="{ 'ng-invalid-required
+     ng-touched': submitted && f.TEMPLATE_NAME.errors }"
+     />
+        </kendo-formfield>
+        <!--kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <li class="k-radio-item">
+                <input #visa kendoRadioButton />
+                <kendo-label [for]="visa" style="background-image: url(https://www.w3schools.com/images/w3schools_green.jpg);" ></kendo-label>
+            </li>
+        </kendo-formfield-->
+
+
+
+        <kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="ORDER_TYPE" text="Type"></kendo-label>
+            <kendo-combobox  #ORDER_TYPE class="form-field-combobox" [formControlName]="'ORDER_TYPE'"
+            [data]="lkpArrORDER_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }"
+
+            [ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.ORDER_TYPE.errors }" >
+            </kendo-combobox>
+        </kendo-formfield>
+
+        <kendo-formfield class="form-field"[orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="DAYS" text="Days" ></kendo-label>
+            <input class="form-input" formControlName="DAYS" kendoTextBox #DAYS />
+        </kendo-formfield>
+    </div>
+    <div class="wrap">
+
+   
+
+   
+    <!-- <div class="wrap">
+        kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="DEPT" text="Dept"></kendo-label>
+            <kendo-combobox  #DEPT class="form-field-combobox" [formControlName]="'DEPT'"
+            [data]="lkpArrDEPT" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+            </kendo-combobox>
+        </kendo-formfield>
+
+        <kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="DIV" text="Div"></kendo-label>
+            <kendo-combobox  #DIV class="form-field-combobox" [formControlName]="'DIV'"
+            [data]="lkpArrDIV" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+            </kendo-combobox>
+        </kendo-formfield
+    </div> -->
+
+        <kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="ASSIGNEE_TYPE" text="Assignee Type"></kendo-label>
+            <kendo-combobox  #ASSIGNEE_TYPE class="form-field-combobox" [formControlName]="'ASSIGNEE_TYPE'"
+            [readonly]="isAsigneeTypeReadOnly"
+            [data]="lkpArrASSIGNEE_TYPE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+            </kendo-combobox>
+        </kendo-formfield>
+        <kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="ASSIGNEE" text="Assignee"></kendo-label>
+            <kendo-combobox  #ASSIGNEE class="form-field-combobox" [formControlName]="'ASSIGNEE'"
+            [readonly]="isAsigneeReadOnly"
+            [data]="lkpArrASSIGNEE" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+            </kendo-combobox>
+        </kendo-formfield>
+
+        <kendo-formfield class="form-field" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="FORM_NAME" text="Form Name"></kendo-label>
+            <kendo-combobox  #FORM_NAME class="form-field-combobox" [formControlName]="'FORM_NAME'"
+            [data]="lkpArrFORM_NAME" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+            [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }"
+
+            [ngClass]="{ 'ng-invalid-required ng-touched': submitted && f.FORM_NAME.errors }" >
+            </kendo-combobox>
+        </kendo-formfield>
+
+        <kendo-toolbar>
+            <kendo-toolbar-button  kendoButton [icon]="'select-box'" title="show form" (click)="showMultiStepForm(0)" >Show form</kendo-toolbar-button >
+        </kendo-toolbar>
+    </div>
+    <div >
+        <kendo-formfield  class="form-field-double" [orientation]="'horizontal'">
+            <kendo-label class="form-label" [for]="DESCRIPTION" text="Notes"></kendo-label>
+            <textarea kendoTextArea  style="resize: both;" class="form-input-double" formControlName="DESCRIPTION" kendoTextBox #DESCRIPTION >
+            </textarea>
+        </kendo-formfield>
+    </div>
+
+    </fieldset>
+    </form>
+    </div>
+</kendo-pdf-export>
+</div>
+
+
+<div [hidden]="!multiStepFormOpened" >
+	<kendo-dialog [title]="DSP_MULTISTEPFormConfig?.masterParams?.formName || 'Form title'" (close)="multiStepFormClose()"
+	  resizable="true"
+		[minWidth]="700" [width]="700" [height]="fieldGridHeight+200">
+
+		<app-dsp-multistep
+		(saveCompletedOutput)="savemultiStepFormCompletedHandler($event)"
+		[setComponentConfig_Input]="DSP_MULTISTEPFormConfig">
+		</app-dsp-multistep>
+	</kendo-dialog>
+	</div>
+
+<div [hidden]="!copyTemplateOpened">
+    <kendo-dialog title="Copy from template" resizable="false" [minWidth]="700" [width]="700" [height]="200" (close)="copyTemplateOpened = false">      
+        <kendo-loader *ngIf="isLoading" style="position: absolute; top: 50%; left: 50%" type="converging-spinner"
+            themeColor="primary" size="medium">
+        </kendo-loader>
+        
+        <div *ngIf="!isLoading" class="wrap">
+            <kendo-formfield class="form-field" [orientation]="'horizontal'" style="flex-basis: 100%;">
+                <kendo-label class="form-label" [for]="TEMPLATE_NAME" text="Template name"></kendo-label>
+                <input class="form-input form-control" placeholder="Type new template copy name" [(ngModel)]="copyTemplateName" kendoTextBox #TEMPLATE_NAME />
+            </kendo-formfield>
+        </div>  
+        
+        <kendo-dialog-actions *ngIf="!isLoading">
+            <button kendoButton (click)="copyTemplateOpened = false; copyTemplateName = null">Cancel</button>
+            <button kendoButton (click)="copyTemplate()" [primary]="true">Copy template</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+</div>

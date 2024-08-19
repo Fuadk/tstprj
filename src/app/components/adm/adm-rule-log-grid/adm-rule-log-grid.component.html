@@ -1,0 +1,119 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid 
+    
+    id="grid" [sortable]="true" [height]="componentConfig.gridHeight"
+    
+    
+    [resizable] ="true"
+    (cellClick)="cellClickHandler($event)" 
+    (add)="addHandler()"
+    (remove)="removeHandler($event)"
+    [filter]="state.filter"
+    [filterable]= "isFilterable"
+    [columnMenu]="isColumnMenu"
+    (dataStateChange)="dataStateChange($event)"
+    [resizable]="true"
+    [sortable]="true">
+
+    
+    
+        <ng-template kendoGridToolbarTemplate>
+        <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+        
+
+        
+        <button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild && insertable"></button >
+        <button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></button >
+    
+        
+            <button   kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button >
+            <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></button >
+            <button   kendoButton [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></button >
+        
+        
+            <button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand *ngIf="insertable"></button >
+            <button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand *ngIf="insertable">Remove</button >
+                
+            <button  kendoButton [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></button >
+            <button  kendoButton [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></button >
+            <button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></button >
+            <button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></button >
+    
+    
+    </ng-template>
+
+
+
+	<!--kendo-grid-column field="RULE_ID" title="Rule Id" [width]="100"   [editable]="isRULE_IDEnable">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetRULE_ID(dataItem.RULE_ID)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrRULE_ID"  textField="CODETEXT_LANG" valueField="CODE"
+		(valueChange)="valueChangeRULE_ID($event)"
+		[valuePrimitive]="true" [formControl]="formGroup.get('RULE_ID')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column-->
+	<kendo-grid-column field="RULE_ID" 
+       title="Rule Id" [width]="30"></kendo-grid-column>
+  <kendo-grid-column field="ACTION_ID" 
+       title="Action Id" [width]="40"></kendo-grid-column>   
+  <kendo-grid-column field="STATUS" 
+       title="Status" [width]="40"></kendo-grid-column>        
+  <kendo-grid-column field="SENT_DATE"  [width]="100"	filter="date"	 editor="date"  title="Sent Date" 
+       [format]="paramConfig.DateTimeFormat">
+       <ng-template KendoGridEditTemplate  let-dataItem>
+       <kendo-datetimepicker [format]="this.paramConfig.DateTimeFormat" ngDefaultControl	 #datepicker>
+       </kendo-datetimepicker>
+       </ng-template>
+     </kendo-grid-column>          
+  <kendo-grid-column field="RULE_KEY" 
+		   title="Rule Key" [width]="120" [editable]="isRULE_KEYEnable"></kendo-grid-column>
+  
+
+
+	<kendo-grid-column field="MSG_RESPONSE" 
+		   title="Msg Response" [width]="120"></kendo-grid-column>
+
+  <!--kendo-grid-column field="MODULE" 
+		   title="Module" [width]="120"></kendo-grid-column>
+	<kendo-grid-column field="MSG_RECEIVED" 
+		   title="Msg Received" [width]="120"></kendo-grid-column>
+	<kendo-grid-column field="PARAMETER_SENT" 
+		   title="Parameter Sent" [width]="120"></kendo-grid-column>
+	<kendo-grid-column field="BODY_SENT" 
+		   title="Body Sent" [width]="120"></kendo-grid-column-->
+
+
+
+
+
+    
+                       <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                        <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                        <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                         <div class="page-template">
+                            <div class="header">
+                              <div style="float: center">{{ title }}</div>
+                            </div>
+                            <div class="footer">
+                              Page {{ pageNum }} of {{ totalPages }}
+                            </div>
+                          </div>
+                        </ng-template>
+                    </kendo-grid-pdf>
+                    <kendo-grid-excel [fileName]="ExcelfileName" ></kendo-grid-excel>
+    
+    </kendo-grid>
+    
+    
+    </kendo-pdf-export>
+
+    <div [hidden]="!logOpened" >
+        <kendo-dialog title="Logs"  (close)="logClose()" 
+    [minWidth]="400" [width]="950" [height]="650">
+      <app-adm-rule-log-form
+      [setComponentConfig_Input]="form_adm_rule_log">
+      </app-adm-rule-log-form>
+      </kendo-dialog>
+    </div>

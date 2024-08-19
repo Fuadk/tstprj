@@ -3,11 +3,18 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "noImplicitReturns": false,
+    "useDefineForClassFields": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noImplicitThis":false,
+    "strictPropertyInitialization": false,
+
     "outDir": "./dist/out-tsc",
-    "strict": true,
+    "strict": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
+    
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,6 +24,14 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
+    "paths": {
+      "@modeldir/*": [
+        "./model/*"
+      ],
+      "starlib": [
+        "./dist/starlib"
+      ]
+    },
     "module": "ES2022",
     "lib": [
       "ES2022",

@@ -1,0 +1,25 @@
+<div>
+  <legend class="k-form-legend" >{{title }}</legend>
+<kendo-tabstrip  [keepTabContent]="true">
+    
+  <kendo-tabstrip-tab  [selected]="true" >
+    <ng-template   kendoTabTitle>
+      <legend>Users </legend>
+     </ng-template>
+    <ng-template kendoTabContent>
+          <app-adm-user-authority></app-adm-user-authority>
+    </ng-template>
+  </kendo-tabstrip-tab>
+  
+  <kendo-tabstrip-tab >
+    <ng-template   kendoTabTitle>
+      <legend>Groups </legend>
+     </ng-template>
+    <ng-template kendoTabContent>
+        <app-adm-group-authority>
+        </app-adm-group-authority>
+    </ng-template>
+  </kendo-tabstrip-tab>
+
+</kendo-tabstrip>
+</div>

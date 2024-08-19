@@ -1,0 +1,109 @@
+
+<div>
+    <legend>{{ title }}</legend>
+
+      <kendo-toolbar class="form-toolbar" *ngIf="showToolBar">
+          <!--kendo-toolbar-button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></kendo-toolbar-button -->
+
+      <!--kendo-toolbar-separator></kendo-toolbar-separator-->
+          <!--kendo-toolbar-button  [icon]="'reload'"  title="Execute Query"  (click)="executeQuery( form.value);"></kendo-toolbar-button-->
+          <!--kendo-toolbar-button   [icon]="'cancel'" title="Cancel"  (click)="onCancel($event)" ></kendo-toolbar-button -->
+
+      </kendo-toolbar>
+      <!--kendo-pdf-export #pdf paperSize="A4" margin="2cm"-->
+
+          <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="form" >
+          <fieldset class="form-fieldset"  class="k-form-fieldset">
+
+
+      <div class="wrap">
+        <kendo-formfield class="form-input-double" [orientation]="'horizontal'">
+          <kendo-label class="form-label" [for]="QUERY_ID" text="Report Id"></kendo-label>
+          <kendo-combobox  #QUERY_ID class="form-field-combobox" [formControlName]="'QUERY_ID'"
+          [data]="lkpArrQUERY_ID" [textField]="'CODETEXT_LANG'"  [valueField]="'CODE'"
+          [valuePrimitive]="true"  [kendoDropDownFilter]="{ operator: 'contains' }">
+          </kendo-combobox>
+        </kendo-formfield>
+        <p > &nbsp;&nbsp;
+          <button kendoButton style="vertical-align: top;" (click)="executeQuery( form.value);">Run Report</button>
+      </p>
+
+      </div>
+
+          </fieldset>
+          </form>
+    <div><br/></div>
+        
+<div *ngIf="showParams">
+  <kendo-grid
+     id="gridParams"
+    [kendoGridBinding]="gridData"
+    scrollable="none"
+    (cellClick)="cellClickHandler($event)" 
+    >
+<ng-template kendoGridToolbarTemplate>
+  <legend class="k-form-legend" >Select Report Parameters</legend>
+  </ng-template>
+
+  <kendo-grid-column
+  *ngFor="let column of columns"
+  field="{{column.field}}"
+  title="{{column.title}}"
+  format="{{column.format}}"
+  type="{{column.type}}"
+      >
+        <p *ngIf="column.lookup">
+          <ng-template kendoGridCellTemplate  let-dataItem> {{lkpArrGetfield(column.field, dataItem)?.CODETEXT_LANG}} </ng-template>
+        </p>
+
+    </kendo-grid-column>
+  </kendo-grid>
+  </div>
+
+  <div><br/></div>
+
+
+  <!--/kendo-pdf-export-->
+
+  <app-dsp-dynamic-grid [hidden]="hideDynamicGrid"
+  [setComponentConfig_Input]="DSP_DYNAMICGridConfig">
+</app-dsp-dynamic-grid>
+
+  <kendo-dialog title={{dialogTitle}} *ngIf="lookupOpened" (close)="lookupClose()" 
+  resizable="true"
+    [minWidth]="400" [width]="500" [height]="450">
+      <kendo-grid
+        id="grid2"
+        [kendoGridBinding]="lookupData"
+        scrollable="scrollable"
+        [filterable]= "true"
+        (cellClick)="cellClickHandlerLookup($event)" 
+        >
+        
+        <kendo-grid-column field="CODE" 
+            title="Code" [width]="100" ></kendo-grid-column>
+        <kendo-grid-column field="CODETEXT_LANG" 
+            title="Text" [width]="150" ></kendo-grid-column>
+      </kendo-grid>
+    </kendo-dialog>
+    
+
+
+      <kendo-dialog title={{dialogDateTitle}} *ngIf="dateOpened" (close)="dateClose()" 
+           [minWidth]="400" [width]="500" [height]="250">
+
+          <form class="form-layout" class="k-form k-form-horizontal" [formGroup]="formDate" >
+            <fieldset class="form-fieldset"  class="k-form-fieldset">
+              <div class="wrap">
+                <kendo-formfield class="form-field" [orientation]="'horizontal'">
+                  <kendo-label class="form-label" [for]="DYNAMIC_FIELD" text="Date"></kendo-label>
+                  <kendo-datepicker [format]="this.paramConfig.DateFormat" class="form-field-date" formControlName="DYNAMIC_FIELD" 
+                  (valueChange)="valueChangeDYNAMIC_FIELDE($event)"
+                  #DYNAMIC_FIELD ></kendo-datepicker>
+                </kendo-formfield>
+              </div>
+            </fieldset>
+            </form>
+
+      </kendo-dialog>
+</div>

@@ -1,0 +1,643 @@
+/* You can add global styles to this file, and also import other style files */
+
+//$kendo-panelbar-bg: #1b56b8;
+//$kendo-body-bg : #1b56b8 !default;
+
+//$kendo-grid-bg: #1bb822;
+//$kendo-color-white : #1b56b8 !important;
+// $primary:#3C99DC; $base-bg:#D5F3FE !default;  $hovered-bg:#66D3FA !default; 
+// $base-text:#000000 !default; $link-text:#3C99DC !default; $text-color:#000000 !default;
+// // $body-bg:#FFFFFF !default; 
+// $bg-color:#FFFFFF !default; 
+// $app-bg:#D5F3FE !default; $app-text:#000000 !default; $line-height: (1) !default;
+//point1
+// $base-border: rgba( black, .2 ) !default;
+
+
+// $spacer: .5em !default;
+// $padding-x: 4px !default;
+// $padding-y: 2px !default;
+
+// //$line-height: (16 / 14) !default;
+// $icon-size: 16px !default;
+// $font-size: 12px !default;
+// $form-field-margin-top: .5rem !default;
+// /* $kendo-checkbox-border-width : 4px !default; */
+
+//$kendo-app-bg:red;
+@import "@progress/kendo-theme-core/scss/functions/index.import.scss";
+$kendo-spacing: (     //$_default-spacing:
+0: 0px, //affects spacing between form
+1: .05rem, // this is main for line height
+1.5: .075rem, //affects height of tabs
+2: 4px, //affecting spacing between buttons 
+2.5: .625rem, //affects right margin after a label
+3: .5rem, //affects spacing between tabs , and height of toolbar
+4: .5rem,   // spacing between the form and the border
+);
+
+$kendo-enable-typography: true; // Enable the typography system.
+$kendo-line-height	: k-math-div( 20, 14 ) !default;
+$kendo-font-size :0.875rem !default;
+//$kendo-font-family : Tahoma;
+//$padding-block: 0;
+
+$kendo-colors-green-black:(
+  app-surface: #122226,     //app background
+  surface-alt: #122226,     //panelbar except selected
+
+  surface: #d5f8c0 ,        //form and grid header and legend
+  base : #D0F3BB,         //button background
+  base-hover: #C6E9B1,    //button hover
+  
+  primary: #18af25,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #03A61E, 
+
+  subtle: #ffffff,          // text:placeholder
+  on-app-surface: #ffffff,  // text:form, grid, legend. Not button, not panelbar head
+  
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+  //border: rgba(1, 1, 1, 0.08),  
+  //border-alt: rgba(0, 0, 0, 0.16),
+);
+
+$kendo-colors-green-white:(
+  app-surface: #f4f8f9,     //app background
+  surface-alt: #f4f8f9,     //panelbar except selected
+
+  surface: #d5f8c0 ,        //form and grid header and legend
+  base : #D0F3BB,         //button background
+  base-hover: #C6E9B1,    //button hover
+  
+  primary: #18af25,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #020302,   
+
+  subtle: #2bb85c,          // text:placeholder
+  on-app-surface: #028F33,  // text:form, grid, legend. Not button, not panelbar head
+  
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+  //border: rgba(1, 1, 1, 0.08),  
+  //border-alt: rgba(0, 0, 0, 0.16),
+);
+
+$kendo-colors-pink-black:(
+  app-surface: #122226,     //app background
+  surface-alt: #122226,     //panelbar except selected
+
+  surface: #d4bbdd ,        //form and grid header and legend
+  base : #CFB6D8,         //button background
+  base-hover: #C5ACCE,    //button hover
+  
+  primary: #a173be,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #8C6AB7,   
+
+  subtle: #ffffff,          // text:placeholder
+  on-app-surface: #ffffff,  // text:form, grid, legend. Not button, not panelbar head
+  
+
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+  //border: rgba(1, 1, 1, 0.08),  
+  //border-alt: rgba(0, 0, 0, 0.16),
+);
+
+$kendo-colors-pink-white:(
+  app-surface: #f4f8f9,     //app background
+  surface-alt: #f4f8f9,     //panelbar except selected
+
+  surface: #d4bbdd ,        //form and grid header and legend
+  base : #CFB6D8,         //button background
+  base-hover: #C5ACCE,    //button hover
+
+  primary: #a173be,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #8C6AB7,   
+
+  subtle: #902bb8,          // text:placeholder
+  on-app-surface: #67028F,  // text:form, grid, legend. Not button, not panelbar head
+  
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+  //border: rgba(1, 1, 1, 0.08),  
+  //border-alt: rgba(0, 0, 0, 0.16),
+);
+
+
+$kendo-colors-genovity:(
+  app-surface: #ffffff,     //app background
+  surface-alt: #ffffff,     //panelbar, form, grid bodies except selected
+
+  surface: #0D2445,        //form and grid header and legend
+  base : #ffffff,         //button background
+  base-hover: #0D2445,    //button hover
+  
+  primary: #b42818,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: hsl(6, 76%, 20%),  
+
+  on-app-surface: #a88b87,  // text:form, grid, legend. Not button, not panelbar head
+  subtle: #b42818,          // text:placeholder
+  
+  border: rgba(0, 0, 0, 0.08),  
+  border-alt: rgba(0, 0, 0, 0.16),
+);
+
+
+$kendo-colors-blue-black:(
+  app-surface: #122226,     //app background
+  surface-alt: #122226,     //panelbar except selected
+
+  surface: #D5F3FE ,        //form and grid header and legend
+  base : #D0EEF9,         //button background
+  base-hover: #C6E4EF,    //button hover
+  
+  primary: #3C99DC,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #2790D5,   
+
+  subtle: #ffffff,          // text:placeholder
+  on-app-surface: #ffffff,  // text:form, grid, legend. Not button, not panelbar head
+
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+  //border: rgba(1, 1, 1, 0.08),  
+  //border-alt: rgba(0, 0, 0, 0.16),
+);
+$kendo-colors-blue-white:(
+  app-surface: #f4f8f9,     //app background
+  surface-alt: #f4f8f9,     //panelbar except selected
+
+  surface: #D5F3FE ,        //form and grid header and legend
+  base : #D0EEF9,         //button background
+  base-hover: #C6E4EF,    //button hover
+  
+  primary: #3C99DC,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #2790D5,   
+  
+  subtle: #2B56B8,          // text:placeholder
+  on-app-surface: #022D8F,  // text:form, grid, legend. Not button, not panelbar head
+  
+
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+  //border: rgba(1, 1, 1, 0.08),  
+  //border-alt: rgba(0, 0, 0, 0.16),
+);
+
+$kendo-colors-gray-white:(
+  app-surface: #ffffff,     //app background
+  surface-alt: #ffffff,     //panelbar except selected
+  
+  surface: #fafafa ,        //form and grid header and legend
+  base : #f5f5f5,         //button background
+  base-hover: #ebebeb,    //button hover
+    
+  primary: #b42818,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #b42818,   
+  
+  on-app-surface: #3d3d3d,  // text:form, grid, legend. Not button, not panelbar head
+  subtle: #666666,          // text:placeholder
+  
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+);
+
+$kendo-colors-gray-black:(
+  app-surface: #122226,     //app background
+  surface-alt: #122226,     //panelbar except selected
+  
+  surface: #b42818 ,        //form and grid header and legend
+  base : #f5f5f5,         //button background
+  base-hover: #ebebeb,    //button hover
+    
+  primary: #b42818,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #b42818,   
+  
+  on-app-surface: #ffffff,  // text:form, grid, legend. Not button, not panelbar head
+  subtle: #ffffff,          // text:placeholder
+  
+  border: #d6d6d6,
+  border-alt: #5c5a5a,
+);
+
+$kendo-colors: $kendo-colors-blue-white !default;
+
+$kendo-colors-master:(
+  app-surface: #ffffff,     //app background
+  surface-alt: #ffffff,     //panelbar except selected
+  surface: #fafafa ,        //form and grid header and legend
+  base : #f5f5f5,         //button background
+  base-hover: #ebebeb,    //button hover
+  on-app-surface: #3d3d3d,  // text:form, grid, legend. Not button, not panelbar head
+  subtle: #666666,          // text:placeholder
+  
+  primary: #ff6358,         //bkg selected(panel, tree, button. text of paneblar head
+  primary-hover: #ea5a51,   
+
+  border: rgba(0, 0, 0, 0.08),  
+  border-alt: rgba(0, 0, 0, 0.16),
+);
+$kendo-colors-test: (      //$_default_colors:
+app-surface: #38317E,
+on-app-surface: #ffffff,
+
+  primary: #3C99DC,
+  base : #332C79,
+  surface: #38317E,
+  secondary: #A39CEA,
+  tertiary:#40E078,
+  primary-hover: #2790D5,
+  
+//  on-primary: #ffffff,      //affects panel bar text when highlighted
+  );
+  $kendo-colors-ref-small: (
+    primary: #ff6358,
+    base: #f5f5f5,
+    surface: #fafafa,
+    secondary: #666666,
+    tertiary: #03a9f4,
+    primary-hover: #3D3684,
+  );
+  $kendo-colorsy: (
+    // Primary
+  primary-subtle: #3D236F,
+  primary-subtle-hover: #3D155F,
+  primary-subtle-active: #3CFF48,
+  primary: #3C99DC,
+  primary-hover: #3D3684,
+  primary-active: #1189CD,
+  primary-emphasis: #3CD41B,
+  primary-on-subtle: #9956A0,
+  on-primary: #ffffff,
+  primary-on-surface: #3C99DC,
+  );  
+$kendo-colors-ref:(
+ // Misc
+ app-surface: #ffffff,
+ on-app-surface: #3d3d3d,
+ subtle: #666666,
+ surface: #fafafa,
+ surface-alt: #ffffff,
+ border: rgba(0, 0, 0, 0.08),
+ border-alt: rgba(0, 0, 0, 0.16),
+ // Base
+ base-subtle: #ebebeb,
+ base-subtle-hover: #e0e0e0,
+ base-subtle-active: #d6d6d6,
+ base: #f5f5f5,
+ base-hover: #ebebeb,
+ base-active: #d6d6d6,
+ base-emphasis: #c2c2c2,
+ base-on-subtle: #3d3d3d,
+ on-base: #3d3d3d,
+ base-on-surface: #3d3d3d,
+ // Primary
+ primary-subtle: #ffeceb,
+ primary-subtle-hover: #ffdedb,
+ primary-subtle-active: #ffc8c4,
+ primary: #ff6358,
+ primary-hover: #ea5a51,
+ primary-active: #d45349,
+ primary-emphasis: #ff9d97,
+ primary-on-subtle: #5c201c,
+ on-primary: #ffffff,
+ primary-on-surface: #ff6358,
+ // Secondary
+ secondary-subtle: #fafafa,
+ secondary-subtle-hover: #f5f5f5,
+ secondary-subtle-active: #ebebeb,
+ secondary: #666666,
+ secondary-hover: #525252,
+ secondary-active: #3d3d3d,
+ secondary-emphasis: #e0e0e0,
+ secondary-on-subtle: #141414,
+ on-secondary: #ffffff,
+ secondary-on-surface: #292929,
+ // Tertiary
+ tertiary-subtle: #d8f1fd,
+ tertiary-subtle-hover: #c5eafc,
+ tertiary-subtle-active: #a3dffb,
+ tertiary: #03a9f4,
+ tertiary-hover: #039ae0,
+ tertiary-active: #028ccb,
+ tertiary-emphasis: #61c9f9,
+ tertiary-on-subtle: #023f5c,
+ on-tertiary: #ffffff,
+ tertiary-on-surface: #028ccb,
+ // Info
+ info-subtle: #d2e2fb,
+ info-subtle-hover: #bdd4f8,
+ info-subtle-active: #80acf4,
+ info: #0058e9,
+ info-hover: #0052d6,
+ info-active: #004ac2,
+ info-emphasis: #6098f2,
+ info-on-subtle: #002259,
+ on-info: #ffffff,
+ info-on-surface: #004ac2,
+ // Success
+ success-subtle: #dcf0d3,
+ success-subtle-hover: #cbe9bf,
+ success-subtle-active: #b7e1a5,
+ success: #37b400,
+ success-hover: #32a500,
+ success-active: #2d9600,
+ success-emphasis: #81d15f,
+ success-on-subtle: #1c5a00,
+ on-success: #ffffff,
+ success-on-surface: #2d9600,
+ // Warning
+ warning-subtle: #fff4d3,
+ warning-subtle-hover: #ffeebd,
+ warning-subtle-active: #ffe79e,
+ warning: #ffc000,
+ warning-hover: #eaaf00,
+ warning-active: #d49f00,
+ warning-emphasis: #ffd760,
+ warning-on-subtle: #5e4700,
+ on-warning: #3d3d3d,
+ warning-on-surface: #ffc000,
+ // Error
+ error-subtle: #fcddda,
+ error-subtle-hover: #fbc8c3,
+ error-subtle-active: #f98b80,
+ error: #f31700,
+ error-hover: #df1600,
+ error-active: #ca1400,
+ error-emphasis: #f76f60,
+ error-on-subtle: #7a0c00,
+ on-error: #ffffff,
+ error-on-surface: #ca1400,
+ // Light
+ light-subtle: #fafafa,
+ light-subtle-hover: #f5f5f5,
+ light-subtle-active: #ebebeb,
+ light: #ebebeb,
+ light-hover: #e0e0e0,
+ light-active: #d6d6d6,
+ light-emphasis: #d6d6d6,
+ light-on-subtle: #141414,
+ on-light: #000000,
+ light-on-surface: #e0e0e0,
+ // Dark
+ dark-subtle: #c2c2c2,
+ dark-subtle-hover: #adadad,
+ dark-subtle-active: #999999,
+ dark: #3d3d3d,
+ dark-hover: #292929,
+ dark-active: #1f1f1f,
+ dark-emphasis: #666666,
+ dark-on-subtle: #1f1f1f,
+ on-dark: #ffffff,
+ dark-on-surface: #141414,
+ // Inverse
+ inverse-subtle: #c2c2c2,
+ inverse-subtle-hover: #adadad,
+ inverse-subtle-active: #999999,
+ inverse: #3d3d3d,
+ inverse-hover: #292929,
+ inverse-active: #1f1f1f,
+ inverse-emphasis: #666666,
+ inverse-on-subtle: #1f1f1f,
+ on-inverse: #ffffff,
+ inverse-on-surface: #141414,
+ // Series A
+ series-a: #ff6358,
+ series-a-bold: #bf4a42,
+ series-a-bolder: #80322c,
+ series-a-subtle: #ffb1ac,
+ series-a-subtler: #ff8a82,
+ // Series B
+ series-b: #ffe162,
+ series-b-bold: #bfa94a,
+ series-b-bolder: #807131,
+ series-b-subtle: #fff0b1,
+ series-b-subtler: #ffe989,
+ // Series C
+ series-c: #4cd180,
+ series-c-bold: #399d60,
+ series-c-bolder: #266940,
+ series-c-subtle: #a6e8c0,
+ series-c-subtler: #79dda0,
+ // Series D
+ series-d: #4b5ffa,
+ series-d-bold: #3847bc,
+ series-d-bolder: #26307d,
+ series-d-subtle: #a5affd,
+ series-d-subtler: #7887fb,
+ // Series E
+ series-e: #ac58ff,
+ series-e-bold: #8142bf,
+ series-e-bolder: #562c80,
+ series-e-subtle: #d6acff,
+ series-e-subtler: #c182ff,
+ // Series F
+ series-f: #ff5892,
+ series-f-bold: #bf426e,
+ series-f-bolder: #802c49,
+ series-f-subtle: #ffacc9,
+ series-f-subtler: #ff82ae,
+);
+//@import "@progress/kendo-theme-default/dist/all.scss";
+@import "@progress/kendo-theme-fluent/dist/all.scss";
+
+// @import "@progress/kendo-theme-default/dist/all";
+// /*@import "~@progress/kendo-theme-default/scss/all";*/
+ @import "@swimlane/ngx-dnd/release/index.css";
+ @import "@progress/kendo-font-icons/dist/index.css";
+
+.wrap {
+   display: flex;
+   justify-content: flex-start;
+   padding:0px 0px 10px 0px;
+}
+.wrapyes {
+  display: flex;
+  flex-wrap: wrap
+}
+.wrapno {
+  display: flex;
+  flex-wrap: nowrap
+}
+legend {
+    font-size:1.2em;
+    padding: 0px 0px 0px 0px;
+}
+
+
+.k-form-legend
+  {margin:0 0 0rem;
+//  background-color: $kendo-app-bg;
+  // color: $kendo-app-text;
+}
+
+/* margin top, right, bottom, and left) */
+/*
+$header-cell-padding-x: 3px !default;
+$header-cell-padding-y: 2px !default;
+$cell-padding-x: 3px !default;
+$cell-padding-y: 2px !default;
+$cell-padding: 3px !default;
+*/
+
+/*
+.k-textbox{
+  font-size:8px;
+  height:"20";
+  padding:0px;
+}
+.k-combobox{
+  font-size:8px;
+  height:"20";
+  padding:0px;
+}
+.k-input{
+  padding:0px 0px;
+  padding-right:0px
+}
+.k-panel{
+  padding:0px 0px;
+}
+.k-form
+{
+  padding: 0;
+}
+k-grid-toolbar{
+  padding:0px 0px;
+}
+
+*/
+.k-grid td
+{
+  padding: 4px;
+}
+
+
+/*.k-textbox{width:100%;box-sizing:border-box}*/
+.form-borders{
+  border-radius: 5px;
+  border: 1px solid gray;
+  margin-bottom: 10px;
+}
+.form-layout{
+
+}
+.card-format{
+  margin-left: 10px;
+}
+.form-toolbar  
+{
+  margin:0 0 0rem;
+//  background-color: $kendo-base-bg;
+}
+.form-fieldset{
+/*flex-basis: 800px;*/
+width: 600px !important;
+}
+
+
+.form-field {
+  flex-basis: 300px;
+ }
+
+
+ .form-field-double{
+  flex-basis: 450px;
+}
+.form-field-combobox {
+  flex-basis: 200px;
+ /* width: 200px !important;*/
+
+}
+.form-field-date {
+  flex-basis: 200px;
+}
+
+.form-label {
+  flex-basis: 100px;
+  }
+.form-input {
+    flex-basis: 200px;
+}
+
+.form-input-double {
+  flex-basis: 600px;
+  resize: both;
+
+}
+.form-input-triple {
+  flex-basis: 800px;
+  height :200px;
+  resize: both;
+
+}
+.form-input-full {
+  flex-basis: 800px;
+  height :300px;
+  resize: both;
+
+}
+.disabled {
+  pointer-events: none !important;
+  opacity: .5 !important;
+}
+
+// @media print {
+//   body * {
+//     visibility: hidden;
+//   }
+//   kendo-pdf-export, kendo-pdf-export * {
+//     visibility: visible;
+//   }
+//   kendo-pdf-export {
+//     position: absolute;
+//     left: 0;
+//     top: 0;
+//   }
+// }
+
+signature-pad {
+  canvas {
+    border: solid thin #c1c1c1;
+  }
+}
+
+.content-pane {
+  flex: 1;
+  overflow-x: hidden;
+  background-color: $kendo-body-bg;
+}
+
+.k-searchbar {
+  align-items: center;
+  padding-left: 10px;
+}
+.input-upper{
+  text-transform: uppercase;
+}
+.Capitalize > .k-input-inner {
+  text-transform: capitalize;
+}
+.overlap {
+  position: absolute !important;
+  z-index: 100 !important;
+}
+
+.gold .codeColumn {
+  background-color: #ffba80;
+}
+.green .codeColumn {
+  background-color: #b2f699;
+}
+
+.fields-overflow {
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.ng-star-inserted{
+  background-repeat:no-repeat;
+  background-size:0px;
+}
+.k-panelbar{
+  display:inline;
+}

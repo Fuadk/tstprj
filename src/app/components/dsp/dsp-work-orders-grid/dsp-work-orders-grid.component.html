@@ -1,0 +1,212 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid 
+    
+    id="grid" [sortable]="true" [height]="componentConfig.gridHeight"
+    [resizable] ="true"
+	(cellClick)="cellClickHandler($event)" 
+	(edit)="editHandler($event)" 
+    (add)="addHandler()"
+    (remove)="removeHandler($event)"
+    [filter]="state.filter"
+    [filterable]= "isFilterable"
+    [columnMenu]="isColumnMenu"
+    (dataStateChange)="dataStateChange($event)"
+    [resizable]="true"
+    [sortable]="true">
+
+    
+    
+        <ng-template kendoGridToolbarTemplate>
+        <legend class="k-form-legend" >{{ title }}</legend>
+        
+
+        
+        <button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild"></button >
+        <button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></button >
+    
+        
+            <button   kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);" *ngIf="queryable"></button >
+            <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);" *ngIf="queryable"></button >
+            <button   kendoButton [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></button >
+        
+        
+            <button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand *ngIf="insertable"></button >
+            <button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand *ngIf="insertable">Remove</button >
+                
+            <button  kendoButton [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></button >
+            <button  kendoButton [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></button >
+            <button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></button >
+            <button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></button >
+    
+    
+    </ng-template>
+
+	<!--kendo-grid-column field="DEPT" title="Dept" [width]="80">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDEPT(dataItem.DEPT)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrDEPT"  textField="CODETEXT_LANG" valueField="CODE"
+		(valueChange)="valueChangeDEPT($event)"
+		[valuePrimitive]="true" [formControl]="formGroup.get('DEPT')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+   <kendo-grid-column field="DIV" title="Div" [width]="100">
+			<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetDIV(dataItem.DIV)?.CODETEXT_LANG}} </ng-template>
+			<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+			<kendo-dropdownlist  [data]="getlkpArrDIV()"  textField="CODETEXT_LANG" valueField="CODE"
+			(valueChange)="valueChangeDIV($event)"
+			[valuePrimitive]="true" [formControl]="formGroup.get('DIV')">
+			</kendo-dropdownlist>
+			</ng-template>
+		</kendo-grid-column-->
+
+		<kendo-grid-command-column  [width]="70">
+            <ng-template kendoGridCellTemplate>
+                <button kendoGridEditCommand [primary]="true" [icon]="'more-horizontal'">More</button>
+            </ng-template>
+        </kendo-grid-command-column>
+
+	<kendo-grid-column field="ASSIGNEE_TYPE" title="Ass. Type" [width]="70">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetASSIGNEE_TYPE(dataItem.ASSIGNEE_TYPE)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrASSIGNEE_TYPE"  textField="CODETEXT_LANG" valueField="CODE"
+		(valueChange)="valueChangeASSIGNEE_TYPE($event)"
+		[valuePrimitive]="true" [formControl]="formGroup.get('ASSIGNEE_TYPE')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+	<kendo-grid-column field="ASSIGNEE" title="Assignee" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetASSIGNEE(dataItem.ASSIGNEE,dataItem.ASSIGNEE_TYPE)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="getlkpArrASSIGNEE()"  textField="CODETEXT_LANG" valueField="CODE"
+	[valuePrimitive]="true" [formControl]="formGroup.get('ASSIGNEE')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+	<kendo-grid-column field="SUBNO" 
+		   title="Subno" [width]="100"></kendo-grid-column>
+	<kendo-grid-column field="WO_STATUS" title="Status" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetWO_STATUS(dataItem.WO_STATUS)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrWO_STATUS"  textField="CODETEXT_LANG" valueField="CODE"
+		[valuePrimitive]="true" [formControl]="formGroup.get('WO_STATUS')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+	
+	<kendo-grid-column field="ORDER_NO" 
+	title="Order No" [width]="60" [editable]="isORDER_NOEnable"></kendo-grid-column>
+<kendo-grid-column field="WO_ORDER_NO"
+	title="No" [width]="60" [editable]="isWO_ORDER_NOEnable"></kendo-grid-column>
+
+<kendo-grid-column field="WO_TYPE" title="WO Job" [width]="100">
+ <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetWO_TYPE(dataItem.WO_TYPE)?.CODETEXT_LANG}} </ng-template>
+ <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+ <kendo-dropdownlist  [data]="lkpArrWO_TYPE"  textField="CODETEXT_LANG" valueField="CODE"
+ [valuePrimitive]="true" [formControl]="formGroup.get('WO_TYPE')">
+ </kendo-dropdownlist>
+ </ng-template>
+</kendo-grid-column>
+
+
+
+	<kendo-grid-column field="PROMISED_DATE"  [width]="100"	filter="date"	 editor="date"  title="Promised" 
+		[format]="paramConfig.DateFormat">
+		<ng-template KendoGridEditTemplate  let-dataItem>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+		</kendo-datepicker>
+		</ng-template>
+	</kendo-grid-column>
+	<kendo-grid-column field="ORDERED_DATE"  [width]="100"	filter="date"	 editor="date"  title="Ordered" 
+		[format]="paramConfig.DateFormat">
+		<ng-template KendoGridEditTemplate  let-dataItem>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+		</kendo-datepicker>
+		</ng-template>
+	</kendo-grid-column>
+
+	<kendo-grid-column field="PARENT_WO_ORDER_NO" 
+		   title="Parent" [width]="80" [editable]="false"></kendo-grid-column>
+
+	<kendo-grid-column field="NOTES" 
+		   title="Notes" [width]="100"></kendo-grid-column>
+   <kendo-grid-column field="TEMPLATE_ORDER"
+		   title="No" [width]="60" *ngIf=false></kendo-grid-column>
+	   
+	<!--kendo-grid-column field="COMPLETION_DATE"  [width]="150"	filter="date"	 editor="date"
+		[format]="paramConfig.DateFormat">
+		<ng-template KendoGridEditTemplate  let-dataItem>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+		</kendo-datepicker>
+		</ng-template>
+		</kendo-grid-column>
+	<kendo-grid-column field="ACTUAL_START_DATE"  [width]="150"	filter="date"	 editor="date"
+		[format]="paramConfig.DateFormat">
+		<ng-template KendoGridEditTemplate  let-dataItem>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+		</kendo-datepicker>
+		</ng-template>
+		</kendo-grid-column>
+
+	<kendo-grid-column field="ACTUAL_END_DATE"  [width]="150"	filter="date"	 editor="date"
+		[format]="paramConfig.DateFormat">
+		<ng-template KendoGridEditTemplate  let-dataItem>
+		<kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+		</kendo-datepicker>
+		</ng-template>
+		</kendo-grid-column>
+
+
+
+	<kendo-grid-column field="TEMPLATE_NAME" title="TEMPLATE_NAME" [width]="100">
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetTEMPLATE_NAME(dataItem.TEMPLATE_NAME)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrTEMPLATE_NAME"  textField="CODETEXT_LANG" valueField="CODE"
+		[valuePrimitive]="true" [formControl]="formGroup.get('TEMPLATE_NAME')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column-->
+
+
+
+
+    
+		<kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+		<kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+		<ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+			<div class="page-template">
+			<div class="header">
+				<div style="float: center">{{ title }}</div>
+			</div>
+			<div class="footer">
+				Page {{ pageNum }} of {{ totalPages }}
+			</div>
+			</div>
+		</ng-template>
+	</kendo-grid-pdf>
+	<kendo-grid-excel fileName="ExcelfileName" ></kendo-grid-excel>
+    
+    </kendo-grid>
+    
+    
+	<app-dsp-diagram-wrap
+	[setComponentConfig_Input]="app_dsp_diagram_wrapConfig">
+	</app-dsp-diagram-wrap>
+
+
+    </kendo-pdf-export>
+
+	
+	<div [hidden]="!workOrderOpened" >
+		<kendo-dialog title="Work Order" (close)="workOrderClose()" 
+		  resizable="true"
+			[minWidth]="700" [width]="1000" [height]="600">
+			<app-dsp-work-orders-form
+			[setComponentConfig_Input]="DSP_WORK_ORDERFormConfig"  
+			>
+			</app-dsp-work-orders-form>
+		</kendo-dialog>
+		</div>

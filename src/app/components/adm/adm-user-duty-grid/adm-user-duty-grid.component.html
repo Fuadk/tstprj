@@ -1,0 +1,212 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+  <kendo-grid 
+  
+  id="grid" [sortable]="true" [height]="gridHeight"
+  [resizable] ="true"
+  [readonly]="true"
+  (cellClick)="cellClickHandler($event)" 
+  (add)="addHandler()"
+  (remove)="removeHandler($event)"
+  [filter]="state.filter"
+  [filterable]= "isFilterable"
+  [columnMenu]="isColumnMenu"
+  (dataStateChange)="dataStateChange($event)"
+  [resizable]="true"
+  [sortable]="true">
+
+  
+  
+      <ng-template kendoGridToolbarTemplate>
+      <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+      
+
+      
+      <button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild"></button >
+      <button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></button >
+  
+      
+          <button   kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button >
+          <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></button >
+          <button   kendoButton [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></button >
+      
+      
+          <button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand></button >
+          <button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand>Remove</button >
+              
+          <button  kendoButton [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></button >
+          <button  kendoButton [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></button >
+          <button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></button >
+          <button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></button >
+  
+  
+  </ng-template>
+
+
+<kendo-grid-column field="USERNAME" title="Username" [width]="100" [editable]="isUSERNAMEEnable">
+  <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetUSERNAME(dataItem.USERNAME)?.CODETEXT_LANG}} </ng-template>
+  <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+  <kendo-dropdownlist  [data]="lkpArrUSERNAME"  textField="CODETEXT_LANG" valueField="USERNAME"
+  [valuePrimitive]="true" [formControl]="formGroup.get('USERNAME')">
+  </kendo-dropdownlist>
+  </ng-template>
+</kendo-grid-column>
+
+
+<kendo-grid-column field="ON_DUTY_DATE"  [width]="100"	filter="date"	 editor="date" title="On Duty" 
+  [format]="paramConfig.DateFormat">
+  <ng-template KendoGridEditTemplate  let-dataItem>
+  <kendo-datepicker [format]="this.paramConfig.DateFormat" ngDefaultControl	 #datepicker>
+  </kendo-datepicker>
+  </ng-template>
+  </kendo-grid-column>
+
+
+
+    <kendo-grid-column-group title={{dayOfWeek[0]}} [width]="80" [locked]="false">
+    <kendo-grid-column field="A_1"
+    title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+      <input type="checkbox" [checked]="dataItem.A_1"/>
+    </ng-template></kendo-grid-column>
+
+      <kendo-grid-column field="P_1"
+    title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+      <input type="checkbox" [checked]="dataItem.P_1"/>
+    </ng-template></kendo-grid-column>
+
+      <kendo-grid-column field="O_1"
+    title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+    <input type="checkbox" [checked]="dataItem.O_1"/>
+    </ng-template></kendo-grid-column>
+  </kendo-grid-column-group> <kendo-grid-column [width]="10" ></kendo-grid-column>
+  
+  
+  <kendo-grid-column-group title={{dayOfWeek[1]}} [width]="60" [locked]="false">
+      <kendo-grid-column field="A_2"
+    title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+    <input type="checkbox" [checked]="dataItem.A_2"/>
+    </ng-template></kendo-grid-column>
+
+      <kendo-grid-column field="P_2"
+    title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+    <input type="checkbox" [checked]="dataItem.P_2"/>
+    </ng-template></kendo-grid-column>
+
+      <kendo-grid-column field="O_2"
+    title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+    <input type="checkbox" [checked]="dataItem.O_2"/>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid-column-group> <kendo-grid-column [width]="10" ></kendo-grid-column>
+
+<kendo-grid-column-group title={{dayOfWeek[2]}} [width]="60" [locked]="false">
+    <kendo-grid-column field="A_3"
+  title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.A_3"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="P_3"
+  title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.P_3"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="O_3"
+  title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.O_3"/>
+  </ng-template>
+</kendo-grid-column>
+</kendo-grid-column-group> <kendo-grid-column [width]="10" ></kendo-grid-column>
+<kendo-grid-column-group title={{dayOfWeek[3]}} [width]="60" [locked]="false">
+    <kendo-grid-column field="A_4"
+  title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.A_4"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="P_4"
+  title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.P_4"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="O_4"
+  title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.O_4"/>
+  </ng-template></kendo-grid-column>
+</kendo-grid-column-group> <kendo-grid-column [width]="10" ></kendo-grid-column>
+<kendo-grid-column-group title={{dayOfWeek[4]}} [width]="60" [locked]="false">
+    <kendo-grid-column field="A_5"
+  title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.A_5"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="P_5"
+  title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.P_5"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="O_5"
+  title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.O_5"/>
+  </ng-template>
+</kendo-grid-column>
+</kendo-grid-column-group> <kendo-grid-column [width]="10" ></kendo-grid-column>
+<kendo-grid-column-group title={{dayOfWeek[5]}} [width]="60" [locked]="false">
+    <kendo-grid-column field="A_6"
+  title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.A_6"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="P_6"
+  title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.P_6"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="O_6"
+  title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.O_6"/>
+  </ng-template>
+  </kendo-grid-column>
+</kendo-grid-column-group> <kendo-grid-column [width]="10" ></kendo-grid-column>
+<kendo-grid-column-group title={{dayOfWeek[6]}} [width]="60" [locked]="false">
+    <kendo-grid-column field="A_7"
+  title="A"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.A_7"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="P_7"
+  title="P"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.P_7"/>
+  </ng-template></kendo-grid-column>
+
+    <kendo-grid-column field="O_7"
+  title="O"  editor="boolean" [width]="20"><ng-template kendoGridCellTemplate let-dataItem>
+  <input type="checkbox" [checked]="dataItem.O_7"/>
+  </ng-template>
+</kendo-grid-column>
+</kendo-grid-column-group>
+
+
+
+
+
+
+  
+                     <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                      <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                      <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                       <div class="page-template">
+                          <div class="header">
+                            <div style="float: center">{{ title }}</div>
+                          </div>
+                          <div class="footer">
+                            Page {{ pageNum }} of {{ totalPages }}
+                          </div>
+                        </div>
+                      </ng-template>
+                  </kendo-grid-pdf>
+                  <kendo-grid-excel [fileName]="ExcelfileName" ></kendo-grid-excel>
+  
+  </kendo-grid>
+  
+  
+  </kendo-pdf-export>
+  

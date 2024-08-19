@@ -1,0 +1,20 @@
+<div >
+    <legend>{{ title }}</legend>
+   
+ 
+
+    <form class="form-layout" class="k-form k-form-horizontal"  >
+        <fieldset class="form-fieldset" class="k-form-fieldset" >
+            
+
+            <kendo-editor  *ngIf="enableHtmlEditor" [value]="value" (valueChange)="valueChange($event)"  style="height: 300px;">
+                    
+                </kendo-editor >
+                <textarea kendoTextArea  *ngIf="enableTextEditor" style="resize: both;height: 300px;" class="form-input-double" [value]="value" (valueChange)="valueChange($event)"></textarea>
+          </fieldset>
+          <event-log title="Event log" [events]="events"></event-log>
+    </form>
+    <div>
+        <button class="k-button k-primary" (click)="submit()" >Submit</button>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+
+    <kendo-grid 
+    
+    id="grid" [sortable]="true" [height]="componentConfig.gridHeight"
+    [resizable] ="true"
+    (cellClick)="cellClickHandler($event)" 
+    (add)="addHandler()"
+    (remove)="removeHandler($event)"
+    [filter]="state.filter"
+    [filterable]= "isFilterable"
+    [columnMenu]="isColumnMenu"
+    (dataStateChange)="dataStateChange($event)"
+    [resizable]="true"
+    [sortable]="true">
+
+    
+    
+        <ng-template kendoGridToolbarTemplate>
+        <legend class="k-form-legend" *ngIf="componentConfig.showTitle">{{ title }}</legend>
+        
+
+        
+        <button  kendoButton [icon]="'save'" title="save" (click)="saveChanges(grid);" *ngIf="!isChild"></button >
+        <button  kendoButton [icon]="'print'" title="print" (click)="printScreen()" ></button >
+    
+        
+            <button   kendoButton [icon]="'zoom'" title="Enter Query" (click)="enterQuery(grid);"></button >
+            <button   kendoButton [icon]="'reload'"  title="Execute Query"  (click)="executeQuery(grid);"></button >
+            <button   kendoButton [icon]="'cancel'" title="Cancel"  (click)="cancelHandler()" ></button >
+        
+        
+            <button  [icon]="'plus-outline'" title="Insert Record"  kendoGridAddCommand></button >
+            <button  [icon]="'minus-outline'" title="Delete Record"  kendoGridRemoveCommand>Remove</button >
+                
+            <button  kendoButton [icon]="'filter'" title="Show/Hide Filter options"  (click)="toggleFilter()" ></button >
+            <button  kendoButton [icon]="'menu'" title="Show/Hide Menu"  (click)="toggleColumnMenu()" ></button >
+            <button  [icon]="'file-pdf'" title="Export to PDF"  kendoGridPDFCommand ></button >
+            <button  [icon]="'file-excel'" title="Export to Excel"  kendoGridExcelCommand ></button >
+    
+    
+    </ng-template>
+
+    <kendo-grid-column field="MODULE" *ngIf="showKeys"
+		   title="Module" [width]="100" [editable]="isMODULEEnable">
+	</kendo-grid-column>
+
+<kendo-grid-column-group [locked]="false" *ngIf="showText">
+	<kendo-grid-column field="RULE_AND" title=" " [width]="40" >
+		</kendo-grid-column>
+	<kendo-grid-column field="RULE_CONDITION_TEXT" title=" " [width]="200"  >
+		</kendo-grid-column>		   
+</kendo-grid-column-group>
+
+
+<kendo-grid-column-group [locked]="false" *ngIf="!showText">
+    <kendo-grid-column field="DISABLED"
+    title="Disable"  editor="boolean" [width]="80"><ng-template kendoGridCellTemplate let-dataItem>
+    <input type="checkbox" [checked]="dataItem.DISABLED"/>
+    </ng-template>
+  </kendo-grid-column>
+	<kendo-grid-column field="MODULE" 
+		   title="Module" [width]="150" [editable]="isMODULEEnable"></kendo-grid-column>
+	<kendo-grid-column field="RULE_ID" 
+		   title="Id" [width]="40" [editable]="isRULE_IDEnable"></kendo-grid-column>
+  <kendo-grid-column field="ITEM" 
+    [editable]="!primarKeyReadOnlyArr.isITEMreadOnly"
+    title="Item" [width]="80" ></kendo-grid-column>
+	<!--kendo-grid-column field="FIELD" 
+       title="Field" [width]="150"></kendo-grid-column-->
+  <kendo-grid-column field="FIELD" title="FIELD" [width]="150"  >
+  <ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetFIELD(dataItem.FIELD)?.CODETEXT_LANG}} </ng-template>
+  <ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+  <kendo-dropdownlist  [data]="lkpArrFIELD"  textField="CODETEXT_LANG" valueField="CODE"
+  (valueChange)="valueChangeFIELD($event)"
+  [valuePrimitive]="true" [formControl]="formGroup.get('FIELD')">
+  </kendo-dropdownlist>
+  </ng-template>
+</kendo-grid-column>
+
+	<kendo-grid-column field="OPERATION" title="Operation" [width]="100"  >
+		<ng-template kendoGridCellTemplate let-dataItem> {{lkpArrGetOPERATION(dataItem.OPERATION)?.CODETEXT_LANG}} </ng-template>
+		<ng-template kendoGridEditTemplate let-dataItem let-formGroup="formGroup">
+		<kendo-dropdownlist  [data]="lkpArrOPERATION"  textField="CODETEXT_LANG" valueField="CODE"
+		(valueChange)="valueChangeOPERATION($event)"
+		[valuePrimitive]="true" [formControl]="formGroup.get('OPERATION')">
+		</kendo-dropdownlist>
+		</ng-template>
+	</kendo-grid-column>
+
+	<kendo-grid-column field="FIELD_VALUE" 
+		   title="Field Value" [width]="150"></kendo-grid-column>
+
+      </kendo-grid-column-group>
+
+
+
+    
+                       <kendo-grid-pdf [fileName]="PDFfileName" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+                        <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+                        <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                         <div class="page-template">
+                            <div class="header">
+                              <div style="float: center">{{ title }}</div>
+                            </div>
+                            <div class="footer">
+                              Page {{ pageNum }} of {{ totalPages }}
+                            </div>
+                          </div>
+                        </ng-template>
+                    </kendo-grid-pdf>
+                    <kendo-grid-excel [fileName]="ExcelfileName" ></kendo-grid-excel>
+    
+    </kendo-grid>
+    
+    
+    </kendo-pdf-export>

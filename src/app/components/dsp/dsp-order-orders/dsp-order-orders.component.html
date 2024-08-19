@@ -1,0 +1,12 @@
+<div>
+    <app-dsp-orders-form
+                  (readCompletedOutput)="readCompletedHandler($event)"
+                  (clearCompletedOutput)="clearCompletedHandler($event)"
+		  (saveCompletedOutput)="saveCompletedHandler($event)" 
+		  [setComponentConfig_Input]="DSP_ORDERSFormConfig">
+    </app-dsp-orders-form>
+    
+    <app-dsp-orders-grid [detail_Input]="grid_DSP_ORDERS"  
+				 [setComponentConfig_Input]="DSP_ORDERSGridConfig">
+    </app-dsp-orders-grid>
+</div>
