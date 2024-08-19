@@ -9,8 +9,8 @@ export const environment = {
   EPMENG_URL: 'http://gmashro.com:8092/format',
   // SERVER_URL: 'http://213.136.79.186:8090'
   //SERVER_URL: 'http://gmashro.com:8090',
-  SERVER_URL:'http://localhost:8090',
-  //SERVER_URL: 'http://62.171.129.171:8090'
+  //SERVER_URL:'http://localhost:8090',
+  SERVER_URL: 'http://62.171.129.171:8090'
   
   };
 

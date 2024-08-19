@@ -145,7 +145,7 @@ public async sendToDiagram(ComponentConfig){
     if (typeof ComponentConfig !== "undefined") {
       this.componentConfig = this.starServices.setComponentConfig(ComponentConfig, this.componentConfig);
       if (ComponentConfig.masterParams != null) {
-        this.sendToDiagram(ComponentConfig);
+       // this.sendToDiagram(ComponentConfig);
        
       }
       if (ComponentConfig.showDiagram != null)
